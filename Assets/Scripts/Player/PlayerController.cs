@@ -1,4 +1,5 @@
 ﻿using System;
+using Interfaces;
 using Objects;
 using UnityEngine;
 
@@ -24,7 +25,7 @@ namespace Player
         {
             _actions = new Actions();
             _actions.Player.FreeCursor.performed += _ => HandleCursor();
-            // TODO: Figure out all controls.
+            _actions.Player.Interact.started += _ => HandleInteractions();
         }
         private void Start()
         {
@@ -34,15 +35,13 @@ namespace Player
 
         private void Update()
         {
+            // TODO:
+            // 1. Use FSM later.
+            // 2. Network later.
             HandleMovement();
             HandleVelocity();
             HandleCursor();
             CheckGrounded();
-        }
-        
-        private void FixedUpdate()
-        {
-            
         }
 
         private void OnEnable() => _actions?.Enable();
@@ -66,9 +65,11 @@ namespace Player
             move.Normalize();
 
             // Modify movement speed.
-            var speed = settings.movementSpeed;
+            var isSlowWalking = _actions.Player.SlowWalk.IsPressed();
+            var modifiedSpeed = isSlowWalking ? settings.movementSpeed / settings.slowWalkMultiplier : settings.movementSpeed;
+            modifiedSpeed *= Mathf.Lerp(1.0f, 1.5f, (100f - settings.sanity) / 100f);
 
-            character.Move(move * (speed * Time.deltaTime));
+            character.Move(move * (modifiedSpeed * Time.deltaTime));
 
             cameraTransform.localPosition = new Vector3(0, 0.3f, 0);
 
@@ -114,6 +115,30 @@ namespace Player
             var cursorFree = _actions.Player.FreeCursor.IsPressed();
             Cursor.lockState = cursorFree ? CursorLockMode.None : CursorLockMode.Locked;
             Cursor.visible = cursorFree;
+        }
+
+        private void GenerateNoise(bool isSlowWalking)
+        {
+            // TODO:
+            // 1. Adjust values later.
+            // 2. AudioMixers.
+            
+            var noiseLevel = Mathf.Lerp(0.1f, 1.0f, (100f - settings.sanity) / 100f);
+            if (isSlowWalking) noiseLevel /= 2;
+        }
+
+        private void HandleInteractions()
+        {
+            // TODO:
+            // 1. Add cooldown maybe.
+            // 2. UI feedback.
+            // 3. Animation.
+            var ray = new Ray(cameraTransform.position, cameraTransform.forward);
+            if (!Physics.Raycast(ray, out var hit, settings.interactDistance)) return;
+            
+            var interactable = hit.collider.GetComponent<IInteractable>();
+            interactable?.Interact();
+            Debug.Log($"Interacted with {hit.collider.name}!");
         }
     }
 }

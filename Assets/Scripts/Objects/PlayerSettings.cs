@@ -12,7 +12,9 @@ namespace Objects
         public float jumpHeight = 6f;
         public float gravity = -9.81f;
         
-        public float sprintMultiplier = 1.15f;
+        public float slowWalkMultiplier  = 1.15f;
+        
+        public float interactDistance = 2f;
 
         public LayerMask ground;
     }
