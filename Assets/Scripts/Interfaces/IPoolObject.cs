@@ -1,7 +1,10 @@
-﻿public interface IPoolObject
+﻿namespace Interfaces
 {
-    /// <summary>
-    /// Invoked when the object is re-used.
-    /// </summary>
-    void Reset();
+    public interface IPoolObject
+    {
+        /// <summary>
+        /// Invoked when the object is re-used.
+        /// </summary>
+        void Reset();
+    }
 }
