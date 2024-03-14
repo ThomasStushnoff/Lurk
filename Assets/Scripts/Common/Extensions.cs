@@ -21,14 +21,14 @@ public static class Extensions
     /// Returns true if the collider is a player.
     /// </summary>
     /// <param name="collider">The collider to check.</param>
-    public static bool IsPlayer(this Collider2D collider)
+    public static bool IsPlayer(this Collider collider)
         => collider.CompareTag("Player") || collider.gameObject.CompareLayer("Player");
 
     /// <summary>
     /// Returns true if the collision is a player.
     /// </summary>
     /// <param name="collision">The collision to check.</param>
-    public static bool IsPlayer(this Collision2D collision)
+    public static bool IsPlayer(this Collision collision)
         => collision.gameObject.CompareTag("Player") || collision.gameObject.CompareLayer("Player");
 
     /// <summary>
