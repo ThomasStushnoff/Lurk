@@ -11,11 +11,9 @@ namespace Objects
         public float jumpHeight = 6f;
         public float gravity = -9.81f;
         
-        public float sanity = 100f;
         public float maxSanity = 100f;
         public float panicThreshold = 30f;
         
-        public float stamina = 100f;
         public float maxStamina = 100f;
         public float staminaThreshold = 30f;
         public float staminaRegenRate = 5f;

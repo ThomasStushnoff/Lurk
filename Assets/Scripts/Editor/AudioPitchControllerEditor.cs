@@ -20,7 +20,8 @@ public class AudioPitchControllerEditor : Editor
                 break;
             case PitchType.Increase:
             case PitchType.Decrease:
-                t.pitchStep = EditorGUILayout.Slider("Pitch Step", t.pitchStep, 0.1f, 2.0f);
+                t.initialPitch = EditorGUILayout.Slider("Initial Pitch", t.initialPitch, -3.0f, 3.0f);
+                t.pitchStep = EditorGUILayout.Slider("Pitch Step", t.pitchStep, 0.1f, 6.0f);
                 break;
         }
 

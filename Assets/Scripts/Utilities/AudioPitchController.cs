@@ -15,8 +15,11 @@ namespace Utilities
         [Range(-3.0f, 3.0f)]
         public float maxPitch = 3.0f;
         
+        [Tooltip("The initial pitch value")]
+        public float initialPitch = 1.0f;
+        
         [Tooltip("The pitch value to increase or decrease by")]
-        [Range(0.1f, 2.0f)]
+        [Range(0.1f, 6.0f)]
         public float pitchStep = 0.1f;
         
         private AudioSource _audioSource;
@@ -27,32 +30,31 @@ namespace Utilities
             _audioSource = GetComponent<AudioSource>();
             _currentPitch = _audioSource.pitch;
         }
-
+        
         private void OnEnable() => AdjustAudioPitch();
 
-        private void AdjustAudioPitch()
+        /// <summary>
+        /// Adjust the audio pitch based on the pitch type.
+        /// </summary>
+        public void AdjustAudioPitch()
         {
             switch (pitchType)
             {
                 case PitchType.Random:
-                    _audioSource.pitch = Random.Range(minPitch, maxPitch);
+                    _currentPitch = Random.Range(minPitch, maxPitch);
                     break;
                 case PitchType.Increase:
-                    _currentPitch += pitchStep;
-                    if (_currentPitch > maxPitch)
-                        _currentPitch = maxPitch;
-                    _audioSource.pitch = _currentPitch;
+                    _currentPitch += pitchStep; 
                     break;
                 case PitchType.Decrease:
                     _currentPitch -= pitchStep;
-                    if (_currentPitch < minPitch)
-                        _currentPitch = minPitch;
-                    _audioSource.pitch = _currentPitch;
                     break;
                 default:
                     _currentPitch = _audioSource.pitch;
                     break;
             }
+            
+            _audioSource.pitch = _currentPitch;
         }
     }
     
