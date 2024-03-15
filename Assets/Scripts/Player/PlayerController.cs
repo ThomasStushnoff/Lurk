@@ -8,14 +8,14 @@ namespace Player
 {
     public class PlayerController : MonoBehaviour
     {
-        [Header("Player Settings")]
+        [TitleHeader("Player Settings")]
         [SerializeField] private PlayerSettings settings;
         [SerializeField] private Transform groundCheck;
         [SerializeField] private Transform cameraTransform;
         [SerializeField] private CharacterController character;
         [SerializeField] private UIController uiController;
         
-        // [Header("Network Settings")]
+        // [TitleHeader("Network Settings")]
         // public bool isHost;
 
         private bool _onGround;
@@ -24,7 +24,6 @@ namespace Player
         private Vector3 _velocity;
         private float _currentStamina;
         private float _currentSanity;
-
         private void Awake()
         {
             if (GameManager.Instance.localPlayer == null)
@@ -93,7 +92,7 @@ namespace Player
             var isSlowWalking = _actions.Player.SlowWalk.IsPressed();
             if (isSlowWalking) currentSpeed /= settings.slowWalkMultiplier;
             
-            currentSpeed *= Mathf.Lerp(0.5f, 1.0f, (100f - _currentStamina) / 100f);
+            currentSpeed *= Mathf.Lerp(0.5f, 1.0f, (100.0f - _currentStamina) / 100.0f);
 
             character.Move(move * (currentSpeed * Time.deltaTime));
 
@@ -110,7 +109,7 @@ namespace Player
                 var lookY = look.y * settings.mouseSensitivity * Time.deltaTime;
 
                 _xRotation -= lookY;
-                _xRotation = Mathf.Clamp(_xRotation, -90f, 90f);
+                _xRotation = Mathf.Clamp(_xRotation, -90.0f, 90.0f);
 
                 cameraTransform.localRotation = Quaternion.Euler(_xRotation, 0f, 0f);
                 transform.Rotate(Vector3.up * lookX);
@@ -152,11 +151,11 @@ namespace Player
         private void HandleVelocity()
         {
             if (_onGround && _velocity.y < 0)
-                _velocity.y = -2f;
+                _velocity.y = -2.0f;
 
             // Handle jumping.
             if (_onGround && _actions.Player.Jump.WasPressedThisFrame())
-                _velocity.y = Mathf.Sqrt(settings.jumpHeight * -2f * settings.gravity);
+                _velocity.y = Mathf.Sqrt(settings.jumpHeight * -2.0f * settings.gravity);
 
             _velocity.y += settings.gravity * Time.deltaTime;
             character.Move(_velocity * Time.deltaTime);
@@ -175,7 +174,7 @@ namespace Player
             // 1. Adjust values later.
             // 2. AudioMixers.
             
-            var noiseLevel = Mathf.Lerp(0.1f, 1.0f, (100f - _currentStamina) / 100f);
+            var noiseLevel = Mathf.Lerp(0.1f, 1.0f, (100.0f - _currentStamina) / 100.0f);
             if (isSlowWalking) noiseLevel /= 2;
         }
 

@@ -5,12 +5,12 @@ namespace World
 {
     public class BasicRoom : MonoBehaviour
     {
-        [Header("Room Settings")]
+        [TitleHeader("Room Settings")]
         [SerializeField] private RoomLight roomLight;
         [SerializeField] private float roomTime = 100f;
         [SerializeField] private float roomFlickerTime = 80f;
         
-        [Header("Sanity Settings")]
+        [TitleHeader("Sanity Settings")]
         [SerializeField] private float sanityDrainMultiplier = 10f;
         
         private float _currentTime;

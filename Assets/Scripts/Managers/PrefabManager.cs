@@ -129,14 +129,14 @@ namespace Managers
     [Serializable]
     public struct Prefab
     {
-        [Header("Prefab Info")]
+        [TitleHeader("Prefab Info")]
         public PrefabType type;
         public GameObject prefab;
 
-        [Header("Spawning Info")]
+        [TitleHeader("Spawning Info")]
         [CanBeNull] public string root;
 
-        [Header("Pooling Settings")]
+        [TitleHeader("Pooling Settings")]
         public bool shouldPool;
         public int initialPoolSize;
     }
