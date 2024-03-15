@@ -8,9 +8,12 @@ namespace Objects
         [TitleHeader("Player Settings")]
         public float mouseSensitivity = 20.0f;
         public float movementSpeed = 5.0f;
-        public float slowWalkMultiplier  = 1.15f;
-        public float jumpHeight = 6.0f;
-        public float gravity = -9.81f;
+        public float vaultDistance = 1.0f;
+        public float crouchSpeedMultiplier  = 0.5f;
+        public float sneakSpeedMultiplier = 0.5f;
+        public float inspectDistance = 5.0f;
+        public float inspectRotationSpeed = 0.5f;
+        [TitleHeader("Sanity")]
         [TitleHeader("Sanity")]
         public float maxSanity = 100.0f;
         public float panicThreshold = 30.0f;
@@ -22,7 +25,9 @@ namespace Objects
         [TitleHeader("Interact Distance")]
         public float interactDistance = 2.0f;
         
-        [TitleHeader("Ground Check")]
+        [TitleHeader("Layers")]
         public LayerMask ground;
+        public LayerMask interactable;
+        public LayerMask obstacle;
     }
 }

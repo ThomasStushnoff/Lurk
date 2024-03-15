@@ -15,7 +15,16 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Slow Walk",
+                    "name": "Vault",
+                    "type": "Button",
+                    "id": "dfefb80a-c85c-4d10-a377-3f72c464c376",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Crouch",
                     "type": "Button",
                     "id": "20427bc4-0a99-4a82-a0a6-233e6eb71f86",
                     "expectedControlType": "Button",
@@ -24,9 +33,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Jump",
+                    "name": "Sneak",
                     "type": "Button",
-                    "id": "dfefb80a-c85c-4d10-a377-3f72c464c376",
+                    "id": "0f192844-6995-4311-bc7e-9228ad099256",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -36,6 +45,33 @@
                     "name": "Interact",
                     "type": "Button",
                     "id": "7e8c95fa-11e3-42a2-bd23-642b2eef6cc1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Inspect",
+                    "type": "Button",
+                    "id": "2c0e00e0-081b-4293-921b-03da1223c1ad",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RotateLeft",
+                    "type": "Button",
+                    "id": "ae62f481-7888-4030-81e0-292f3d9d1601",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RotateRight",
+                    "type": "Button",
+                    "id": "f0e760aa-957f-4a8c-8f1f-ec3ba89743c5",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -140,17 +176,6 @@
                 },
                 {
                     "name": "",
-                    "id": "f0753dc0-7cb7-4a5a-b91d-b9e13728b6cd",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Jump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "3339c469-b39d-4886-971f-cfb4a7af8eca",
                     "path": "<Mouse>/delta",
                     "interactions": "",
@@ -173,12 +198,67 @@
                 },
                 {
                     "name": "",
-                    "id": "911e7e25-4fee-42d5-a610-86fe7927dc26",
-                    "path": "<Keyboard>/leftShift",
+                    "id": "960bf04f-d957-4d36-91d1-05fc0379d36f",
+                    "path": "<Keyboard>/shift",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Slow Walk",
+                    "action": "Sneak",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f0753dc0-7cb7-4a5a-b91d-b9e13728b6cd",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Vault",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "911e7e25-4fee-42d5-a610-86fe7927dc26",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Crouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a4674b5a-e77a-42f1-8e2b-da6ea940f7ae",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Inspect",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b570629e-9249-4ef3-a592-3d3c0e6b06fd",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RotateLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "94f0f6a8-e8d7-408d-b3a3-d518e2e28393",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RotateRight",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

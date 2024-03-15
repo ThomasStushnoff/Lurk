@@ -3,10 +3,12 @@ using Managers;
 using Objects;
 using UI;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.HighDefinition;
 
 namespace Player
 {
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : MonoBehaviour, IEntity
     {
         [TitleHeader("Player Settings")]
         [SerializeField] private PlayerSettings settings;
@@ -14,6 +16,7 @@ namespace Player
         [SerializeField] private Transform cameraTransform;
         [SerializeField] private CharacterController character;
         [SerializeField] private UIController uiController;
+        [SerializeField] Volume postProcessVolume;
         
         // [TitleHeader("Network Settings")]
         // public bool isHost;
@@ -24,43 +27,80 @@ namespace Player
         private Vector3 _velocity;
         private float _currentStamina;
         private float _currentSanity;
+        private bool _isCrouching;
+        private bool _isSneaking;
+        private bool _isVaulting;
+        private bool _isInspecting;
+        private float _rotationDirection;
+        private GameObject _inspectingObject = null;
+        private Vector3 _objOriginalPosition;
+        private Quaternion _objOriginalRotation;
+        private DepthOfField _depthOfField;
+
         private void Awake()
         {
             if (GameManager.Instance.localPlayer == null)
                 GameManager.Instance.localPlayer = this;
 
             _actions = new Actions();
-            _actions.Player.FreeCursor.performed += _ => HandleCursor();
-            _actions.Player.Interact.started += _ => HandleInteractions();
         }
 
         private void Start()
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-            
+
             _currentStamina = settings.maxStamina;
             _currentSanity = settings.maxSanity;
         }
 
         private void Update()
         {
+            HandleCameraMovement();
             // TODO:
             // 1. Use FSM later.
             // 2. Network later.
             HandleMovement();
+            HandleVault();
             HandleStamina();
             HandleSanity();
-            
+            if (_isInspecting) RotateInspectingObject();
+
             // Removed since no jumping.
             // HandleVelocity();
             HandleCursor();
             CheckGrounded();
+            
+            postProcessVolume.profile.TryGet<DepthOfField>(out _depthOfField);
         }
 
-        private void OnEnable() => _actions?.Enable();
+        private void OnEnable()
+        {
+            _actions.Player.FreeCursor.performed += _ => HandleCursor();
+            _actions.Player.Interact.started += _ => HandleInteractions();
+            
+            _actions.Player.Inspect.performed += _ => ToggleInspect();
+            _actions.Player.RotateLeft.performed += _ => StartRotatingLeft();
+            _actions.Player.RotateLeft.canceled += _ => StopRotating();
+            _actions.Player.RotateRight.performed += _ => StartRotatingRight();
+            _actions.Player.RotateRight.canceled += _ => StopRotating();
+            
+            _actions?.Enable();
+        }
 
-        private void OnDisable() => _actions?.Disable();
+        private void OnDisable()
+        {
+            _actions.Player.FreeCursor.performed -= _ => HandleCursor();
+            _actions.Player.Interact.started -= _ => HandleInteractions();
+            
+            _actions.Player.Inspect.performed -= _ => ToggleInspect();
+            _actions.Player.RotateLeft.performed -= _ => StartRotatingLeft();
+            _actions.Player.RotateLeft.canceled -= _ => StopRotating();
+            _actions.Player.RotateRight.performed -= _ => StartRotatingRight();
+            _actions.Player.RotateRight.canceled -= _ => StopRotating();
+            
+            _actions?.Disable();
+        }
 
         private void CheckGrounded()
         {
@@ -69,39 +109,8 @@ namespace Player
             _onGround = Physics.CheckSphere(groundCheck.position, 0.1f, settings.ground);
         }
 
-        private void HandleMovement()
+        private void HandleCameraMovement()
         {
-            #region Moving
-
-            var currentSpeed = settings.movementSpeed;
-            
-            // Movement is slowed or disabled when in panic state.
-            if (IsInPanicState())
-            {
-                // TODO:
-                // 1. Figure out whether to disable movement or slow it down.
-                currentSpeed /= 2f;
-            }
-            
-            var input = _actions.Player.Move.ReadValue<Vector2>();
-            var move = cameraTransform.TransformDirection(new Vector3(input.x, 0, input.y));
-            move.y = 0;
-            move.Normalize();
-
-            // Modify movement speed.
-            var isSlowWalking = _actions.Player.SlowWalk.IsPressed();
-            if (isSlowWalking) currentSpeed /= settings.slowWalkMultiplier;
-            
-            currentSpeed *= Mathf.Lerp(0.5f, 1.0f, (100.0f - _currentStamina) / 100.0f);
-
-            character.Move(move * (currentSpeed * Time.deltaTime));
-
-            if (IsMoving()) GenerateNoise(isSlowWalking);
-
-            #endregion
-
-            #region Looking
-
             if (!Cursor.visible)
             {
                 var look = _actions.Player.Look.ReadValue<Vector2>();
@@ -114,8 +123,60 @@ namespace Player
                 cameraTransform.localRotation = Quaternion.Euler(_xRotation, 0f, 0f);
                 transform.Rotate(Vector3.up * lookX);
             }
+        }
 
-            #endregion
+        private void HandleMovement()
+        {
+            var currentSpeed = settings.movementSpeed;
+
+            // Movement is slowed or disabled when in panic state.
+            if (IsInPanicState())
+            {
+                // TODO:
+                // 1. Figure out whether to disable movement or slow it down.
+                currentSpeed /= 2f;
+            }
+
+            var input = _actions.Player.Move.ReadValue<Vector2>();
+            var move = cameraTransform.TransformDirection(new Vector3(input.x, 0, input.y));
+            move.y = 0;
+            move.Normalize();
+
+            // Crouching.
+            if (_actions.Player.Crouch.WasPressedThisFrame())
+            {
+                _isCrouching = !_isCrouching;
+                character.height = _isCrouching ? 1 : 2;// To be removed.
+                currentSpeed *= _isCrouching ? settings.crouchSpeedMultiplier : 1;
+            }
+
+            // Sneaking.
+            _isSneaking = _actions.Player.Sneak.IsPressed();
+            if (_isSneaking) currentSpeed *= settings.sneakSpeedMultiplier;
+
+            currentSpeed *= Mathf.Lerp(0.5f, 1.0f, (100.0f - _currentStamina) / 100.0f);
+
+            character.Move(move * (currentSpeed * Time.deltaTime));
+
+            if (IsMoving()) GenerateNoise(_isSneaking);
+        }
+
+        private void HandleVault()
+        {
+            // TODO:
+            // 1. Add animation.
+            // 2. Optimize.
+            if (!_actions.Player.Vault.WasPressedThisFrame() || !CanVault(out var obstacleHeight)) return;
+            
+            if (obstacleHeight > 0)
+            {
+                var vaultHeight = obstacleHeight + 0.5f;
+
+                var newPosition = new Vector3(transform.position.x, vaultHeight, transform.position.z) +
+                                  transform.forward * settings.vaultDistance;
+                transform.position = newPosition;
+                // transform.position = Vector3.Lerp(transform.position, newPosition, 0.5f);
+            }
         }
 
         private void HandleStamina()
@@ -135,7 +196,7 @@ namespace Player
                     _currentSanity += Time.deltaTime * settings.staminaRegenRate * 2;
                     break;
             }
-            
+
             _currentSanity = Mathf.Clamp(_currentSanity, 0, settings.maxStamina);
             uiController.UpdateStamina(_currentSanity / settings.maxStamina);
         }
@@ -147,20 +208,7 @@ namespace Player
         }
 
         public void UpdateSanity(float value) => _currentStamina += value;
-        
-        private void HandleVelocity()
-        {
-            if (_onGround && _velocity.y < 0)
-                _velocity.y = -2.0f;
 
-            // Handle jumping.
-            if (_onGround && _actions.Player.Jump.WasPressedThisFrame())
-                _velocity.y = Mathf.Sqrt(settings.jumpHeight * -2.0f * settings.gravity);
-
-            _velocity.y += settings.gravity * Time.deltaTime;
-            character.Move(_velocity * Time.deltaTime);
-        }
-        
         private void HandleCursor()
         {
             var cursorFree = _actions.Player.FreeCursor.IsPressed();
@@ -168,14 +216,14 @@ namespace Player
             Cursor.visible = cursorFree;
         }
 
-        private void GenerateNoise(bool isSlowWalking)
+        private void GenerateNoise(bool isSneaking)
         {
             // TODO:
             // 1. Adjust values later.
             // 2. AudioMixers.
             
             var noiseLevel = Mathf.Lerp(0.1f, 1.0f, (100.0f - _currentStamina) / 100.0f);
-            if (isSlowWalking) noiseLevel /= 2;
+            if (isSneaking) noiseLevel /= 2;
         }
 
         private void HandleInteractions()
@@ -191,9 +239,94 @@ namespace Player
             interactable?.Interact();
             Debug.Log($"Interacted with {hit.collider.name}!");
         }
+
+        private void StartRotatingLeft() => _rotationDirection = -1.0f;
+
+        private void StartRotatingRight() => _rotationDirection = 1.0f;
+
+        private void StopRotating() => _rotationDirection = 0.0f;
+
+        private void RotateInspectingObject() 
+        {
+            if (_rotationDirection != 0 && _isInspecting)
+            {
+                var rotationSpeed = settings.inspectRotationSpeed;
+                _inspectingObject.transform.Rotate(Vector3.up, rotationSpeed * _rotationDirection * Time.deltaTime, 
+                    Space.World);
+            }
+        }
+
+        private void ToggleInspect()
+        {
+            if (_isInspecting)
+                StartInspecting(_inspectingObject);
+            else
+                StopInspecting();
+        }
+        
+        void StartInspecting(GameObject obj) 
+        {
+            _inspectingObject = obj;
+            _objOriginalPosition = obj.transform.position;
+            _objOriginalRotation = obj.transform.rotation;
+            
+            _inspectingObject.transform.position = cameraTransform.position + cameraTransform.forward * settings.inspectDistance;
+            _inspectingObject.transform.rotation = Quaternion.identity;
+
+            if (_depthOfField)
+            {
+                _depthOfField.active = true;
+                // _depthOfField.focusDistance.SetValue();
+            }
+            
+            _isInspecting = true;
+        }
+
+        void StopInspecting() 
+        {
+            _inspectingObject.transform.position = _objOriginalPosition;
+            _inspectingObject.transform.rotation = _objOriginalRotation;
+            
+            if (_depthOfField) _depthOfField.active = false;
+            
+            _isInspecting = false;
+            _inspectingObject = null;
+        }
         
         private bool IsMoving() => _actions.Player.Move.ReadValue<Vector2>().magnitude > 0;
         
         private bool IsInPanicState() => _currentStamina <= settings.panicThreshold || _currentSanity <= settings.staminaThreshold;
+        
+        private bool CanVault(out float obstacleHeight)
+        {
+            obstacleHeight = 0;
+
+            // Define the start position of the ray.
+            var rayStart = groundCheck.position;
+            // Define the direction of the ray.
+            var rayDirection = transform.forward;
+            
+            if (Physics.Raycast(rayStart, rayDirection, out var hit, settings.vaultDistance, settings.obstacle))
+            {
+                // Calculate the height of the obstacle.
+                obstacleHeight = hit.collider.bounds.max.y;
+                var heightDifference = obstacleHeight - transform.position.y;
+
+                // Check if the obstacle is shorter than the character.
+                if (heightDifference < character.height / 2.0f)
+                {
+                    Debug.DrawRay(rayStart, rayDirection * hit.distance, Color.green, 2f);
+                    return true;
+                }
+                else
+                {
+                    Debug.DrawRay(rayStart, rayDirection * settings.vaultDistance, Color.red, 2f);
+                    return false;
+                }
+            }
+            
+            Debug.DrawRay(rayStart, rayDirection * settings.vaultDistance, Color.blue, 2f);
+            return true;
+        }
     }
 }
