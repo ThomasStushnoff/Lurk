@@ -14,7 +14,6 @@ namespace Objects
         public float inspectDistance = 5.0f;
         public float inspectRotationSpeed = 0.5f;
         [TitleHeader("Sanity")]
-        [TitleHeader("Sanity")]
         public float maxSanity = 100.0f;
         public float panicThreshold = 30.0f;
         [TitleHeader("Stamina")]

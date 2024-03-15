@@ -5,6 +5,7 @@ using UI;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
+using UnityEngine.Serialization;
 
 namespace Player
 {
@@ -15,7 +16,8 @@ namespace Player
         [SerializeField] private Transform groundCheck;
         [SerializeField] private Transform cameraTransform;
         [SerializeField] private CharacterController character;
-        [SerializeField] private UIController uiController;
+        [FormerlySerializedAs("uiController")]
+        [SerializeField] private HUDController hudController;
         [SerializeField] Volume postProcessVolume;
         
         // [TitleHeader("Network Settings")]
@@ -198,13 +200,13 @@ namespace Player
             }
 
             _currentSanity = Mathf.Clamp(_currentSanity, 0, settings.maxStamina);
-            uiController.UpdateStamina(_currentSanity / settings.maxStamina);
+            hudController.UpdateStamina(_currentSanity / settings.maxStamina);
         }
 
         private void HandleSanity()
         {
             _currentStamina = Mathf.Clamp(_currentStamina, 0, settings.maxSanity);
-            uiController.UpdateSanity(_currentStamina / settings.maxSanity);
+            hudController.UpdateSanity(_currentStamina / settings.maxSanity);
         }
 
         public void UpdateSanity(float value) => _currentStamina += value;
