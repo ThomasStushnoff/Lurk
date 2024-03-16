@@ -58,6 +58,8 @@ namespace Player
 
         private void Update()
         {
+            AudioManager.Instance.UpdateAudioSource(transform.position);
+            
             HandleCameraMovement();
             // TODO:
             // 1. Use FSM later.
