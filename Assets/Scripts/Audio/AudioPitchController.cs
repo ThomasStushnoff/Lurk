@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Utilities
+namespace Audio
 {
     [RequireComponent(typeof(AudioSource))]
     public class AudioPitchController : MonoBehaviour

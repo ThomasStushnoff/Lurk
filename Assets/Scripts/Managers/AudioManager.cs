@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Objects;
 using UnityEngine;
@@ -130,5 +131,52 @@ namespace Managers
             // Play the reversed clip.
             source.Play();
         }
+        
+        /// <summary>
+        /// Fades the audio source in or out over the given duration.
+        /// </summary>
+        /// <param name="source">The audio source to fade.</param>
+        /// <param name="mode">The fade mode.</param>
+        /// <param name="duration">The duration of the fade.</param>
+        public void FadeAudio(AudioSource source, FadeMode mode, float duration)
+        {
+            switch (mode)
+            {
+                case FadeMode.In:
+                    StartCoroutine(Fade(source, duration, 1.0f));
+                    break;
+                case FadeMode.Out:
+                    StartCoroutine(Fade(source, duration, 0.0f));
+                    break;
+            }
+        }
+        
+        /// <summary>
+        /// Fades the audio source to the target volume over the given duration.
+        /// </summary>
+        /// <param name="source">The audio source to fade.</param>
+        /// <param name="duration">The duration of the fade.</param>
+        /// <param name="targetVolume">The target volume to fade to.</param>
+        private IEnumerator Fade(AudioSource source, float duration, float targetVolume)
+        {
+            var startVolume = source.volume;
+            var currentTime = 0.0f;
+            
+            while (currentTime < duration)
+            {
+                currentTime += Time.deltaTime;
+                source.volume = Mathf.Lerp(startVolume, targetVolume, currentTime / duration);
+                yield return null;
+            }
+            
+            source.volume = targetVolume;
+            if (targetVolume == 0) source.Stop();
+        }
+    }
+
+    public enum FadeMode
+    {
+        In,
+        Out
     }
 }

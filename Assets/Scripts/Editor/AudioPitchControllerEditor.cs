@@ -1,6 +1,6 @@
-﻿using UnityEditor;
+﻿using Audio;
+using UnityEditor;
 using UnityEngine;
-using Utilities;
 
 [CustomEditor(typeof(AudioPitchController))]
 public class AudioPitchControllerEditor : Editor
@@ -16,7 +16,6 @@ public class AudioPitchControllerEditor : Editor
             case PitchType.Random:
                 t.minPitch = EditorGUILayout.Slider("Min Pitch", t.minPitch, -3.0f, 3.0f);
                 t.maxPitch = EditorGUILayout.Slider("Max Pitch", t.maxPitch, -3.0f, 3.0f);
-                // EditorGUILayout.MinMaxSlider(ref t.minPitch, ref t.maxPitch, -3.0f, 3.0f);
                 break;
             case PitchType.Increase:
             case PitchType.Decrease:
@@ -26,8 +25,6 @@ public class AudioPitchControllerEditor : Editor
         }
 
         if (GUI.changed)
-        {
             EditorUtility.SetDirty(t);
-        }
     }
 }

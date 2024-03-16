@@ -53,5 +53,6 @@ public static class Extensions
         audioSource.playOnAwake = audioData.playOnAwake;
         audioSource.loop = audioData.loop;
         audioSource.volume = audioData.volume;
+        audioSource.spatialize = audioData.spatialize;
     }
 }
