@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Objects;
+using UnityEngine;
 
 public static class Extensions
 {
@@ -39,4 +40,18 @@ public static class Extensions
     /// <returns>true or false.</returns>
     public static bool CompareLayer(this GameObject gameObject, string layerName)
         => gameObject.layer == LayerMask.NameToLayer(layerName);
+    
+    /// <summary>
+    /// Configures the audio source with the audio data.
+    /// </summary>
+    /// <param name="audioSource">The audio source to configure.</param>
+    /// <param name="audioData">The audio data to use.</param>
+    public static void Configure(this AudioSource audioSource, AudioData audioData)
+    {
+        audioSource.clip = audioData.clip;
+        audioSource.outputAudioMixerGroup = audioData.mixerGroup;
+        audioSource.playOnAwake = audioData.playOnAwake;
+        audioSource.loop = audioData.loop;
+        audioSource.volume = audioData.volume;
+    }
 }

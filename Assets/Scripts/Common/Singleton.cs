@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// A generic Singleton class for creating single instances of a MonoBehaviour.
@@ -45,7 +47,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
         OnAwake();
     }
-    
+
     /// <summary>
     /// Ensures an instance of the singleton exists.
     /// </summary>
@@ -60,8 +62,25 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         singletonObject.name = typeof(T) + " (Singleton)";
     }
 
-    protected virtual void OnAwake()
-    {
+    protected virtual void OnAwake() { }
 
+    protected void OnEnable()
+    {
+        // Subscribes to the scene loaded event.
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        // Subscribes to the scene unloaded event.
+        SceneManager.sceneUnloaded += OnSceneUnloaded;
     }
+
+    protected virtual void OnDestroy()
+    {
+        // Unsubscribes from the scene loaded event.
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        // Unsubscribes from the scene unloaded event.
+        SceneManager.sceneUnloaded -= OnSceneUnloaded;
+    }
+
+    protected virtual void OnSceneLoaded(Scene scene, LoadSceneMode mode) { }
+    
+    protected virtual void OnSceneUnloaded(Scene scene) { }
 }
