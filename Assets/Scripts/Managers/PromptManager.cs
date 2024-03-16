@@ -8,12 +8,21 @@ namespace Managers
     {
         private HUDController _hudController;
         private DialogueController _dialogueController;
-
+        
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            
+            if (!TryGetControllers())
+                Debug.LogWarning("Failed to get controllers.");
+            
+            _dialogueController.OnDialoguesFinished += AdvanceDialogue;
+        }
+        
         protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             if (!TryGetControllers())
-                Debug.LogError("Failed to get controllers.");
-            
+                Debug.LogWarning("Failed to get controllers.");
             
             _dialogueController.OnDialoguesFinished += AdvanceDialogue;
         }

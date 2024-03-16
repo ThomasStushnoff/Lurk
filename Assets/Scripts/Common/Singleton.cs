@@ -64,7 +64,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
     protected virtual void OnAwake() { }
 
-    protected void OnEnable()
+    protected virtual void OnEnable()
     {
         // Subscribes to the scene loaded event.
         SceneManager.sceneLoaded += OnSceneLoaded;
