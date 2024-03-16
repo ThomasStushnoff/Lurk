@@ -55,4 +55,15 @@ public static class Extensions
         audioSource.volume = audioData.volume;
         audioSource.spatialize = audioData.spatialize;
     }
+    
+    /// <summary>
+    /// Configures the audio source with the audio data and plays it.
+    /// </summary>
+    /// <param name="audioSource">The audio source to configure.</param>
+    /// <param name="audioData">The audio data to use.</param>
+    public static void ConfigureAndPlay(this AudioSource audioSource, AudioData audioData)
+    {
+        audioSource.Configure(audioData);
+        audioSource.Play();
+    }
 }

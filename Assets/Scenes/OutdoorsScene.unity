@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2643.0881, g: 2663.1487, b: 3744.6646, a: 1}
+  m_IndirectSpecularColor: {r: 2644.51, g: 2664.262, b: 3745.9692, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2244,7 +2244,8 @@ MonoBehaviour:
   speakerText: {fileID: 975805955}
   contentText: {fileID: 1715469398}
   typingSpeed: 0.05
-  isAutoPlay: 0
+  isAutoPlay: 1
+  autoPlayDelay: 2
   isReading: 0
 --- !u!82 &1062877284
 AudioSource:
@@ -2257,7 +2258,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -3560,7 +3561,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   narratorName: 74164
   data: {fileID: 11400000, guid: f86fa3788f83f42429f9c946aaa8b2f0, type: 2}
-  _controller: {fileID: 1062877283}
+  controller: {fileID: 1062877283}
 --- !u!114 &1626799745
 MonoBehaviour:
   m_ObjectHideFlags: 0

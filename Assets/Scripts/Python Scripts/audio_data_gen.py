@@ -26,6 +26,7 @@ MonoBehaviour:
   playOnAwake: 0
   loop: 0
   volume: 1
+  spatialize: 0
     """
 
     for filename in os.listdir(input_dir):

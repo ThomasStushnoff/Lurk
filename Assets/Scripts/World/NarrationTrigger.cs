@@ -11,32 +11,28 @@ namespace World
         [TitleHeader("Narration Settings")]
         [SerializeField] private string narratorName;
         [SerializeField] private DialogueData data;
-        public DialogueController _controller;
+        [SerializeField] private DialogueController controller;
         
         private AudioSource _controllerAudioSource;
         
         private void Start()
         {
             // _controller = FindObjectOfType<DialogueController>();
-            _controllerAudioSource = _controller.GetComponent<AudioSource>();
+            _controllerAudioSource = controller.GetComponent<AudioSource>();
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            if (!other.IsPlayer()) return;
-            
-            // Play the narration if it exists.
-            if (data != null && data.audioData != null)
-            {
-                _controllerAudioSource.Configure(data.audioData);
-                if (!_controllerAudioSource.isPlaying)
-                    _controllerAudioSource.Play();
-            }
-            
+            if (!other.IsPlayer() && !data && !controller) return;
+            Debug.Log("Entered narration trigger.");
             // Queue the dialogue if it exists.
-            if (data != null && data.dialogueContents != null && _controller != null)
-                data.dialogueContents.Select(content => new Dialogue(narratorName, content))
-                    .ToList().ForEach(dialogue => PromptManager.Instance.AppendDialogue(dialogue, true));
+            data.dialogueContents?.Select(content => new Dialogue(narratorName, content))
+                .ToList().ForEach(dialogue => PromptManager.Instance.AppendDialogue(dialogue, true));
+
+            // Play the narration if it exists.
+            if (!data.audioData) return;
+            if (!_controllerAudioSource.isPlaying)
+                _controllerAudioSource.ConfigureAndPlay(data.audioData);
         }
     }
 }
