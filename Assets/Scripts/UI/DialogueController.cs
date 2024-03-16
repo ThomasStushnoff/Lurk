@@ -28,6 +28,7 @@ namespace UI
         [Tooltip("The speed at which the text is typed out. The lower the value, the faster the text is typed.")]
         [SerializeField] private float typingSpeed = 0.05f;
         [SerializeField] private bool isAutoPlay;
+        [SerializeField] private float autoPlayDelay = 1.0f;
         [SerializeField] private bool isReading;
         public event Action OnDialoguesFinished;
         
@@ -66,9 +67,12 @@ namespace UI
             
             if (_dialogues.Count == 0)
                 OnDialoguesFinished?.Invoke();
-            
+
             if (isAutoPlay)
+            {
                 DisplayNextDialogue();
+                yield return new WaitForSeconds(autoPlayDelay);
+            }
         }
         
         /// <summary>
