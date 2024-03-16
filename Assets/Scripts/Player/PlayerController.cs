@@ -189,29 +189,29 @@ namespace Player
             {
                 case true:
                     // Reduce stamina when walking.
-                    _currentSanity -= Time.deltaTime * settings.staminaDrainRate;
+                    _currentStamina -= Time.deltaTime * settings.staminaDrainRate;
                     break;
                 case false when IsInPanicState():
                     // Regenerate stamina when not moving and in panic state.
-                    _currentSanity += Time.deltaTime * settings.staminaRegenRate;
+                    _currentStamina += Time.deltaTime * settings.staminaRegenRate;
                     break;
                 case false when !IsInPanicState():
                     // Regenerate stamina when not moving and not in panic state.
-                    _currentSanity += Time.deltaTime * settings.staminaRegenRate * 2;
+                    _currentStamina += Time.deltaTime * settings.staminaRegenRate * 2;
                     break;
             }
 
-            _currentSanity = Mathf.Clamp(_currentSanity, 0, settings.maxStamina);
-            hudController.UpdateStamina(_currentSanity / settings.maxStamina);
+            _currentStamina = Mathf.Clamp(_currentStamina, 0, settings.maxStamina);
+            hudController.UpdateStamina(_currentStamina / settings.maxStamina);
         }
 
         private void HandleSanity()
         {
-            _currentStamina = Mathf.Clamp(_currentStamina, 0, settings.maxSanity);
-            hudController.UpdateSanity(_currentStamina / settings.maxSanity);
+            _currentSanity = Mathf.Clamp(_currentSanity, 0, settings.maxSanity);
+            hudController.UpdateSanity(_currentSanity / settings.maxSanity);
         }
 
-        public void UpdateSanity(float value) => _currentStamina += value;
+        public void UpdateSanity(float value) => _currentSanity += value;
 
         private void HandleCursor()
         {
@@ -235,13 +235,20 @@ namespace Player
             // TODO:
             // 1. Add cooldown maybe.
             // 2. UI feedback.
-            // 3. Animation.
+            // 3. SFX.
             var ray = new Ray(cameraTransform.position, cameraTransform.forward);
             if (!Physics.Raycast(ray, out var hit, settings.interactDistance)) return;
             
             var interactable = hit.collider.GetComponent<IInteractable>();
-            interactable?.Interact();
+            if (interactable == null) return;
+            
+            interactable.Interact();
             Debug.Log($"Interacted with {hit.collider.name}!");
+
+            // Check if the object is collectible.
+            var collectible = hit.collider.GetComponent<ICollectible>();
+            collectible?.Collect();
+            Debug.Log($"Collected {hit.collider.name}!");
         }
 
         private void StartRotatingLeft() => _rotationDirection = -1.0f;
@@ -299,7 +306,7 @@ namespace Player
         
         private bool IsMoving() => _actions.Player.Move.ReadValue<Vector2>().magnitude > 0;
         
-        private bool IsInPanicState() => _currentStamina <= settings.panicThreshold || _currentSanity <= settings.staminaThreshold;
+        private bool IsInPanicState() => _currentSanity <= settings.panicThreshold || _currentStamina <= settings.staminaThreshold;
         
         private bool CanVault(out float obstacleHeight)
         {

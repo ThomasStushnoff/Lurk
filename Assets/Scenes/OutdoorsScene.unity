@@ -2246,6 +2246,7 @@ MonoBehaviour:
   typingSpeed: 0.05
   isAutoPlay: 1
   autoPlayDelay: 2
+  postDialogueDelay: 2
   isReading: 0
 --- !u!82 &1062877284
 AudioSource:

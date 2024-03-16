@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Objects
 {
-    [CreateAssetMenu(fileName = "Prefabs", menuName = "Objects/Prefabs")]
+    [CreateAssetMenu(fileName = "Prefabs", menuName = "Presets/Prefabs")]
     public class Prefabs : ScriptableObject
     {
         public List<Prefab> prefabs;

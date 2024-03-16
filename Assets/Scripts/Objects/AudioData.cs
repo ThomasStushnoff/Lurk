@@ -6,7 +6,7 @@ namespace Objects
     /// <summary>
     /// Represents audio data for use in the game.
     /// </summary>
-    [CreateAssetMenu(fileName = "AudioData", menuName = "Objects/Audio Data")]
+    [CreateAssetMenu(fileName = "AudioData", menuName = "Data/Audio Data")]
     public class AudioData : ScriptableObject
     {
         [Tooltip("The audio clip to play.")]

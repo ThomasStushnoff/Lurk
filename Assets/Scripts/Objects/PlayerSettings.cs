@@ -2,7 +2,7 @@
 
 namespace Objects
 {
-    [CreateAssetMenu(fileName = "PlayerSettings", menuName = "Objects/Player")]
+    [CreateAssetMenu(fileName = "PlayerSettings", menuName = "Presets/Player")]
     public class PlayerSettings : ScriptableObject
     {
         [TitleHeader("Player Settings")]
