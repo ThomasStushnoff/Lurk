@@ -170,35 +170,36 @@ namespace Player
             // TODO:
             // 1. Add animation.
             // 2. Optimize.
-            if (!_actions.Player.Vault.WasPressedThisFrame() || !CanVault(out var obstacleHeight)) return;
+            if (!_actions.Player.Vault.WasPressedThisFrame() || !CanVault(out var obstacleHeight) || _currentStamina <= 0) return;
             
             if (obstacleHeight > 0)
             {
                 var vaultHeight = obstacleHeight + 0.5f;
 
-                var newPosition = new Vector3(transform.position.x, vaultHeight, transform.position.z) +
-                                  transform.forward * settings.vaultDistance;
-                transform.position = newPosition;
+                var newPos = new Vector3(transform.position.x, vaultHeight, transform.position.z).
+                    Add(transform.forward * settings.vaultDistance);
+                transform.position = newPos;
+                _currentStamina -= settings.vaultStaminaCost;
                 // transform.position = Vector3.Lerp(transform.position, newPosition, 0.5f);
             }
         }
 
         private void HandleStamina()
         {
-            switch (IsMoving())
+            if (IsMoving() || _isVaulting)
             {
-                case true:
-                    // Reduce stamina when walking.
-                    _currentStamina -= Time.deltaTime * settings.staminaDrainRate;
-                    break;
-                case false when IsInPanicState():
-                    // Regenerate stamina when not moving and in panic state.
-                    _currentStamina += Time.deltaTime * settings.staminaRegenRate;
-                    break;
-                case false when !IsInPanicState():
-                    // Regenerate stamina when not moving and not in panic state.
-                    _currentStamina += Time.deltaTime * settings.staminaRegenRate * 2;
-                    break;
+                // Decrease stamina when moving or vaulting.
+                _currentStamina -= Time.deltaTime * settings.staminaDrainRate;
+            }
+            else if (_isCrouching || !IsMoving())
+            {
+                // Regenerate stamina when crouching or standing still.
+                _currentStamina += Time.deltaTime * settings.crouchStaminaRegenRate;
+            }
+            else
+            {
+                // Regenerate stamina when not moving.
+                _currentStamina += Time.deltaTime * settings.staminaRegenRate;
             }
 
             _currentStamina = Mathf.Clamp(_currentStamina, 0, settings.maxStamina);
@@ -207,8 +208,26 @@ namespace Player
 
         private void HandleSanity()
         {
+            // Player is low on stamina.
+            if (_currentStamina <= settings.staminaThreshold)
+                _currentSanity -= Time.deltaTime * settings.sanityDrainRate;
+            // Player is near an enemy.
+            if (IsEnemyNearby())
+                _currentSanity -= Time.deltaTime * settings.sanityDrainRate;
+            
             _currentSanity = Mathf.Clamp(_currentSanity, 0, settings.maxSanity);
             hudController.UpdateSanity(_currentSanity / settings.maxSanity);
+
+            // Trigger Insanity.
+            if (_currentSanity <= 0)
+            {
+                // Player loses control over character.
+                _actions.Disable();
+                // Player dies with a jump scare.
+                // Trigger Jump Scare.
+                // AudioManager.Instance.PlayOneShotAudio();
+                // Restart the level.
+            }
         }
 
         public void UpdateSanity(float value) => _currentSanity += value;
@@ -339,5 +358,18 @@ namespace Player
             Debug.DrawRay(rayStart, rayDirection * settings.vaultDistance, Color.blue, 2f);
             return true;
         }
+
+        private bool IsEnemyNearby()
+        {
+            var col = Physics.OverlapSphere(transform.position, settings.detectionRadius, settings.enemy);
+            if (col.Length > 0)
+            {
+                // Play Heart Beat SFX.
+                return true;
+            }
+            
+            return false;
+        }
+            
     }
 }
