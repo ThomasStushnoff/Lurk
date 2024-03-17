@@ -12,18 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3bd614f60d84bd39dadccfa5b92a210, type: 3}
   m_Name: PlayerSettings
   m_EditorClassIdentifier: 
-  mouseSensitivity: 10
+  mouseSensitivity: 8
   movementSpeed: 10
   vaultDistance: 1
   crouchSpeedMultiplier: 0.5
   sneakSpeedMultiplier: 0.5
   maxSanity: 100
   panicThreshold: 30
+  sanityDrainRate: 10
   maxStamina: 100
   staminaThreshold: 30
   staminaRegenRate: 5
   staminaDrainRate: 10
+  crouchStaminaRegenRate: 10
+  vaultStaminaCost: 5
   interactDistance: 2
+  inspectDistance: 5
+  inspectRotationSpeed: 0.5
+  detectionRadius: 10
   ground:
     serializedVersion: 2
     m_Bits: 64
@@ -33,3 +39,6 @@ MonoBehaviour:
   obstacle:
     serializedVersion: 2
     m_Bits: 256
+  enemy:
+    serializedVersion: 2
+    m_Bits: 0
