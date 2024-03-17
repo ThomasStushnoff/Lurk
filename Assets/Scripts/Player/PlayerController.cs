@@ -150,7 +150,7 @@ namespace Player
             if (_actions.Player.Crouch.WasPressedThisFrame())
             {
                 _isCrouching = !_isCrouching;
-                character.height = _isCrouching ? 1 : 2;// To be removed.
+                // character.height = _isCrouching ? 1 : 2; // To be removed.
                 currentSpeed *= _isCrouching ? settings.crouchSpeedMultiplier : 1;
             }
 
@@ -293,8 +293,8 @@ namespace Player
             else
                 StopInspecting();
         }
-        
-        void StartInspecting(GameObject obj) 
+
+        private void StartInspecting(GameObject obj) 
         {
             _inspectingObject = obj;
             _objOriginalPosition = obj.transform.position;
@@ -312,7 +312,7 @@ namespace Player
             _isInspecting = true;
         }
 
-        void StopInspecting() 
+        private void StopInspecting() 
         {
             _inspectingObject.transform.position = _objOriginalPosition;
             _inspectingObject.transform.rotation = _objOriginalRotation;
