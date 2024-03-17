@@ -158,7 +158,10 @@ namespace Player
             _isSneaking = _actions.Player.Sneak.IsPressed();
             if (_isSneaking) currentSpeed *= settings.sneakSpeedMultiplier;
 
+            // Apply speed reduction based on stamina.
             currentSpeed *= Mathf.Lerp(0.5f, 1.0f, (100.0f - _currentStamina) / 100.0f);
+            // Apply speed reduction based on sanity.
+            currentSpeed *= Mathf.Lerp(0.5f, 1.0f, (100.0f - _currentSanity) / 100.0f);
 
             character.Move(move * (currentSpeed * Time.deltaTime));
 
@@ -288,10 +291,16 @@ namespace Player
 
         private void ToggleInspect()
         {
-            if (_isInspecting)
-                StartInspecting(_inspectingObject);
+            if (!_isInspecting && Physics.Raycast(cameraTransform.position, cameraTransform.forward, out var hit, 
+                    settings.inspectDistance, settings.interactable))
+            {
+                if (hit.collider.GetComponent<IInspectable>() != null)
+                    StartInspecting(hit.collider.gameObject);
+            }
             else
+            {
                 StopInspecting();
+            }
         }
 
         private void StartInspecting(GameObject obj) 
