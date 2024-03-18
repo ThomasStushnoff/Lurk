@@ -13,6 +13,7 @@ namespace Objects
         [FormerlySerializedAs("data")]
         public AudioData audioData;
 
+        [TextArea(10, 10)]
         public List<string> dialogueContents;
     }
 }
