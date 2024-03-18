@@ -6,7 +6,7 @@ namespace Objects
     /// <summary>
     /// Represents audio data for use in the game.
     /// </summary>
-    [CreateAssetMenu(fileName = "AudioData", menuName = "Data/Audio Data")]
+    [CreateAssetMenu(fileName = "Audio Data", menuName = "Data/Audio Data")]
     public class AudioData : ScriptableObject
     {
         [Tooltip("The audio clip to play.")]
@@ -27,5 +27,8 @@ namespace Objects
         
         [Tooltip("Should the audio spatialize.")]
         public bool spatialize;
+        
+        [Tooltip("The pitch of the audio.")]
+        public float pitch = 1.0f;
     }
 }

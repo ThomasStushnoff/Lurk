@@ -1,4 +1,5 @@
-﻿using Objects;
+﻿using Audio;
+using Objects;
 using UnityEngine;
 
 public static class Extensions
@@ -54,6 +55,7 @@ public static class Extensions
         audioSource.loop = audioData.loop;
         audioSource.volume = audioData.volume;
         audioSource.spatialize = audioData.spatialize;
+        audioSource.pitch = audioData.pitch;
     }
     
     /// <summary>
@@ -65,5 +67,38 @@ public static class Extensions
     {
         audioSource.Configure(audioData);
         audioSource.Play();
+    }
+    
+    // /// <summary>
+    // /// Plays the music audio data.
+    // /// </summary>
+    // /// <param name="audioSource">The audio source to play the music.</param>
+    // /// <param name="audioEnum">The music audio data enum.</param>
+    // public static void PlayMusic(this AudioSource audioSource, AudioDataEnumMusic audioEnum)
+    // {
+    //     if (AudioDataMapMusic.Map.TryGetValue(audioEnum, out var audioData))
+    //         audioSource.ConfigureAndPlay(audioData);
+    // }
+    
+    /// <summary>
+    /// Plays the voice over audio data.
+    /// </summary>
+    /// <param name="audioSource">The audio source to play the voice over.</param>
+    /// <param name="audioEnum">The voice over audio data enum.</param>
+    public static void PlayVoiceOver(this AudioSource audioSource, AudioDataEnumVoiceOver audioEnum)
+    {
+        if (AudioDataMapVoiceOver.Map.TryGetValue(audioEnum, out var audioData))
+            audioSource.ConfigureAndPlay(audioData);
+    }
+    
+    /// <summary>
+    /// Plays the sound fx audio data.
+    /// </summary>
+    /// <param name="audioSource">The audio source to play the sound fx.</param>
+    /// <param name="audioEnum">The voice over audio data enum.</param>
+    public static void PlaySoundFx(this AudioSource audioSource, AudioDataEnumSoundFx audioEnum)
+    {
+        if (AudioDataMapSoundFx.Map.TryGetValue(audioEnum, out var audioData))
+            audioSource.ConfigureAndPlay(audioData);
     }
 }

@@ -1,33 +1,50 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
 using Objects;
 using UnityEditor;
 using UnityEngine;
 
-// Work in progress.
-// Goal is to generate enum reference of all AudioData objects in the project.
-// This will allow for easy access to AudioData in the AudioManager and other scripts.
-//
-// TODO:
-// AudioDataWindow.cs
-// Get all AudioData objects in the project. (DONE)
-// Display them in a window. (DONE)
-// Allow for drag and drop of AudioData objects. (DONE)
-// Group AudioData objects by their AudioMixerGroup. (DONE)
-// Allow for easy access to AudioData objects in the AudioManager and other scripts. (TODO)
-// Use tree view or nested lists to display AudioData objects. (TODO)
-// Allow for easy access to AudioData objects in the AudioManager and other scripts. (TODO)
-//
-// AudioManager.cs
-// Use the enum reference to easily access AudioData objects. (TODO)
 public class AudioDataWindow : EditorWindow
 {
-    private readonly Dictionary<string, List<AudioData>> _audioDataGroups = new Dictionary<string, List<AudioData>>();
+    private Dictionary<string, List<AudioData>> _audioDataGroups = new Dictionary<string, List<AudioData>>();
+    private AudioDataGroups _audioDataGroupsObject;
     private Vector2 _scrollPosition;
+
+    private void OnEnable()
+    {
+        // Load or create the AudioDataGroups object.
+        _audioDataGroupsObject = Resources.Load<AudioDataGroups>("Objects/AudioData/Audio Data Group");
+        if (_audioDataGroups == null)
+        {
+            _audioDataGroupsObject = CreateInstance<AudioDataGroups>();
+            AssetDatabase.CreateAsset(_audioDataGroupsObject, "Assets/Resources/Objects/Audio Data Group.asset");
+            AssetDatabase.SaveAssets();
+        }
+        
+        // Load the data from the AudioDataGroups object.
+        _audioDataGroups!.Clear();
+        foreach (var audioGroup in _audioDataGroupsObject.groups)
+            _audioDataGroups[audioGroup.groupName] = audioGroup.audioData;
+    }
 
     private void OnGUI()
     {
-        GUILayout.Label("Drag AudioData objects here:", EditorStyles.boldLabel);
+        // Set the style for the header.
+        var headerStyle = new GUIStyle(EditorStyles.label)
+        {
+            fontSize = 13,
+            fontStyle = FontStyle.Bold,
+            normal = {
+                textColor = Color.white,
+                background = Texture2D.blackTexture
+            },
+            alignment = TextAnchor.MiddleCenter
+        };
         
+        GUILayout.Label("Generate AudioData Enum Reference", headerStyle);
+
         // Display the drag area.
         var dragArea = GUILayoutUtility.GetRect(0f, 50f, GUILayout.ExpandWidth(true));
         GUI.Box(dragArea, "Drop AudioData Here");
@@ -39,26 +56,40 @@ public class AudioDataWindow : EditorWindow
         {
             EditorGUILayout.BeginVertical("box");
             EditorGUILayout.LabelField(group.Key, EditorStyles.boldLabel);
+            EditorGUI.indentLevel++;
+            
+            // Check if the audio data is null and remove it from the list.
+            group.Value.RemoveAll(audioData => !audioData);
+            
             foreach (var audioData in group.Value)
                 EditorGUILayout.ObjectField(audioData, typeof(AudioData), false);
-
+            
+            EditorGUI.indentLevel--;
             EditorGUILayout.EndVertical();
         }
-
+        
+        EditorGUILayout.Separator();
+        
+        if (GUILayout.Button("Generate Enum"))
+            GenerateData();
+        
         EditorGUILayout.EndScrollView();
     }
 
     [MenuItem("Window/Audio Data Manager")]
-    public static void ShowWindow() => GetWindow<AudioDataWindow>("Audio Data Manager");
-
+    public static void ShowWindow() => GetWindow<AudioDataWindow>("Audio Data Manager").CollectAudioData();
+    
+    /// <summary>
+    /// Handles drag and drop of AudioData objects.
+    /// </summary>
+    /// <param name="dropArea"></param>
     private void HandleDragAndDrop(Rect dropArea)
     {
         var currentEvent = Event.current;
         var eventType = currentEvent.type;
-
-        if (!dropArea.Contains(currentEvent.mousePosition))
-            return;
-
+        
+        if (!dropArea.Contains(currentEvent.mousePosition)) return;
+        
         switch (eventType)
         {
             case EventType.DragUpdated:
@@ -67,25 +98,165 @@ public class AudioDataWindow : EditorWindow
                 if (eventType == EventType.DragPerform)
                 {
                     DragAndDrop.AcceptDrag();
-
                     foreach (var draggedObject in DragAndDrop.objectReferences)
                     {
-                        var draggedAudioData = draggedObject as AudioData;
-                        if (draggedAudioData != null)
+                        // Add the dragged object to the list.
+                        switch (draggedObject)
                         {
-                            var groupName = draggedAudioData.mixerGroup != null ? draggedAudioData.mixerGroup.name : "Uncategorized";
-                            if (!_audioDataGroups.ContainsKey(groupName))
-                                _audioDataGroups[groupName] = new List<AudioData>();
-                            
-                            if (!_audioDataGroups[groupName].Contains(draggedAudioData))
-                                _audioDataGroups[groupName].Add(draggedAudioData);
+                            case DefaultAsset folder:
+                            {
+                                // If the dragged object is a folder, add all audio data assets in the folder.
+                                var folderPath = AssetDatabase.GetAssetPath(folder);
+                                var audioDataPaths = Directory.GetFiles(folderPath, "*.asset", 
+                                    SearchOption.AllDirectories);
+                                
+                                foreach (var audioDataPath in audioDataPaths)
+                                {
+                                    var draggedAudioData = AssetDatabase.LoadAssetAtPath<AudioData>(audioDataPath);
+                                    if (!draggedAudioData) continue;
+                                    var groupName = draggedAudioData.mixerGroup ? 
+                                        draggedAudioData.mixerGroup.name : "Uncategorized";
+                                        
+                                    if (!_audioDataGroups.ContainsKey(groupName))
+                                        _audioDataGroups[groupName] = new List<AudioData>();
+                                        
+                                    if (!_audioDataGroups[groupName].Contains(draggedAudioData))
+                                        _audioDataGroups[groupName].Add(draggedAudioData);
+                                }
+                                
+                                break;
+                            }
+                            case AudioData draggedAudioData:
+                            {
+                                // If the dragged object is an AudioData asset, add it directly.
+                                var groupName = draggedAudioData.mixerGroup ? 
+                                    draggedAudioData.mixerGroup.name : "Uncategorized";
+                                
+                                if (!_audioDataGroups.ContainsKey(groupName))
+                                    _audioDataGroups[groupName] = new List<AudioData>();
+
+                                if (!_audioDataGroups[groupName].Contains(draggedAudioData))
+                                    _audioDataGroups[groupName].Add(draggedAudioData);
+                                
+                                break;
+                            }
                         }
                     }
-                    
-                    Repaint();
                 }
                 
                 break;
         }
+        
+        // Update the AudioDataGroups object.
+        _audioDataGroupsObject.groups.Clear();
+        foreach (var (key, value) in _audioDataGroups)
+        {
+            var audioGroup = new AudioGroup {groupName = key, audioData = value};
+            _audioDataGroupsObject.groups.Add(audioGroup);
+        }
+        
+        EditorUtility.SetDirty(_audioDataGroupsObject);
+    }
+    
+    /// <summary>
+    /// Collects all AudioData objects in the resources folder.
+    /// </summary>
+    private void CollectAudioData()
+    {
+        _audioDataGroups = new Dictionary<string, List<AudioData>>();
+        var allAudioData = Resources.FindObjectsOfTypeAll<AudioData>();
+
+        foreach (var audioData in allAudioData)
+        {
+            var groupName = audioData.mixerGroup != null ? audioData.mixerGroup.name : "Uncategorized";
+            if (!_audioDataGroups.ContainsKey(groupName))
+                _audioDataGroups[groupName] = new List<AudioData>();
+
+            _audioDataGroups[groupName].Add(audioData);
+        }
+    }
+    
+    /// <summary>
+    /// Generates enum and map data for all AudioData objects in the project.
+    /// </summary>
+    private void GenerateData()
+    {
+        var enumsFilePath = Path.Combine(Application.dataPath, "Scripts/Audio/AudioDataEnum.cs");
+        var mapsFilePath = Path.Combine(Application.dataPath, "Scripts/Audio/AudioDataMap.cs");
+        
+        // Delete the files if they exist.
+        if (File.Exists(enumsFilePath)) File.Delete(enumsFilePath);
+        if (File.Exists(mapsFilePath)) File.Delete(mapsFilePath);
+        
+        // Initialize the string builders.
+        var enumBuilder = new StringBuilder();
+        var mapBuilder = new StringBuilder();
+        
+        // Enums header.
+        enumBuilder.AppendLine("// This file is auto-generated. Do not manually modify.\n" +
+                               "// To regenerate this file,\n" +
+                               "// Go to Window > Audio Data Manager. Then, drag all AudioData and click Generate Enum.\n");
+        enumBuilder.AppendLine("namespace Audio");
+        enumBuilder.AppendLine("{");
+        
+        // Maps header.
+        mapBuilder.AppendLine("// This file is auto-generated. Do not manually modify.\n" +
+                              "// To regenerate this file,\n" +
+                              "// Go to Window > Audio Data Manager. Then, drag all AudioData and click Generate Enum.\n");
+        mapBuilder.AppendLine("using System.Collections.Generic;");
+        mapBuilder.AppendLine("using Objects;");
+        mapBuilder.AppendLine("using UnityEngine;");
+        mapBuilder.AppendLine();
+        mapBuilder.AppendLine("namespace Audio");
+        mapBuilder.AppendLine("{");
+        
+        foreach (var group in _audioDataGroups)
+        {
+            var groupName = group.Key.Replace(" ", "");
+            var enumName = $"AudioDataEnum{groupName}";
+            
+            var sortedAudioData = group.Value.OrderBy(a => a.name).ToList();
+            
+            // Start enum.
+            enumBuilder.AppendLine($"    public enum {enumName}");
+            enumBuilder.AppendLine("    {");
+            
+            // Replace spaces and hyphens with underscores.
+            foreach (var validEnumName in sortedAudioData.Select(audioData => 
+                         audioData.name.Replace(" ", "_").Replace("-", "_")))
+                enumBuilder.AppendLine($"        {validEnumName},");
+            
+            enumBuilder.AppendLine("    }");
+            
+            // Start map.
+            mapBuilder.AppendLine($"    public static class AudioDataMap{groupName}");
+            mapBuilder.AppendLine("    {");
+            mapBuilder.AppendLine($"        public static readonly Dictionary<{enumName}, AudioData> Map = new Dictionary<{enumName}, AudioData>();");
+            
+            // Generate constructor
+            mapBuilder.AppendLine($"        static AudioDataMap{groupName}()");
+            mapBuilder.AppendLine("        {");
+            
+            // Populate the map.
+            foreach (var audioData in sortedAudioData)
+            {
+                var validEnumName = audioData.name.Replace(" ", "_").Replace("-", "_");
+                mapBuilder.AppendLine($"            Map.Add({enumName}.{validEnumName}, Resources.Load<AudioData>(\"{AssetDatabase.GetAssetPath(audioData).Replace("Assets/Resources/", "").Replace(".asset", "")}\"));");
+            }
+            
+            // Close constructor and map.
+            mapBuilder.AppendLine("        }");
+            mapBuilder.AppendLine("    }");
+        }
+        
+        // Close namespaces.
+        enumBuilder.AppendLine("}");
+        mapBuilder.AppendLine("}");
+        
+        // Write the files.
+        File.WriteAllText(enumsFilePath, enumBuilder.ToString());
+        File.WriteAllText(mapsFilePath, mapBuilder.ToString());
+
+        AssetDatabase.Refresh();
     }
 }

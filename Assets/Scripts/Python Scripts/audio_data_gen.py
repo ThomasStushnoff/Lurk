@@ -1,9 +1,16 @@
 import os
 import re
 import argparse
+from tkinter import filedialog as fd
 
 def print_warning(message):
     print(f"\033[93m[WARNING]\033[0m " + message)
+
+def print_error(message):
+    print(f"\033[91m[ERROR]\033[0m " + message)
+
+def print_info(message):
+    print(f"\033[94m[INFO]\033[0m " + message)
 
 def create_audio_data(input_dir, output_dir, mixer_group):
     supported_extensions = ['.wav', '.aif', '.mp3', '.ogg']
@@ -27,10 +34,14 @@ MonoBehaviour:
   loop: 0
   volume: 1
   spatialize: 0
+  pitch: 1
     """
+
+    found_files = False
 
     for filename in os.listdir(input_dir):
         if any(filename.endswith(ext) for ext in supported_extensions):
+            found_files = True
             meta_filename = filename + ".meta"
             meta_file_path = os.path.join(input_dir, meta_filename)
 
@@ -48,9 +59,14 @@ MonoBehaviour:
                         os.makedirs(output_dir, exist_ok=True)
                         with open(asset_file_path, 'w') as asset_file:
                             asset_file.write(asset_content)
+                        
+                        print_info(f"Created audio data for {filename}")
             else:
-                print_warning(f"No .meta file found for {filename}.\nInitialize meta files for all audio files by opening Unity.")
+                print_error(f"No .meta file found for {filename}.\nInitialize meta files for all audio files by opening Unity.")
                 return
+            
+    if not found_files:
+        print_error("No audio files found in the input directory.")
 
 def main():
     parser = argparse.ArgumentParser(description='Generate audio data for Lurk and set the mixer group')
@@ -71,9 +87,20 @@ def main():
         mixer_group = "{fileID: 7500764252588437308, guid: 26c0ca923bdf63b4bb915eb3697b7c0c, type: 2}"
     else:
         mixer_group = "{fileID: 0}"
+    
+    root = fd.Tk()
+    root.withdraw()
 
-    input_path = input("Path to audio files (supports .wav, .aif, .mp3, .ogg): ")
-    output_path = input("Path to output directory: ")
+    input_path =  fd.askdirectory(title="Path to audio files (supports .wav, .aif, .mp3, .ogg)")
+    if not input_path:
+        print_error("No input path provided.")
+        return
+    
+    output_path = fd.askdirectory(title="Output path for audio data")
+    if not output_path:
+        print_error("No output path provided.")
+        return
+    
     create_audio_data(input_path, output_path, mixer_group)
 
 if __name__ == "__main__":

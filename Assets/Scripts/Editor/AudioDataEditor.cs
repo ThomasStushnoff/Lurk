@@ -6,7 +6,7 @@ using UnityEngine;
 /// <summary>
 /// Custom editor for the AudioData scriptable object.
 /// Waveform reference:
-/// <a href="https://github.com/jackyyang09/Simple-Unity-Audio-Manager/blob/master/Editor/AudioPlaybackToolEditor.cs">JSAM</a>
+/// <a href="https://github.com/jackyyang09/Simple-Unity-Audio-Manager/blob/master/Editor/AudioPlaybackToolEditor.cs"></a>
 /// </summary>
 [CustomEditor(typeof(AudioData))]
 public class AudioDataEditor : Editor
@@ -26,11 +26,11 @@ public class AudioDataEditor : Editor
 
     private void Awake()
     {
-        _restartIcon = Resources.Load<Texture2D>("Sprites/backward-step-solid");
-        _playIcon = Resources.Load<Texture2D>("Sprites/play-solid");
-        _pauseIcon = Resources.Load<Texture2D>("Sprites/pause-solid");
-        _repeatIcon = Resources.Load<Texture2D>("Sprites/repeat-solid");
-        _nonRepeatIcon = Resources.Load<Texture2D>("Sprites/non-repeat-solid");
+        _restartIcon = Resources.Load<Texture2D>("Sprites/UI/backward-step-solid");
+        _playIcon = Resources.Load<Texture2D>("Sprites/UI/play-solid");
+        _pauseIcon = Resources.Load<Texture2D>("Sprites/UI/pause-solid");
+        _repeatIcon = Resources.Load<Texture2D>("Sprites/UI/repeat-solid");
+        _nonRepeatIcon = Resources.Load<Texture2D>("Sprites/UI/non-repeat-solid");
     }
 
     private void OnEnable()
@@ -69,8 +69,10 @@ public class AudioDataEditor : Editor
         
         // Draw the audio preview section if the clip exists.
         if (!_currentData.clip) return;
+        
         GUILayout.Space(20);
         EditorGUILayout.LabelField("Audio Preview", EditorStyles.boldLabel);
+        
         if (!_waveformTexture || Math.Abs(_waveformTexture.width - EditorGUIUtility.currentViewWidth) > float.Epsilon)
             GenerateWaveform(_currentData.clip, (int)EditorGUIUtility.currentViewWidth, 300);
 

@@ -1,12 +1,12 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-[CustomPropertyDrawer(typeof(TitleHeader))]
+[CustomPropertyDrawer(typeof(TitleHeaderAttribute))]
 public class TitleHeaderDrawer : DecoratorDrawer
 {
     public override void OnGUI(Rect position)
     {
-        var header = (TitleHeader) attribute;
+        var header = (TitleHeaderAttribute) attribute;
         
         // Set the position for the header.
         position.y += EditorGUIUtility.singleLineHeight / 2.0f;

@@ -6,14 +6,20 @@ namespace Entities
 {
     public abstract class BaseEntity : MonoBehaviour, IBaseEntity
     {
-        protected uint runtimeID;
+        public uint runtimeID;
         [SerializeField] protected EntityType entityType;
-        protected Animator animator;
+        
+        // Cache commonly used components.
+        protected Animator Animator;
+        protected Rigidbody Rigidbody;
+        protected AudioSource AudioSource;
         
         protected virtual void Awake()
         {
             runtimeID = (uint)GetInstanceID();
-            animator = GetComponent<Animator>();
+            Animator = TryGetComponent<Animator>(out var anim) ? anim : null;
+            Rigidbody = TryGetComponent<Rigidbody>(out var rb) ? rb : null;
+            AudioSource = TryGetComponent<AudioSource>(out var src) ? src : null;
         }
         
         public uint RuntimeID => runtimeID;

@@ -2,9 +2,9 @@
 using UnityEngine;
 
 [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
-public class TitleHeader : PropertyAttribute
+public class TitleHeaderAttribute : PropertyAttribute
 {
     public readonly string Header;
     
-    public TitleHeader(string header) => Header = header;
+    public TitleHeaderAttribute(string header) => Header = header;
 }

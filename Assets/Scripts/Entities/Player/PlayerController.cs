@@ -1,4 +1,7 @@
-﻿using Interfaces;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Audio;
+using Interfaces;
 using Managers;
 using Objects;
 using StateMachines;
@@ -17,7 +20,9 @@ namespace Entities.Player
         [SerializeField] private Transform cameraTransform;
         [SerializeField] private CharacterController character;
         [SerializeField] private HUDController hudController;
-        [SerializeField] Volume postProcessVolume;
+        [SerializeField] private Volume postProcessVolume;
+        [SerializeField] private AudioDataEnumSoundFx footstepSound;
+        [SerializeField] private List<AudioDataEnumSoundFx> footstepSounds;
 
         private bool _onGround;
         private float _xRotation;
@@ -232,6 +237,11 @@ namespace Entities.Player
             // 2. Add SFX.
             var volume = isSneaking ? 0.5f : 1.0f;
             var pitch = isSneaking ? 0.5f : 1.0f;
+            
+            // Randomize the footstep sound.
+            var randomIndex = Random.Range(0, footstepSounds.Count);
+            footstepSound = footstepSounds.ElementAt(randomIndex);
+            if (!AudioSource.isPlaying) AudioSource.PlaySoundFx(footstepSound);
             
             // Play footstep SFX and generate noise.
             

@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1d4c8aff44c4b098f1f95ccf0e79d81, type: 3}
+  m_Name: Audio Data Group
+  m_EditorClassIdentifier: 
+  groups:
+  - groupName: VoiceOver
+    audioData:
+    - {fileID: 11400000, guid: 7ece1bc39aa7d634cba88d7a633b74b6, type: 2}
+  - groupName: SoundFx
+    audioData:
+    - {fileID: 11400000, guid: f1a65e22da10b22438190a1d2a6ece4b, type: 2}
+    - {fileID: 11400000, guid: 23e0aebf2022b10449cf4710d12d062f, type: 2}
+    - {fileID: 11400000, guid: 639a8d5186473c740be90be1fc7f567d, type: 2}
+    - {fileID: 11400000, guid: d307f29eb56594f428e03193fc6ce5e0, type: 2}
+    - {fileID: 11400000, guid: a66d7c7302c27c1458278788445a063a, type: 2}
+    - {fileID: 11400000, guid: 4838562b1cfd90c429c1de6b1a120be4, type: 2}
+    - {fileID: 11400000, guid: f8dcffe9eb3972c478a3406224678e86, type: 2}
+    - {fileID: 11400000, guid: 8ab7023164091c341bd09f753cc3562f, type: 2}
+    - {fileID: 11400000, guid: 0b8df4e9804cd6140b277b178f22c97e, type: 2}
+    - {fileID: 11400000, guid: bceb26e125abb8142abef9e79ef24399, type: 2}
+    - {fileID: 11400000, guid: 4fd2bd61237fee741b3a4cefe32432b5, type: 2}
