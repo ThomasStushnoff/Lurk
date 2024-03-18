@@ -21,6 +21,12 @@ namespace Managers
         public static InputAction Look => Instance._actions.Player.Look;
         public static InputAction FreeCursor => Instance._actions.Player.FreeCursor;
         
+        // Puzzle actions.
+        public static InputAction PuzzlePan => Instance._actions.Puzzle.Pan;
+        public static InputAction PuzzleRotate => Instance._actions.Puzzle.Rotate;
+        public static InputAction PuzzleCancel => Instance._actions.Puzzle.Cancel;
+        
+        
         /// <summary>
         /// Special singleton initializer method.
         /// </summary>
@@ -50,7 +56,7 @@ namespace Managers
         /// <summary>
         /// Enables all player movement input.
         /// </summary>
-        public static void EnableMovement()
+        public static void EnableMovementInput()
         {
             Move.Enable();
             Vault.Enable();
@@ -61,7 +67,7 @@ namespace Managers
         /// <summary>
         /// Disables all player movement input.
         /// </summary>
-        public static void DisableMovement()
+        public static void DisableMovementInput()
         {
             Move.Disable();
             Vault.Disable();
@@ -69,6 +75,20 @@ namespace Managers
             Sneak.Disable();
         }
 
+        public static void EnablePuzzleInput()
+        {
+            PuzzlePan.Enable();
+            PuzzleRotate.Enable();
+            PuzzleCancel.Enable();
+        }
+        
+        public static void DisablePuzzleInput()
+        {
+            PuzzlePan.Disable();
+            PuzzleRotate.Disable();
+            PuzzleCancel.Disable();
+        }
+        
         public static bool IsMovementEnabled => Move.enabled && Vault.enabled && Crouch.enabled && Sneak.enabled;
     }
 }

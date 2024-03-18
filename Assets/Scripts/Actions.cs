@@ -187,17 +187,6 @@ public partial class @Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""f11e43a3-8e4e-4b8f-b788-50a9ecbdb21f"",
-                    ""path"": ""<Keyboard>/e"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Interact"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""3339c469-b39d-4886-971f-cfb4a7af8eca"",
                     ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
@@ -285,6 +274,140 @@ public partial class @Actions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Puzzle"",
+            ""id"": ""2a5a8ee4-82a5-434e-b50d-c441da0a3719"",
+            ""actions"": [
+                {
+                    ""name"": ""Pan"",
+                    ""type"": ""Value"",
+                    ""id"": ""b47a360b-579d-409f-8c3a-ba4bb9e80017"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Rotate"",
+                    ""type"": ""Value"",
+                    ""id"": ""0887f4c3-d172-428c-a313-19bfde34eadd"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Cancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""5189f859-4e35-46bc-a4e3-cf199c7266a6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""WASD"",
+                    ""id"": ""fa63001d-8e4b-4fb6-9945-2653b927e5fe"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pan"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Up"",
+                    ""id"": ""259ff9be-a515-4c74-9c70-29ed33ee5d69"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pan"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Down"",
+                    ""id"": ""044aadc9-4871-444a-bc34-996d56c12023"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pan"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Left"",
+                    ""id"": ""982463b6-d60c-427e-ba6b-b44cc06bfe8b"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pan"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Right"",
+                    ""id"": ""9c349d27-e12a-4499-9613-e321d4ed5df1"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pan"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Rotation"",
+                    ""id"": ""fde9612f-5900-4b0a-a853-77dfbee614cb"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""2172394a-7209-496c-b421-f1f2aa61ed27"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""8f94c0a4-b2b0-4fd8-96ee-c04a44a6e767"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9abd7484-50b7-47cf-af0a-894cab07628f"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -301,6 +424,11 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         m_Player_RotateRight = m_Player.FindAction("RotateRight", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_FreeCursor = m_Player.FindAction("Free Cursor", throwIfNotFound: true);
+        // Puzzle
+        m_Puzzle = asset.FindActionMap("Puzzle", throwIfNotFound: true);
+        m_Puzzle_Pan = m_Puzzle.FindAction("Pan", throwIfNotFound: true);
+        m_Puzzle_Rotate = m_Puzzle.FindAction("Rotate", throwIfNotFound: true);
+        m_Puzzle_Cancel = m_Puzzle.FindAction("Cancel", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -476,6 +604,68 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // Puzzle
+    private readonly InputActionMap m_Puzzle;
+    private List<IPuzzleActions> m_PuzzleActionsCallbackInterfaces = new List<IPuzzleActions>();
+    private readonly InputAction m_Puzzle_Pan;
+    private readonly InputAction m_Puzzle_Rotate;
+    private readonly InputAction m_Puzzle_Cancel;
+    public struct PuzzleActions
+    {
+        private @Actions m_Wrapper;
+        public PuzzleActions(@Actions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Pan => m_Wrapper.m_Puzzle_Pan;
+        public InputAction @Rotate => m_Wrapper.m_Puzzle_Rotate;
+        public InputAction @Cancel => m_Wrapper.m_Puzzle_Cancel;
+        public InputActionMap Get() { return m_Wrapper.m_Puzzle; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PuzzleActions set) { return set.Get(); }
+        public void AddCallbacks(IPuzzleActions instance)
+        {
+            if (instance == null || m_Wrapper.m_PuzzleActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PuzzleActionsCallbackInterfaces.Add(instance);
+            @Pan.started += instance.OnPan;
+            @Pan.performed += instance.OnPan;
+            @Pan.canceled += instance.OnPan;
+            @Rotate.started += instance.OnRotate;
+            @Rotate.performed += instance.OnRotate;
+            @Rotate.canceled += instance.OnRotate;
+            @Cancel.started += instance.OnCancel;
+            @Cancel.performed += instance.OnCancel;
+            @Cancel.canceled += instance.OnCancel;
+        }
+
+        private void UnregisterCallbacks(IPuzzleActions instance)
+        {
+            @Pan.started -= instance.OnPan;
+            @Pan.performed -= instance.OnPan;
+            @Pan.canceled -= instance.OnPan;
+            @Rotate.started -= instance.OnRotate;
+            @Rotate.performed -= instance.OnRotate;
+            @Rotate.canceled -= instance.OnRotate;
+            @Cancel.started -= instance.OnCancel;
+            @Cancel.performed -= instance.OnCancel;
+            @Cancel.canceled -= instance.OnCancel;
+        }
+
+        public void RemoveCallbacks(IPuzzleActions instance)
+        {
+            if (m_Wrapper.m_PuzzleActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IPuzzleActions instance)
+        {
+            foreach (var item in m_Wrapper.m_PuzzleActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_PuzzleActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public PuzzleActions @Puzzle => new PuzzleActions(this);
     public interface IPlayerActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -488,5 +678,11 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         void OnRotateRight(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnFreeCursor(InputAction.CallbackContext context);
+    }
+    public interface IPuzzleActions
+    {
+        void OnPan(InputAction.CallbackContext context);
+        void OnRotate(InputAction.CallbackContext context);
+        void OnCancel(InputAction.CallbackContext context);
     }
 }

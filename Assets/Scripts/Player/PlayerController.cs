@@ -45,6 +45,14 @@ namespace Player
 
         private void Start()
         {
+            InputManager.FreeCursor.performed += _ => HandleCursor();
+            InputManager.Interact.performed += _ => HandleInteractions();
+            InputManager.Inspect.started += _ => ToggleInspect();
+            InputManager.RotateLeft.performed += _ => StartRotatingLeft();
+            InputManager.RotateLeft.canceled += _ => StopRotating();
+            InputManager.RotateRight.performed += _ => StartRotatingRight();
+            InputManager.RotateRight.canceled += _ => StopRotating();
+            
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
 
@@ -193,7 +201,7 @@ namespace Player
             if (_currentSanity <= 0)
             {
                 // Player loses control over character.
-                InputManager.DisableMovement();
+                InputManager.DisableMovementInput();
                 // Player dies with a jump scare.
                 // Trigger Jump Scare.
                 // AudioManager.Instance.PlayOneShotAudio();
