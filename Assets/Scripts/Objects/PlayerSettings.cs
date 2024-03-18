@@ -30,6 +30,7 @@ namespace Objects
         public float detectionRadius = 10.0f;
         [TitleHeader("Layers")]
         public LayerMask ground;
+        public LayerMask inspectable;
         public LayerMask interactable;
         public LayerMask obstacle;
         public LayerMask enemy;

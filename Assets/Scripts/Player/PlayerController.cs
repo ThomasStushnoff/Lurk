@@ -5,7 +5,6 @@ using UI;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
-using UnityEngine.Serialization;
 
 namespace Player
 {
@@ -16,7 +15,6 @@ namespace Player
         [SerializeField] private Transform groundCheck;
         [SerializeField] private Transform cameraTransform;
         [SerializeField] private CharacterController character;
-        [FormerlySerializedAs("uiController")]
         [SerializeField] private HUDController hudController;
         [SerializeField] Volume postProcessVolume;
         
@@ -25,7 +23,6 @@ namespace Player
 
         private bool _onGround;
         private float _xRotation;
-        private Actions _actions;
         private Vector3 _velocity;
         private float _currentStamina;
         private float _currentSanity;
@@ -34,7 +31,7 @@ namespace Player
         private bool _isVaulting;
         private bool _isInspecting;
         private float _rotationDirection;
-        private GameObject _inspectingObject = null;
+        private GameObject _inspectingObject;
         private Vector3 _objOriginalPosition;
         private Quaternion _objOriginalRotation;
         private DepthOfField _depthOfField;
@@ -43,8 +40,7 @@ namespace Player
         {
             if (GameManager.Instance.localPlayer == null)
                 GameManager.Instance.localPlayer = this;
-
-            _actions = new Actions();
+            
         }
 
         private void Start()
@@ -78,34 +74,6 @@ namespace Player
             postProcessVolume.profile.TryGet<DepthOfField>(out _depthOfField);
         }
 
-        private void OnEnable()
-        {
-            _actions.Player.FreeCursor.performed += _ => HandleCursor();
-            _actions.Player.Interact.started += _ => HandleInteractions();
-            
-            _actions.Player.Inspect.performed += _ => ToggleInspect();
-            _actions.Player.RotateLeft.performed += _ => StartRotatingLeft();
-            _actions.Player.RotateLeft.canceled += _ => StopRotating();
-            _actions.Player.RotateRight.performed += _ => StartRotatingRight();
-            _actions.Player.RotateRight.canceled += _ => StopRotating();
-            
-            _actions?.Enable();
-        }
-
-        private void OnDisable()
-        {
-            _actions.Player.FreeCursor.performed -= _ => HandleCursor();
-            _actions.Player.Interact.started -= _ => HandleInteractions();
-            
-            _actions.Player.Inspect.performed -= _ => ToggleInspect();
-            _actions.Player.RotateLeft.performed -= _ => StartRotatingLeft();
-            _actions.Player.RotateLeft.canceled -= _ => StopRotating();
-            _actions.Player.RotateRight.performed -= _ => StartRotatingRight();
-            _actions.Player.RotateRight.canceled -= _ => StopRotating();
-            
-            _actions?.Disable();
-        }
-
         private void CheckGrounded()
         {
             if (!settings) return;
@@ -117,7 +85,7 @@ namespace Player
         {
             if (!Cursor.visible)
             {
-                var look = _actions.Player.Look.ReadValue<Vector2>();
+                var look = InputManager.Look.ReadValue<Vector2>();
                 var lookX = look.x * settings.mouseSensitivity * Time.deltaTime;
                 var lookY = look.y * settings.mouseSensitivity * Time.deltaTime;
 
@@ -141,13 +109,13 @@ namespace Player
                 currentSpeed /= 2f;
             }
 
-            var input = _actions.Player.Move.ReadValue<Vector2>();
+            var input = InputManager.Move.ReadValue<Vector2>();
             var move = cameraTransform.TransformDirection(new Vector3(input.x, 0, input.y));
             move.y = 0;
             move.Normalize();
 
             // Crouching.
-            if (_actions.Player.Crouch.WasPressedThisFrame())
+            if (InputManager.Crouch.WasPressedThisFrame())
             {
                 _isCrouching = !_isCrouching;
                 // character.height = _isCrouching ? 1 : 2; // To be removed.
@@ -155,7 +123,7 @@ namespace Player
             }
 
             // Sneaking.
-            _isSneaking = _actions.Player.Sneak.IsPressed();
+            _isSneaking = InputManager.Sneak.IsPressed();
             if (_isSneaking) currentSpeed *= settings.sneakSpeedMultiplier;
 
             // Apply speed reduction based on stamina.
@@ -173,7 +141,7 @@ namespace Player
             // TODO:
             // 1. Add animation.
             // 2. Optimize.
-            if (!_actions.Player.Vault.WasPressedThisFrame() || !CanVault(out var obstacleHeight) || _currentStamina <= 0) return;
+            if (!InputManager.Vault.WasPressedThisFrame() || !CanVault(out var obstacleHeight) || _currentStamina <= 0) return;
             
             if (obstacleHeight > 0)
             {
@@ -225,7 +193,7 @@ namespace Player
             if (_currentSanity <= 0)
             {
                 // Player loses control over character.
-                _actions.Disable();
+                InputManager.DisableMovement();
                 // Player dies with a jump scare.
                 // Trigger Jump Scare.
                 // AudioManager.Instance.PlayOneShotAudio();
@@ -237,7 +205,7 @@ namespace Player
 
         private void HandleCursor()
         {
-            var cursorFree = _actions.Player.FreeCursor.IsPressed();
+            var cursorFree = InputManager.FreeCursor.IsPressed();
             Cursor.lockState = cursorFree ? CursorLockMode.None : CursorLockMode.Locked;
             Cursor.visible = cursorFree;
         }
@@ -245,11 +213,22 @@ namespace Player
         private void GenerateNoise(bool isSneaking)
         {
             // TODO:
-            // 1. Adjust values later.
-            // 2. AudioMixers.
+            // 1. Adjust the values later.
+            // 2. Add SFX.
+            var volume = isSneaking ? 0.5f : 1.0f;
+            var pitch = isSneaking ? 0.5f : 1.0f;
             
-            var noiseLevel = Mathf.Lerp(0.1f, 1.0f, (100.0f - _currentStamina) / 100.0f);
-            if (isSneaking) noiseLevel /= 2;
+            // Play footstep SFX and generate noise.
+            
+            // Ideas:
+            // Since the enemy will be patrolling, the noise will attract the enemy.
+            // If certain noise level is reached, the enemy will be notified.
+            // So, we create a noise level and notify the enemy.
+            // Logic:
+            // 1. Enemy will have an overlap circle.
+            // 2. Expose a noise level variable for the player.
+            // 3. If the player is within the circle, and the noise level is above a certain threshold, the enemy will be notified.
+            // 4. The enemy will then move towards the player and do the deed.
         }
 
         private void HandleInteractions()
@@ -269,8 +248,12 @@ namespace Player
 
             // Check if the object is collectible.
             var collectible = hit.collider.GetComponent<ICollectible>();
-            collectible?.Collect();
-            Debug.Log($"Collected {hit.collider.name}!");
+            if (collectible != null)
+            {
+                collectible.Collect();
+                Debug.Log($"Collected {hit.collider.name}!");
+            }
+            
         }
 
         private void StartRotatingLeft() => _rotationDirection = -1.0f;
@@ -291,18 +274,20 @@ namespace Player
 
         private void ToggleInspect()
         {
-            if (!_isInspecting && Physics.Raycast(cameraTransform.position, cameraTransform.forward, out var hit, 
+            if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out var hit, 
                     settings.inspectDistance, settings.interactable))
             {
+                Debug.Log($"Inspecting {hit.collider.name}!");
                 if (hit.collider.GetComponent<IInspectable>() != null)
                     StartInspecting(hit.collider.gameObject);
             }
             else
             {
-                StopInspecting();
+                Debug.Log("Stopped inspecting!");
+                // StopInspecting();
             }
         }
-
+        
         private void StartInspecting(GameObject obj) 
         {
             _inspectingObject = obj;
@@ -332,7 +317,7 @@ namespace Player
             _inspectingObject = null;
         }
         
-        private bool IsMoving() => _actions.Player.Move.ReadValue<Vector2>().magnitude > 0;
+        private bool IsMoving() => InputManager.Move.ReadValue<Vector2>().magnitude > 0;
         
         private bool IsInPanicState() => _currentSanity <= settings.panicThreshold || _currentStamina <= settings.staminaThreshold;
         
@@ -379,6 +364,11 @@ namespace Player
             
             return false;
         }
-            
+        
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(cameraTransform.position, cameraTransform.position + cameraTransform.forward * settings.inspectDistance);
+        }
     }
 }

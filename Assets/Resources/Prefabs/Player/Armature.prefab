@@ -915,7 +915,7 @@ GameObject:
   - component: {fileID: 4629173832739338317}
   - component: {fileID: 6330723874676146979}
   - component: {fileID: 4084656751358901924}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Armature
   m_TagString: Untagged
   m_Icon: {fileID: 0}

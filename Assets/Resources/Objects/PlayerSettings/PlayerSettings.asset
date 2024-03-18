@@ -26,19 +26,22 @@ MonoBehaviour:
   staminaDrainRate: 10
   crouchStaminaRegenRate: 10
   vaultStaminaCost: 5
-  interactDistance: 2
+  interactDistance: 20
   inspectDistance: 5
   inspectRotationSpeed: 0.5
   detectionRadius: 10
   ground:
     serializedVersion: 2
     m_Bits: 64
+  inspectable:
+    serializedVersion: 2
+    m_Bits: 512
   interactable:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 256
   obstacle:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 128
   enemy:
     serializedVersion: 2
     m_Bits: 0
