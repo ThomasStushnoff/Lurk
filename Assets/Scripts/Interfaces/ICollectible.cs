@@ -2,6 +2,6 @@
 {
     public interface ICollectible
     {
-        public void Collect();
+        void Collect();
     }
 }

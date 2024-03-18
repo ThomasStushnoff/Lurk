@@ -1,14 +1,15 @@
 ﻿using Interfaces;
 using Managers;
 using Objects;
+using StateMachines;
 using UI;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
 
-namespace Player
+namespace Entities.Player
 {
-    public class PlayerController : MonoBehaviour, IEntity
+    public class PlayerController : BaseEntity
     {
         [TitleHeader("Player Settings")]
         [SerializeField] private PlayerSettings settings;
@@ -17,9 +18,6 @@ namespace Player
         [SerializeField] private CharacterController character;
         [SerializeField] private HUDController hudController;
         [SerializeField] Volume postProcessVolume;
-        
-        // [TitleHeader("Network Settings")]
-        // public bool isHost;
 
         private bool _onGround;
         private float _xRotation;
@@ -35,14 +33,16 @@ namespace Player
         private Vector3 _objOriginalPosition;
         private Quaternion _objOriginalRotation;
         private DepthOfField _depthOfField;
+        private BaseState<IBaseEntity> _currentState;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+            
             if (GameManager.Instance.localPlayer == null)
                 GameManager.Instance.localPlayer = this;
-            
         }
-
+        
         private void Start()
         {
             InputManager.FreeCursor.performed += _ => HandleCursor();
@@ -80,6 +80,13 @@ namespace Player
             CheckGrounded();
             
             postProcessVolume.profile.TryGet<DepthOfField>(out _depthOfField);
+        }
+        
+        public override void ChangeState(BaseState<IBaseEntity> newState)
+        {
+            _currentState?.ExitState();
+            _currentState = newState;
+            _currentState.EnterState();
         }
 
         private void CheckGrounded()
@@ -246,8 +253,8 @@ namespace Player
             // 2. UI feedback.
             // 3. SFX.
             var ray = new Ray(cameraTransform.position, cameraTransform.forward);
-            if (!Physics.Raycast(ray, out var hit, settings.interactDistance)) return;
-            
+            if (!Physics.Raycast(ray, out var hit, settings.interactDistance, settings.interactable)) return;
+            Debug.Log($"hit.collider.name: {hit.collider.name}!");
             var interactable = hit.collider.GetComponent<IInteractable>();
             if (interactable == null) return;
             
@@ -261,7 +268,6 @@ namespace Player
                 collectible.Collect();
                 Debug.Log($"Collected {hit.collider.name}!");
             }
-            
         }
 
         private void StartRotatingLeft() => _rotationDirection = -1.0f;
@@ -283,7 +289,7 @@ namespace Player
         private void ToggleInspect()
         {
             if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out var hit, 
-                    settings.inspectDistance, settings.interactable))
+                    settings.inspectDistance, settings.inspectable))
             {
                 Debug.Log($"Inspecting {hit.collider.name}!");
                 if (hit.collider.GetComponent<IInspectable>() != null)
@@ -376,7 +382,7 @@ namespace Player
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawLine(cameraTransform.position, cameraTransform.position + cameraTransform.forward * settings.inspectDistance);
+            Gizmos.DrawLine(cameraTransform.position, cameraTransform.position + cameraTransform.forward * settings.interactDistance);
         }
     }
 }
