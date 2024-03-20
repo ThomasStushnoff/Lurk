@@ -1,38 +1,43 @@
-﻿using Interfaces;
+﻿using Entities;
+using Entities.Player;
 using Managers;
 using UnityEngine;
 
 namespace World
 {
-    public class Reflector : MonoBehaviour, IInteractable
+    // TODO:
+    // Puzzle completion logic.
+    public class Reflector : BasePuzzle
     {
-        
+        [SerializeField] private PuzzleType type;
         [SerializeField] private float rotationSpeed = 50.0f;
         [SerializeField] private float panSpeed = 2.0f;
         
         private Transform _playerCamera;
-        private bool _isInteracting;
+        private PlayerController _player;
 
-        private void Start() => _playerCamera = Camera.main!.transform;
-
-        public void Interact() => _isInteracting = !_isInteracting;
-
+        private void Start()
+        {
+            Type = type;
+            _playerCamera = Camera.main!.transform;
+            State = PuzzleState.Incomplete;
+        }
+        
         private void Update()
         {
-            if (!_isInteracting) return;
+            if (LockState is PuzzleLockState.Locked) return;
             
-            InputManager.DisableMovementInput();
-            InputManager.EnablePuzzleInput();
-                
             Debug.Log("Interacting with object");
-            if (InputManager.Interact.WasReleasedThisFrame())
+            if (InputManager.PuzzleCancel.WasPressedThisFrame())
             {
-                _isInteracting = false;
+                _player.StopFocusingOnPuzzle();
                 InputManager.EnableMovementInput();
                 InputManager.DisablePuzzleInput();
+                _player = null;
+                LockState = PuzzleLockState.Locked;
                 return;
             }
-                
+            
             RotateObject();
             PanObject();
         }
@@ -42,7 +47,6 @@ namespace World
         /// </summary>
         private void RotateObject()
         {
-            Debug.Log("Rotating object");
             var rotate = InputManager.PuzzleRotate.ReadValue<Vector2>();
             transform.Rotate(rotate, rotationSpeed * Time.deltaTime);
         }
@@ -52,8 +56,20 @@ namespace World
         /// </summary>
         private void PanObject()
         {
-            var panDirection = InputManager.PuzzlePan.ReadValue<Vector2>();
-            transform.position += _playerCamera.TransformDirection(panDirection) * (panSpeed * Time.deltaTime);
+            var panInput = InputManager.PuzzlePan.ReadValue<Vector2>();
+            var panDirection = _playerCamera.TransformDirection(new Vector3(panInput.x, 0, panInput.y));
+            transform.position += new Vector3(panDirection.x, 0, panDirection.z) * (panSpeed * Time.deltaTime);
+        }
+        
+        public override void Interact(BaseEntity entity)
+        {
+            if (entity is not PlayerController player) return;
+            
+            LockState = PuzzleLockState.Unlocked;
+            _player = player;
+            InputManager.DisableMovementInput();
+            InputManager.EnablePuzzleInput();
+            _player.FocusOnPuzzle(transform);
         }
     }
 }

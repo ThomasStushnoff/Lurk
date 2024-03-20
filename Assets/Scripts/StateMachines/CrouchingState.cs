@@ -1,22 +1,28 @@
-﻿using Interfaces;
+﻿using Entities.Player;
+using Interfaces;
 
 namespace StateMachines
 {
     public class CrouchingState : BaseState<IBaseEntity>
     {
-        public CrouchingState(IBaseEntity baseEntity) : base("Crouching", baseEntity) { }
+        private PlayerController _player;
+        
+        public CrouchingState(IBaseEntity owner) : base("Crouching", owner)
+        {
+            _player = owner as PlayerController;
+        }
         
         public override void EnterState()
         {
             throw new System.NotImplementedException();
         }
         
-        public override void ExitState()
+        public override void UpdateState()
         {
             throw new System.NotImplementedException();
         }
         
-        public override void UpdateState()
+        public override void ExitState()
         {
             throw new System.NotImplementedException();
         }

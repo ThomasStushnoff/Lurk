@@ -15,6 +15,7 @@ namespace Managers
         public static InputAction Crouch => Instance._actions.Player.Crouch;
         public static InputAction Sneak => Instance._actions.Player.Sneak;
         public static InputAction Interact => Instance._actions.Player.Interact;
+        public static InputAction InteractPuzzle => Instance._actions.Player.InteractPuzzle; // TODO: Figure out if we need this.
         public static InputAction Inspect => Instance._actions.Player.Inspect;
         public static InputAction RotateLeft => Instance._actions.Player.RotateLeft;
         public static InputAction RotateRight => Instance._actions.Player.RotateRight;
@@ -62,6 +63,7 @@ namespace Managers
             Vault.Enable();
             Crouch.Enable();
             Sneak.Enable();
+            Interact.Enable();
         }
         
         /// <summary>
@@ -73,6 +75,7 @@ namespace Managers
             Vault.Disable();
             Crouch.Disable();
             Sneak.Disable();
+            Interact.Disable();
         }
 
         public static void EnablePuzzleInput()

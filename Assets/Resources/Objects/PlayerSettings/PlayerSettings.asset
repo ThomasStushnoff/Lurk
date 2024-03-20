@@ -39,6 +39,9 @@ MonoBehaviour:
   interactable:
     serializedVersion: 2
     m_Bits: 256
+  puzzle:
+    serializedVersion: 2
+    m_Bits: 1024
   obstacle:
     serializedVersion: 2
     m_Bits: 128

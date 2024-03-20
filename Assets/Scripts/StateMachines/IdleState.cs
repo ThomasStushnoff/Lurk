@@ -1,24 +1,30 @@
-﻿using Interfaces;
+﻿using Entities.Player;
+using Interfaces;
 
 namespace StateMachines
 {
     public class IdleState : BaseState<IBaseEntity>
     {
-        public IdleState(IBaseEntity baseEntity) : base("Idle", baseEntity) { }
+        private PlayerController _player;
+
+        public IdleState(IBaseEntity owner) : base("Idle", owner)
+        {
+            _player = owner as PlayerController;
+        }
         
         public override void EnterState()
         {
-            throw new System.NotImplementedException();
-        }
-        
-        public override void ExitState()
-        {
-            throw new System.NotImplementedException();
+            _player.animator.SetBool("Grounded", true);
         }
         
         public override void UpdateState()
         {
-            throw new System.NotImplementedException();
+            
+        }
+        
+        public override void ExitState()
+        {
+            
         }
     }
 }

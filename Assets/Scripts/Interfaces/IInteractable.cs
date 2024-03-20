@@ -1,7 +1,8 @@
-﻿namespace Interfaces
+﻿using Entities;
+namespace Interfaces
 {
     public interface IInteractable
     {
-        void Interact();
+        void Interact(BaseEntity entity);
     }
 }

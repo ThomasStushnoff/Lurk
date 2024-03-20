@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Audio;
 using Interfaces;
@@ -9,7 +10,10 @@ using UI;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
+using World;
+using Random = UnityEngine.Random;
 
+// TODO: REFACTOR AND USE FSM
 namespace Entities.Player
 {
     public class PlayerController : BaseEntity
@@ -21,17 +25,17 @@ namespace Entities.Player
         [SerializeField] private CharacterController character;
         [SerializeField] private HUDController hudController;
         [SerializeField] private Volume postProcessVolume;
-        [SerializeField] private AudioDataEnumSoundFx footstepSound;
         [SerializeField] private List<AudioDataEnumSoundFx> footstepSounds;
 
         private bool _onGround;
         private float _xRotation;
-        private Vector3 _velocity;
-        private float _currentStamina;
-        private float _currentSanity;
+        private float CurrentStamina { get; set; }
+        public float CurrentSanity { get; set; }
         private bool _isCrouching;
         private bool _isSneaking;
         private bool _isVaulting;
+        private Transform _puzzleFocusTarget;
+        private bool _isFocusingOnPuzzle;
         private bool _isInspecting;
         private float _rotationDirection;
         private GameObject _inspectingObject;
@@ -39,6 +43,8 @@ namespace Entities.Player
         private Quaternion _objOriginalRotation;
         private DepthOfField _depthOfField;
         private BaseState<IBaseEntity> _currentState;
+        private Vector3 _lastCameraPosition;
+        private Quaternion _lastCameraRotation;
 
         protected override void Awake()
         {
@@ -51,7 +57,8 @@ namespace Entities.Player
         private void Start()
         {
             InputManager.FreeCursor.performed += _ => HandleCursor();
-            InputManager.Interact.performed += _ => HandleInteractions();
+            InputManager.Interact.started += _ => HandleInteractions();
+            
             InputManager.Inspect.started += _ => ToggleInspect();
             InputManager.RotateLeft.performed += _ => StartRotatingLeft();
             InputManager.RotateLeft.canceled += _ => StopRotating();
@@ -61,32 +68,35 @@ namespace Entities.Player
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
 
-            _currentStamina = settings.maxStamina;
-            _currentSanity = settings.maxSanity;
+            CurrentStamina = settings.maxStamina;
+            CurrentSanity = settings.maxSanity;
         }
-
+        
         private void Update()
         {
             AudioManager.Instance.UpdateAudioSource(transform.position);
             
             HandleCameraMovement();
-            // TODO:
-            // 1. Use FSM later.
-            // 2. Network later.
+
+            
             HandleMovement();
             HandleVault();
             HandleStamina();
             HandleSanity();
             if (_isInspecting) RotateInspectingObject();
-
-            // Removed since no jumping.
-            // HandleVelocity();
+            HandlePuzzleInteractions();
+            
             HandleCursor();
             CheckGrounded();
             
             postProcessVolume.profile.TryGet<DepthOfField>(out _depthOfField);
         }
-        
+
+        private void LateUpdate()
+        {
+            if (_isFocusingOnPuzzle) FollowPuzzle();
+        }
+
         public override void ChangeState(BaseState<IBaseEntity> newState)
         {
             _currentState?.ExitState();
@@ -147,9 +157,9 @@ namespace Entities.Player
             if (_isSneaking) currentSpeed *= settings.sneakSpeedMultiplier;
 
             // Apply speed reduction based on stamina.
-            currentSpeed *= Mathf.Lerp(0.5f, 1.0f, (100.0f - _currentStamina) / 100.0f);
+            currentSpeed *= Mathf.Lerp(0.5f, 1.0f, (100.0f - CurrentStamina) / 100.0f);
             // Apply speed reduction based on sanity.
-            currentSpeed *= Mathf.Lerp(0.5f, 1.0f, (100.0f - _currentSanity) / 100.0f);
+            currentSpeed *= Mathf.Lerp(0.5f, 1.0f, (100.0f - CurrentSanity) / 100.0f);
 
             character.Move(move * (currentSpeed * Time.deltaTime));
 
@@ -161,7 +171,7 @@ namespace Entities.Player
             // TODO:
             // 1. Add animation.
             // 2. Optimize.
-            if (!InputManager.Vault.WasPressedThisFrame() || !CanVault(out var obstacleHeight) || _currentStamina <= 0) return;
+            if (!InputManager.Vault.WasPressedThisFrame() || !CanVault(out var obstacleHeight) || CurrentStamina <= 0) return;
             
             if (obstacleHeight > 0)
             {
@@ -170,7 +180,7 @@ namespace Entities.Player
                 var newPos = new Vector3(transform.position.x, vaultHeight, transform.position.z).
                     Add(transform.forward * settings.vaultDistance);
                 transform.position = newPos;
-                _currentStamina -= settings.vaultStaminaCost;
+                CurrentStamina -= settings.vaultStaminaCost;
                 // transform.position = Vector3.Lerp(transform.position, newPosition, 0.5f);
             }
         }
@@ -180,37 +190,37 @@ namespace Entities.Player
             if (IsMoving() || _isVaulting)
             {
                 // Decrease stamina when moving or vaulting.
-                _currentStamina -= Time.deltaTime * settings.staminaDrainRate;
+                CurrentStamina -= Time.deltaTime * settings.staminaDrainRate;
             }
             else if (_isCrouching || !IsMoving())
             {
                 // Regenerate stamina when crouching or standing still.
-                _currentStamina += Time.deltaTime * settings.crouchStaminaRegenRate;
+                CurrentStamina += Time.deltaTime * settings.crouchStaminaRegenRate;
             }
             else
             {
                 // Regenerate stamina when not moving.
-                _currentStamina += Time.deltaTime * settings.staminaRegenRate;
+                CurrentStamina += Time.deltaTime * settings.staminaRegenRate;
             }
 
-            _currentStamina = Mathf.Clamp(_currentStamina, 0, settings.maxStamina);
-            hudController.UpdateStamina(_currentStamina / settings.maxStamina);
+            CurrentStamina = Mathf.Clamp(CurrentStamina, 0, settings.maxStamina);
+            hudController.UpdateStamina(CurrentStamina / settings.maxStamina);
         }
 
         private void HandleSanity()
         {
             // Player is low on stamina.
-            if (_currentStamina <= settings.staminaThreshold)
-                _currentSanity -= Time.deltaTime * settings.sanityDrainRate;
+            if (CurrentStamina <= settings.staminaThreshold)
+                CurrentSanity -= Time.deltaTime * settings.sanityDrainRate;
             // Player is near an enemy.
             if (IsEnemyNearby())
-                _currentSanity -= Time.deltaTime * settings.sanityDrainRate;
+                CurrentSanity -= Time.deltaTime * settings.sanityDrainRate;
             
-            _currentSanity = Mathf.Clamp(_currentSanity, 0, settings.maxSanity);
-            hudController.UpdateSanity(_currentSanity / settings.maxSanity);
+            CurrentSanity = Mathf.Clamp(CurrentSanity, 0, settings.maxSanity);
+            hudController.UpdateSanity(CurrentSanity / settings.maxSanity);
 
             // Trigger Insanity.
-            if (_currentSanity <= 0)
+            if (CurrentSanity <= 0)
             {
                 // Player loses control over character.
                 InputManager.DisableMovementInput();
@@ -221,7 +231,7 @@ namespace Entities.Player
             }
         }
 
-        public void UpdateSanity(float value) => _currentSanity += value;
+        public void UpdateSanity(float value) => CurrentSanity += value;
 
         private void HandleCursor()
         {
@@ -240,8 +250,8 @@ namespace Entities.Player
             
             // Randomize the footstep sound.
             var randomIndex = Random.Range(0, footstepSounds.Count);
-            footstepSound = footstepSounds.ElementAt(randomIndex);
-            if (!AudioSource.isPlaying) AudioSource.PlaySoundFx(footstepSound);
+            var footstepSound = footstepSounds.ElementAt(randomIndex);
+            if (!audioSource.isPlaying) audioSource.PlaySoundFx(footstepSound);
             
             // Play footstep SFX and generate noise.
             
@@ -262,13 +272,13 @@ namespace Entities.Player
             // 1. Add cooldown maybe.
             // 2. UI feedback.
             // 3. SFX.
-            var ray = new Ray(cameraTransform.position, cameraTransform.forward);
-            if (!Physics.Raycast(ray, out var hit, settings.interactDistance, settings.interactable)) return;
+            if (!Physics.Raycast(cameraTransform.position, cameraTransform.forward, out var hit, 
+                    settings.interactDistance, settings.interactable)) return;
             Debug.Log($"hit.collider.name: {hit.collider.name}!");
             var interactable = hit.collider.GetComponent<IInteractable>();
             if (interactable == null) return;
             
-            interactable.Interact();
+            interactable.Interact(this);
             Debug.Log($"Interacted with {hit.collider.name}!");
 
             // Check if the object is collectible.
@@ -280,6 +290,53 @@ namespace Entities.Player
             }
         }
 
+        private void HandlePuzzleInteractions()
+        {
+            // TODO:
+            // Use Hold.
+            // Add a delay when interacting (Holding the button).
+            if (!InputManager.InteractPuzzle.WasPerformedThisFrame()) return;
+            
+            if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out var hit, 
+                settings.interactDistance, settings.puzzle))
+            {
+                var puzzle = hit.collider.GetComponent<BasePuzzle>();
+                if (puzzle != null)
+                {
+                    puzzle.Interact(this);
+                }
+            }
+        }
+        
+        public void FocusOnPuzzle(Transform puzzleTransform)
+        {
+            _lastCameraPosition = cameraTransform.localPosition;
+            _lastCameraRotation = cameraTransform.localRotation;
+            // Debug.Log($"lastCameraPosition: {_lastCameraPosition}");
+            // Debug.Log($"lastCameraRotation: {_lastCameraRotation}");
+            _puzzleFocusTarget = puzzleTransform;
+            _isFocusingOnPuzzle = true;
+        }
+        
+        public void StopFocusingOnPuzzle()
+        {
+            _puzzleFocusTarget = null;
+            _isFocusingOnPuzzle = false; 
+            cameraTransform.SetLocalPositionAndRotation(_lastCameraPosition, _lastCameraRotation);
+        }
+
+        private void FollowPuzzle()
+        {
+            if (_puzzleFocusTarget == null) return;
+            
+            // TODO
+            // Serialize the values maybe?
+            var offset = new Vector3(0, 2, -2);
+            var targetPosition = _puzzleFocusTarget.position + _puzzleFocusTarget.TransformDirection(offset);
+            var smoothTime = 0.5f;
+            cameraTransform.position = Vector3.Lerp(cameraTransform.position, targetPosition, smoothTime);
+        }
+        
         private void StartRotatingLeft() => _rotationDirection = -1.0f;
 
         private void StartRotatingRight() => _rotationDirection = 1.0f;
@@ -308,7 +365,7 @@ namespace Entities.Player
             else
             {
                 Debug.Log("Stopped inspecting!");
-                // StopInspecting();
+                StopInspecting();
             }
         }
         
@@ -332,6 +389,7 @@ namespace Entities.Player
 
         private void StopInspecting() 
         {
+            if (_inspectingObject == null) return;
             _inspectingObject.transform.position = _objOriginalPosition;
             _inspectingObject.transform.rotation = _objOriginalRotation;
             
@@ -343,7 +401,7 @@ namespace Entities.Player
         
         private bool IsMoving() => InputManager.Move.ReadValue<Vector2>().magnitude > 0;
         
-        private bool IsInPanicState() => _currentSanity <= settings.panicThreshold || _currentStamina <= settings.staminaThreshold;
+        private bool IsInPanicState() => CurrentSanity <= settings.panicThreshold || CurrentStamina <= settings.staminaThreshold;
         
         private bool CanVault(out float obstacleHeight)
         {

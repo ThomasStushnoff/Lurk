@@ -10,16 +10,16 @@ namespace Entities
         [SerializeField] protected EntityType entityType;
         
         // Cache commonly used components.
-        protected Animator Animator;
-        protected Rigidbody Rigidbody;
-        protected AudioSource AudioSource;
+        [HideInInspector] public Animator animator;
+        [HideInInspector] public Rigidbody rb;
+        [HideInInspector] public AudioSource audioSource;
         
         protected virtual void Awake()
         {
             runtimeID = (uint)GetInstanceID();
-            Animator = TryGetComponent<Animator>(out var anim) ? anim : null;
-            Rigidbody = TryGetComponent<Rigidbody>(out var rb) ? rb : null;
-            AudioSource = TryGetComponent<AudioSource>(out var src) ? src : null;
+            animator = TryGetComponent<Animator>(out var anim) ? anim : null;
+            rb = TryGetComponent<Rigidbody>(out var r) ? r : null;
+            audioSource = TryGetComponent<AudioSource>(out var src) ? src : null;
         }
         
         public uint RuntimeID => runtimeID;

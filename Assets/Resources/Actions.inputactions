@@ -51,6 +51,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "InteractPuzzle",
+                    "type": "Button",
+                    "id": "bdf733d2-e705-48fd-a0e8-d9a3016301bf",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Inspect",
                     "type": "Button",
                     "id": "2c0e00e0-081b-4293-921b-03da1223c1ad",
@@ -165,6 +174,17 @@
                 },
                 {
                     "name": "",
+                    "id": "a808cb92-a079-41db-9ce3-aa3974598953",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "3339c469-b39d-4886-971f-cfb4a7af8eca",
                     "path": "<Mouse>/delta",
                     "interactions": "",
@@ -248,6 +268,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "RotateRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "73fa5d16-675e-49b9-99f2-86e4b5d1edf8",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "InteractPuzzle",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

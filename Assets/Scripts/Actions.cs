@@ -73,6 +73,15 @@ public partial class @Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""InteractPuzzle"",
+                    ""type"": ""Button"",
+                    ""id"": ""bdf733d2-e705-48fd-a0e8-d9a3016301bf"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Inspect"",
                     ""type"": ""Button"",
                     ""id"": ""2c0e00e0-081b-4293-921b-03da1223c1ad"",
@@ -187,6 +196,17 @@ public partial class @Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""a808cb92-a079-41db-9ce3-aa3974598953"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""3339c469-b39d-4886-971f-cfb4a7af8eca"",
                     ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
@@ -270,6 +290,17 @@ public partial class @Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""RotateRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""73fa5d16-675e-49b9-99f2-86e4b5d1edf8"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InteractPuzzle"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -419,6 +450,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
         m_Player_Sneak = m_Player.FindAction("Sneak", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
+        m_Player_InteractPuzzle = m_Player.FindAction("InteractPuzzle", throwIfNotFound: true);
         m_Player_Inspect = m_Player.FindAction("Inspect", throwIfNotFound: true);
         m_Player_RotateLeft = m_Player.FindAction("RotateLeft", throwIfNotFound: true);
         m_Player_RotateRight = m_Player.FindAction("RotateRight", throwIfNotFound: true);
@@ -495,6 +527,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Crouch;
     private readonly InputAction m_Player_Sneak;
     private readonly InputAction m_Player_Interact;
+    private readonly InputAction m_Player_InteractPuzzle;
     private readonly InputAction m_Player_Inspect;
     private readonly InputAction m_Player_RotateLeft;
     private readonly InputAction m_Player_RotateRight;
@@ -509,6 +542,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         public InputAction @Crouch => m_Wrapper.m_Player_Crouch;
         public InputAction @Sneak => m_Wrapper.m_Player_Sneak;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
+        public InputAction @InteractPuzzle => m_Wrapper.m_Player_InteractPuzzle;
         public InputAction @Inspect => m_Wrapper.m_Player_Inspect;
         public InputAction @RotateLeft => m_Wrapper.m_Player_RotateLeft;
         public InputAction @RotateRight => m_Wrapper.m_Player_RotateRight;
@@ -538,6 +572,9 @@ public partial class @Actions: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
+            @InteractPuzzle.started += instance.OnInteractPuzzle;
+            @InteractPuzzle.performed += instance.OnInteractPuzzle;
+            @InteractPuzzle.canceled += instance.OnInteractPuzzle;
             @Inspect.started += instance.OnInspect;
             @Inspect.performed += instance.OnInspect;
             @Inspect.canceled += instance.OnInspect;
@@ -572,6 +609,9 @@ public partial class @Actions: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
+            @InteractPuzzle.started -= instance.OnInteractPuzzle;
+            @InteractPuzzle.performed -= instance.OnInteractPuzzle;
+            @InteractPuzzle.canceled -= instance.OnInteractPuzzle;
             @Inspect.started -= instance.OnInspect;
             @Inspect.performed -= instance.OnInspect;
             @Inspect.canceled -= instance.OnInspect;
@@ -673,6 +713,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         void OnCrouch(InputAction.CallbackContext context);
         void OnSneak(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnInteractPuzzle(InputAction.CallbackContext context);
         void OnInspect(InputAction.CallbackContext context);
         void OnRotateLeft(InputAction.CallbackContext context);
         void OnRotateRight(InputAction.CallbackContext context);
