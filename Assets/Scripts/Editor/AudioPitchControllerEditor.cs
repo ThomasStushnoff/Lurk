@@ -2,6 +2,9 @@
 using UnityEditor;
 using UnityEngine;
 
+/// <summary>
+/// Custom editor for the <see cref="AudioPitchController"/> component.
+/// </summary>
 [CustomEditor(typeof(AudioPitchController))]
 public class AudioPitchControllerEditor : Editor
 {

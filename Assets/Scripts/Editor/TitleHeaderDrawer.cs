@@ -1,6 +1,9 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
+/// <summary>
+/// Custom property drawer for the <see cref="TitleHeaderAttribute"/>.
+/// </summary>
 [CustomPropertyDrawer(typeof(TitleHeaderAttribute))]
 public class TitleHeaderDrawer : DecoratorDrawer
 {

@@ -6,6 +6,10 @@ using Objects;
 using UnityEditor;
 using UnityEngine;
 
+/// <summary>
+/// Custom editor window for managing <see cref="AudioData"/> objects.
+/// It allows the user to drag and drop AudioData objects to group them and generate an enum reference.
+/// </summary>
 public class AudioDataWindow : EditorWindow
 {
     private Dictionary<string, List<AudioData>> _audioDataGroups = new Dictionary<string, List<AudioData>>();

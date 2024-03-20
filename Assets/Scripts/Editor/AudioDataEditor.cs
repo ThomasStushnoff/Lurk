@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 
 /// <summary>
-/// Custom editor for the AudioData scriptable object.
+/// Custom editor for the <see cref="AudioData"/> scriptable object.
 /// Waveform reference:
 /// <a href="https://github.com/jackyyang09/Simple-Unity-Audio-Manager/blob/master/Editor/AudioPlaybackToolEditor.cs"></a>
 /// </summary>
