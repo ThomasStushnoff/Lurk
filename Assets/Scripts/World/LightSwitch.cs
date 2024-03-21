@@ -1,4 +1,5 @@
-﻿using Interfaces;
+﻿using Entities;
+using Interfaces;
 using UnityEngine;
 
 namespace World
@@ -7,7 +8,7 @@ namespace World
     {
         [SerializeField] private Light light;
         
-        public void Interact()
+        public void Interact(BaseEntity entity)
         {
             light.enabled = !light.enabled;
         }

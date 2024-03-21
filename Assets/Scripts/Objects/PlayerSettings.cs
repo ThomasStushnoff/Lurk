@@ -32,6 +32,7 @@ namespace Objects
         public LayerMask ground;
         public LayerMask inspectable;
         public LayerMask interactable;
+        public LayerMask puzzle;
         public LayerMask obstacle;
         public LayerMask enemy;
     }
