@@ -134,6 +134,42 @@ public partial class @Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Scroll"",
+                    ""type"": ""Value"",
+                    ""id"": ""f20f4eeb-2200-49ce-8f66-2a4d49163982"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Camera"",
+                    ""type"": ""Button"",
+                    ""id"": ""41d412a0-99e5-43f9-b82c-d3d1baefc635"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Night Vision"",
+                    ""type"": ""Button"",
+                    ""id"": ""50861334-e4bb-49b2-bcf0-59b2b0bb9739"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Menu"",
+                    ""type"": ""Button"",
+                    ""id"": ""16a88acf-5097-49f7-a90e-e8df084878f0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -196,17 +232,6 @@ public partial class @Actions: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""de05ba6e-4a05-43c7-9387-2c5b50506fd4"",
                     ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Interact"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""a808cb92-a079-41db-9ce3-aa3974598953"",
-                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -321,6 +346,50 @@ public partial class @Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Drop"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bf449f55-1828-4535-b16f-71f7281018c8"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Scroll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9e4b867b-18ac-44d9-8df1-1047078f0cb9"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Camera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8292870d-bff7-44f4-bac6-3cee3957b066"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Night Vision"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3b9f42b5-485a-43da-98cd-f9f88d424442"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Menu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -477,6 +546,10 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         m_Player_RotateRight = m_Player.FindAction("RotateRight", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_FreeCursor = m_Player.FindAction("Free Cursor", throwIfNotFound: true);
+        m_Player_Scroll = m_Player.FindAction("Scroll", throwIfNotFound: true);
+        m_Player_Camera = m_Player.FindAction("Camera", throwIfNotFound: true);
+        m_Player_NightVision = m_Player.FindAction("Night Vision", throwIfNotFound: true);
+        m_Player_Menu = m_Player.FindAction("Menu", throwIfNotFound: true);
         // Puzzle
         m_Puzzle = asset.FindActionMap("Puzzle", throwIfNotFound: true);
         m_Puzzle_Pan = m_Puzzle.FindAction("Pan", throwIfNotFound: true);
@@ -555,6 +628,10 @@ public partial class @Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_RotateRight;
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_FreeCursor;
+    private readonly InputAction m_Player_Scroll;
+    private readonly InputAction m_Player_Camera;
+    private readonly InputAction m_Player_NightVision;
+    private readonly InputAction m_Player_Menu;
     public struct PlayerActions
     {
         private @Actions m_Wrapper;
@@ -571,6 +648,10 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         public InputAction @RotateRight => m_Wrapper.m_Player_RotateRight;
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @FreeCursor => m_Wrapper.m_Player_FreeCursor;
+        public InputAction @Scroll => m_Wrapper.m_Player_Scroll;
+        public InputAction @Camera => m_Wrapper.m_Player_Camera;
+        public InputAction @NightVision => m_Wrapper.m_Player_NightVision;
+        public InputAction @Menu => m_Wrapper.m_Player_Menu;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -616,6 +697,18 @@ public partial class @Actions: IInputActionCollection2, IDisposable
             @FreeCursor.started += instance.OnFreeCursor;
             @FreeCursor.performed += instance.OnFreeCursor;
             @FreeCursor.canceled += instance.OnFreeCursor;
+            @Scroll.started += instance.OnScroll;
+            @Scroll.performed += instance.OnScroll;
+            @Scroll.canceled += instance.OnScroll;
+            @Camera.started += instance.OnCamera;
+            @Camera.performed += instance.OnCamera;
+            @Camera.canceled += instance.OnCamera;
+            @NightVision.started += instance.OnNightVision;
+            @NightVision.performed += instance.OnNightVision;
+            @NightVision.canceled += instance.OnNightVision;
+            @Menu.started += instance.OnMenu;
+            @Menu.performed += instance.OnMenu;
+            @Menu.canceled += instance.OnMenu;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -656,6 +749,18 @@ public partial class @Actions: IInputActionCollection2, IDisposable
             @FreeCursor.started -= instance.OnFreeCursor;
             @FreeCursor.performed -= instance.OnFreeCursor;
             @FreeCursor.canceled -= instance.OnFreeCursor;
+            @Scroll.started -= instance.OnScroll;
+            @Scroll.performed -= instance.OnScroll;
+            @Scroll.canceled -= instance.OnScroll;
+            @Camera.started -= instance.OnCamera;
+            @Camera.performed -= instance.OnCamera;
+            @Camera.canceled -= instance.OnCamera;
+            @NightVision.started -= instance.OnNightVision;
+            @NightVision.performed -= instance.OnNightVision;
+            @NightVision.canceled -= instance.OnNightVision;
+            @Menu.started -= instance.OnMenu;
+            @Menu.performed -= instance.OnMenu;
+            @Menu.canceled -= instance.OnMenu;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -749,6 +854,10 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         void OnRotateRight(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnFreeCursor(InputAction.CallbackContext context);
+        void OnScroll(InputAction.CallbackContext context);
+        void OnCamera(InputAction.CallbackContext context);
+        void OnNightVision(InputAction.CallbackContext context);
+        void OnMenu(InputAction.CallbackContext context);
     }
     public interface IPuzzleActions
     {

@@ -21,6 +21,10 @@ namespace Managers
         public static InputAction RotateRight => Instance._actions.Player.RotateRight;
         public static InputAction Look => Instance._actions.Player.Look;
         public static InputAction FreeCursor => Instance._actions.Player.FreeCursor;
+        public static InputAction Scroll => Instance._actions.Player.Scroll;
+        public static InputAction Camera => Instance._actions.Player.Camera;
+        public static InputAction NightVision => Instance._actions.Player.NightVision;
+        public static InputAction Menu => Instance._actions.Player.Menu;
         
         // Puzzle actions.
         public static InputAction PuzzlePan => Instance._actions.Puzzle.Pan;

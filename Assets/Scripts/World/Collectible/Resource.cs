@@ -2,11 +2,11 @@
 using Interfaces;
 using UnityEngine;
 
-namespace World
+namespace World.Collectible
 {
     public class Resource : MonoBehaviour, ICollectible
     {
-        public static Action OnCollect;
+        public Action OnCollect;
         
         public void Collect()
         {

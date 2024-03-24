@@ -8,7 +8,7 @@ namespace Managers
         
         protected override void OnAwake()
         {
-            // PrefabManager.Initialize();
+            PrefabManager.Initialize();
             // AudioManager.Initialize();
             InputManager.Initialize();
         }

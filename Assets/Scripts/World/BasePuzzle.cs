@@ -8,7 +8,8 @@ namespace World
         public PuzzleLockState LockState { get; protected set; }
         public PuzzleType Type { get; protected set; }
         
-        public virtual void Interact(BaseEntity entity) { }
+        public virtual void BeginInteract(BaseEntity entity) { }
+        public virtual void EndInteract() { }
     }
     
     public enum PuzzleState

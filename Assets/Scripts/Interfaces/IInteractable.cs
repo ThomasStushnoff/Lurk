@@ -3,6 +3,7 @@ namespace Interfaces
 {
     public interface IInteractable
     {
-        void Interact(BaseEntity entity);
+        void BeginInteract(BaseEntity entity);
+        void EndInteract();
     }
 }

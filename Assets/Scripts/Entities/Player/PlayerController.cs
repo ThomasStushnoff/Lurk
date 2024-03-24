@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Audio;
 using Interfaces;
@@ -59,9 +58,10 @@ namespace Entities.Player
         
         private void Start()
         {
-            InputManager.FreeCursor.performed += _ => HandleCursor();
-            InputManager.Interact.started += _ => HandleInteractions();
+            InputManager.FreeCursor.performed += _ => EnableCursor();
+            InputManager.FreeCursor.canceled += _ => DisableCursor();
             
+            InputManager.Interact.started += _ => HandleInteractions();
             InputManager.Inspect.started += _ => ToggleInspect();
             InputManager.RotateLeft.performed += _ => StartRotatingLeft();
             InputManager.RotateLeft.canceled += _ => StopRotating();
@@ -90,7 +90,7 @@ namespace Entities.Player
             if (_isInspecting) RotateInspectingObject();
             HandlePuzzleInteractions();
             
-            HandleCursor();
+            // HandleCursor();
             CheckGrounded();
             
             postProcessVolume.profile.TryGet<DepthOfField>(out _depthOfField);
@@ -258,13 +258,21 @@ namespace Entities.Player
 
         public void UpdateSanity(float value) => CurrentSanity += value;
 
-        private void HandleCursor()
+        public static void EnableCursor()
         {
-            var cursorFree = InputManager.FreeCursor.IsPressed();
-            Cursor.lockState = cursorFree ? CursorLockMode.None : CursorLockMode.Locked;
-            Cursor.visible = cursorFree;
+            // var cursorFree = InputManager.FreeCursor.IsPressed();
+            // Cursor.lockState = cursorFree ? CursorLockMode.None : CursorLockMode.Locked;
+            // Cursor.visible = cursorFree;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         }
-
+        
+        public static void DisableCursor()
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        
         private void GenerateNoise(bool isSneaking)
         {
             // TODO:
@@ -303,7 +311,7 @@ namespace Entities.Player
             var interactable = hit.collider.GetComponent<IInteractable>();
             if (interactable == null) return;
             
-            interactable.Interact(this);
+            interactable.BeginInteract(this);
             Debug.Log($"Interacted with {hit.collider.name}!");
 
             // Check if the object is collectible.
@@ -328,7 +336,7 @@ namespace Entities.Player
                 var puzzle = hit.collider.GetComponent<BasePuzzle>();
                 if (puzzle != null)
                 {
-                    puzzle.Interact(this);
+                    puzzle.BeginInteract(this);
                 }
             }
         }
