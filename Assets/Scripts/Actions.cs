@@ -82,6 +82,15 @@ public partial class @Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Drop"",
+                    ""type"": ""Button"",
+                    ""id"": ""90f7738c-fa68-4126-b477-15b9fa04f550"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Inspect"",
                     ""type"": ""Button"",
                     ""id"": ""2c0e00e0-081b-4293-921b-03da1223c1ad"",
@@ -303,6 +312,17 @@ public partial class @Actions: IInputActionCollection2, IDisposable
                     ""action"": ""InteractPuzzle"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""41662df1-1895-4deb-9e92-b706ebcacb1f"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Drop"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -451,6 +471,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         m_Player_Sneak = m_Player.FindAction("Sneak", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_InteractPuzzle = m_Player.FindAction("InteractPuzzle", throwIfNotFound: true);
+        m_Player_Drop = m_Player.FindAction("Drop", throwIfNotFound: true);
         m_Player_Inspect = m_Player.FindAction("Inspect", throwIfNotFound: true);
         m_Player_RotateLeft = m_Player.FindAction("RotateLeft", throwIfNotFound: true);
         m_Player_RotateRight = m_Player.FindAction("RotateRight", throwIfNotFound: true);
@@ -528,6 +549,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Sneak;
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_InteractPuzzle;
+    private readonly InputAction m_Player_Drop;
     private readonly InputAction m_Player_Inspect;
     private readonly InputAction m_Player_RotateLeft;
     private readonly InputAction m_Player_RotateRight;
@@ -543,6 +565,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         public InputAction @Sneak => m_Wrapper.m_Player_Sneak;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputAction @InteractPuzzle => m_Wrapper.m_Player_InteractPuzzle;
+        public InputAction @Drop => m_Wrapper.m_Player_Drop;
         public InputAction @Inspect => m_Wrapper.m_Player_Inspect;
         public InputAction @RotateLeft => m_Wrapper.m_Player_RotateLeft;
         public InputAction @RotateRight => m_Wrapper.m_Player_RotateRight;
@@ -575,6 +598,9 @@ public partial class @Actions: IInputActionCollection2, IDisposable
             @InteractPuzzle.started += instance.OnInteractPuzzle;
             @InteractPuzzle.performed += instance.OnInteractPuzzle;
             @InteractPuzzle.canceled += instance.OnInteractPuzzle;
+            @Drop.started += instance.OnDrop;
+            @Drop.performed += instance.OnDrop;
+            @Drop.canceled += instance.OnDrop;
             @Inspect.started += instance.OnInspect;
             @Inspect.performed += instance.OnInspect;
             @Inspect.canceled += instance.OnInspect;
@@ -612,6 +638,9 @@ public partial class @Actions: IInputActionCollection2, IDisposable
             @InteractPuzzle.started -= instance.OnInteractPuzzle;
             @InteractPuzzle.performed -= instance.OnInteractPuzzle;
             @InteractPuzzle.canceled -= instance.OnInteractPuzzle;
+            @Drop.started -= instance.OnDrop;
+            @Drop.performed -= instance.OnDrop;
+            @Drop.canceled -= instance.OnDrop;
             @Inspect.started -= instance.OnInspect;
             @Inspect.performed -= instance.OnInspect;
             @Inspect.canceled -= instance.OnInspect;
@@ -714,6 +743,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         void OnSneak(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnInteractPuzzle(InputAction.CallbackContext context);
+        void OnDrop(InputAction.CallbackContext context);
         void OnInspect(InputAction.CallbackContext context);
         void OnRotateLeft(InputAction.CallbackContext context);
         void OnRotateRight(InputAction.CallbackContext context);

@@ -60,6 +60,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Drop",
+                    "type": "Button",
+                    "id": "90f7738c-fa68-4126-b477-15b9fa04f550",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Inspect",
                     "type": "Button",
                     "id": "2c0e00e0-081b-4293-921b-03da1223c1ad",
@@ -279,6 +288,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "InteractPuzzle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "41662df1-1895-4deb-9e92-b706ebcacb1f",
+                    "path": "<Keyboard>/g",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Drop",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

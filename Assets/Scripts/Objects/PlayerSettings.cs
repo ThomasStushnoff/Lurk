@@ -11,6 +11,11 @@ namespace Objects
         public float vaultDistance = 1.0f;
         public float crouchSpeedMultiplier  = 0.5f;
         public float sneakSpeedMultiplier = 0.5f;
+        [TitleHeader("Head Bobbing")]
+        public float bobFrequency = 5.0f;
+        public float bobSpeed = 10.0f;
+        public float bobAmountX = 0.005f;
+        public float bobAmountY = 0.05f;
         [TitleHeader("Sanity")]
         public float maxSanity = 100.0f;
         public float panicThreshold = 30.0f;

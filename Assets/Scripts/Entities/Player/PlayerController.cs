@@ -27,15 +27,17 @@ namespace Entities.Player
         [SerializeField] private Volume postProcessVolume;
         [SerializeField] private List<AudioDataEnumSoundFx> footstepSounds;
 
-        private bool _onGround;
-        private float _xRotation;
         private float CurrentStamina { get; set; }
         public float CurrentSanity { get; set; }
+        
+        private bool _onGround;
+        private float _xRotation;
         private bool _isCrouching;
         private bool _isSneaking;
         private bool _isVaulting;
         private Transform _puzzleFocusTarget;
         private bool _isFocusingOnPuzzle;
+        private bool _isInCameraMode;
         private bool _isInspecting;
         private float _rotationDirection;
         private GameObject _inspectingObject;
@@ -43,6 +45,7 @@ namespace Entities.Player
         private Quaternion _objOriginalRotation;
         private DepthOfField _depthOfField;
         private BaseState<IBaseEntity> _currentState;
+        private Vector3 _defaultCameraLocalPosition;
         private Vector3 _lastCameraPosition;
         private Quaternion _lastCameraRotation;
 
@@ -70,6 +73,8 @@ namespace Entities.Player
 
             CurrentStamina = settings.maxStamina;
             CurrentSanity = settings.maxSanity;
+
+            _defaultCameraLocalPosition = cameraTransform.localPosition;
         }
         
         private void Update()
@@ -77,7 +82,6 @@ namespace Entities.Player
             AudioManager.Instance.UpdateAudioSource(transform.position);
             
             HandleCameraMovement();
-
             
             HandleMovement();
             HandleVault();
@@ -118,12 +122,33 @@ namespace Entities.Player
                 var look = InputManager.Look.ReadValue<Vector2>();
                 var lookX = look.x * settings.mouseSensitivity * Time.deltaTime;
                 var lookY = look.y * settings.mouseSensitivity * Time.deltaTime;
+                var localPos = cameraTransform.localPosition;
 
                 _xRotation -= lookY;
                 _xRotation = Mathf.Clamp(_xRotation, -90.0f, 90.0f);
 
                 cameraTransform.localRotation = Quaternion.Euler(_xRotation, 0f, 0f);
                 transform.Rotate(Vector3.up * lookX);
+                
+                // Head Bobbing.
+                if (IsMoving() && !_isInCameraMode && !_isInspecting && !_isFocusingOnPuzzle)
+                {
+                    var speed = Mathf.PI * 2 * settings.bobFrequency * Time.time;
+                    var waveSliceX = Mathf.Cos(speed);
+                    var waveSliceY = Mathf.Sin(speed);
+                    
+                    var bobAmountX = waveSliceX * settings.bobAmountX;
+                    var bobAmountY = waveSliceY * settings.bobAmountY;
+                    
+                    cameraTransform.localPosition = new Vector3(localPos.x + bobAmountX, 
+                        localPos.y + bobAmountY, localPos.z);
+                }
+                else
+                {
+                    cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, 
+                        _defaultCameraLocalPosition, Time.deltaTime * settings.bobSpeed);
+                }
+                
             }
         }
 

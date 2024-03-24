@@ -17,6 +17,10 @@ MonoBehaviour:
   vaultDistance: 1
   crouchSpeedMultiplier: 0.5
   sneakSpeedMultiplier: 0.5
+  bobFrequency: 3
+  bobSpeed: 4
+  bobAmountX: 0.001
+  bobAmountY: 0.005
   maxSanity: 100
   panicThreshold: 30
   sanityDrainRate: 10
