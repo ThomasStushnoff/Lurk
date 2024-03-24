@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Interfaces;
 using JetBrains.Annotations;
 using Objects;
@@ -9,7 +10,7 @@ namespace Managers
 {
     public class PrefabManager : Singleton<PrefabManager>
     {
-        [SerializeField] private Prefabs list;
+        [SerializeField] private List<Prefabs> list;
 
         private readonly Dictionary<PrefabType, Prefab> _prefabs = new Dictionary<PrefabType, Prefab>();
         private readonly Dictionary<PrefabType, Queue<GameObject>> _pools = new Dictionary<PrefabType, Queue<GameObject>>();
@@ -59,7 +60,7 @@ namespace Managers
         {
             DontDestroyOnLoad(this);
 
-            foreach (var prefab in list.prefabs)
+            foreach (var prefab in list.SelectMany(prefabList => prefabList.prefabs))
             {
                 _prefabs.Add(prefab.type, prefab);
 
