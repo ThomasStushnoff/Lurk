@@ -12,11 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3bd614f60d84bd39dadccfa5b92a210, type: 3}
   m_Name: PlayerSettings
   m_EditorClassIdentifier: 
-  mouseSensitivity: 7
   movementSpeed: 8
   vaultDistance: 1
   crouchSpeedMultiplier: 0.5
   sneakSpeedMultiplier: 0.5
+  mouseSensitivity: 7
+  cameraDefaultDistance: 1.56
+  cameraCollisionBuffer: -43.24
   bobFrequency: 3
   bobSpeed: 4
   bobAmountX: 0.001
