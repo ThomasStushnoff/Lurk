@@ -225,6 +225,9 @@ public class AudioDataWindow : EditorWindow
             enumBuilder.AppendLine($"    public enum {enumName}");
             enumBuilder.AppendLine("    {");
             
+            // Add None as the first element.
+            enumBuilder.AppendLine("        None,");
+            
             // Replace spaces and hyphens with underscores.
             foreach (var validEnumName in sortedAudioData.Select(audioData => 
                          audioData.name.Replace(" ", "_").Replace("-", "_")))

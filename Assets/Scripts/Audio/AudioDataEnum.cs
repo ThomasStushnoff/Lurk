@@ -4,12 +4,9 @@
 
 namespace Audio
 {
-    public enum AudioDataEnumVoiceOver
-    {
-        Sample_Brian_TTS,
-    }
     public enum AudioDataEnumSoundFx
     {
+        None,
         Player_Footstep_01,
         Player_Footstep_02,
         Player_Footstep_03,
@@ -21,5 +18,10 @@ namespace Audio
         Player_Footstep_09,
         Player_Footstep_10,
         Player_Land,
+    }
+    public enum AudioDataEnumVoiceOver
+    {
+        None,
+        Sample_Brian_TTS,
     }
 }
