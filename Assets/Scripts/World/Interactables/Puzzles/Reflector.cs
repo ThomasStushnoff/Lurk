@@ -3,7 +3,7 @@ using Entities.Player;
 using Managers;
 using UnityEngine;
 
-namespace World
+namespace World.Interactables.Puzzles
 {
     // TODO:
     // Puzzle completion logic.
@@ -30,11 +30,7 @@ namespace World
             Debug.Log("Interacting with object");
             if (InputManager.PuzzleCancel.WasPressedThisFrame())
             {
-                _player.StopFocusingOnPuzzle();
-                InputManager.EnableMovementInput();
-                InputManager.DisablePuzzleInput();
-                _player = null;
-                LockState = PuzzleLockState.Locked;
+                EndInteract();
                 return;
             }
             
@@ -61,7 +57,7 @@ namespace World
             transform.position += new Vector3(panDirection.x, 0, panDirection.z) * (panSpeed * Time.deltaTime);
         }
         
-        public override void Interact(BaseEntity entity)
+        public override void BeginInteract(BaseEntity entity)
         {
             if (entity is not PlayerController player) return;
             
@@ -70,6 +66,15 @@ namespace World
             InputManager.DisableMovementInput();
             InputManager.EnablePuzzleInput();
             _player.FocusOnPuzzle(transform);
+        }
+        
+        public override void EndInteract()
+        {
+            _player.StopFocusingOnPuzzle();
+            InputManager.EnableMovementInput();
+            InputManager.DisablePuzzleInput();
+            _player = null;
+            LockState = PuzzleLockState.Locked;
         }
     }
 }

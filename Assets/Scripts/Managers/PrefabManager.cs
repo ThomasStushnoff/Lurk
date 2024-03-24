@@ -11,8 +11,8 @@ namespace Managers
     {
         [SerializeField] private Prefabs list;
 
-        private readonly Dictionary<PrefabType, Prefab> _prefabs = new();
-        private readonly Dictionary<PrefabType, Queue<GameObject>> _pools = new ();
+        private readonly Dictionary<PrefabType, Prefab> _prefabs = new Dictionary<PrefabType, Prefab>();
+        private readonly Dictionary<PrefabType, Queue<GameObject>> _pools = new Dictionary<PrefabType, Queue<GameObject>>();
 
         /// <summary>
         /// Static shortcut method for creating a prefab.
@@ -40,7 +40,21 @@ namespace Managers
             
             return component;
         }
+        
+        /// <summary>
+        /// Special singleton initializer method.
+        /// </summary>
+        public new static void Initialize()
+        {
+            var prefab = Resources.Load<GameObject>("Prefabs/Managers/PrefabManager");
+            if (prefab == null) throw new Exception("Missing PrefabManager prefab!");
 
+            var instance = Instantiate(prefab);
+            if (instance == null) throw new Exception("Failed to instantiate PrefabManager prefab!");
+
+            instance.name = "Managers.PrefabManager (Singleton)";
+        }
+        
         private void Awake()
         {
             DontDestroyOnLoad(this);
@@ -123,7 +137,8 @@ namespace Managers
 
     public enum PrefabType
     {
-        
+        Page1,
+        Page2
     }
 
     [Serializable]
