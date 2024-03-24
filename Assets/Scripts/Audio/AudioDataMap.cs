@@ -8,14 +8,6 @@ using UnityEngine;
 
 namespace Audio
 {
-    public static class AudioDataMapVoiceOver
-    {
-        public static readonly Dictionary<AudioDataEnumVoiceOver, AudioData> Map = new Dictionary<AudioDataEnumVoiceOver, AudioData>();
-        static AudioDataMapVoiceOver()
-        {
-            Map.Add(AudioDataEnumVoiceOver.Sample_Brian_TTS, Resources.Load<AudioData>("Objects/AudioData/VoiceOver/Sample_Brian_TTS"));
-        }
-    }
     public static class AudioDataMapSoundFx
     {
         public static readonly Dictionary<AudioDataEnumSoundFx, AudioData> Map = new Dictionary<AudioDataEnumSoundFx, AudioData>();
@@ -32,6 +24,14 @@ namespace Audio
             Map.Add(AudioDataEnumSoundFx.Player_Footstep_09, Resources.Load<AudioData>("Objects/AudioData/SoundFx/Character/Player_Footstep_09"));
             Map.Add(AudioDataEnumSoundFx.Player_Footstep_10, Resources.Load<AudioData>("Objects/AudioData/SoundFx/Character/Player_Footstep_10"));
             Map.Add(AudioDataEnumSoundFx.Player_Land, Resources.Load<AudioData>("Objects/AudioData/SoundFx/Character/Player_Land"));
+        }
+    }
+    public static class AudioDataMapVoiceOver
+    {
+        public static readonly Dictionary<AudioDataEnumVoiceOver, AudioData> Map = new Dictionary<AudioDataEnumVoiceOver, AudioData>();
+        static AudioDataMapVoiceOver()
+        {
+            Map.Add(AudioDataEnumVoiceOver.Sample_Brian_TTS, Resources.Load<AudioData>("Objects/AudioData/VoiceOver/Sample_Brian_TTS"));
         }
     }
 }
