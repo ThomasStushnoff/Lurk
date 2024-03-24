@@ -40,5 +40,6 @@ namespace Objects
         public LayerMask puzzle;
         public LayerMask obstacle;
         public LayerMask enemy;
+        public LayerMask environment;
     }
 }

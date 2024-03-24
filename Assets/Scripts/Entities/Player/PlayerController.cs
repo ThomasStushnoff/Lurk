@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Audio;
 using Interfaces;
@@ -101,6 +102,14 @@ namespace Entities.Player
             if (_isFocusingOnPuzzle) FollowPuzzle();
         }
 
+        private void OnApplicationFocus(bool hasFocus)
+        {
+            if (hasFocus)
+                DisableCursor();
+            else
+                EnableCursor();
+        }
+
         public override void ChangeState(BaseState<IBaseEntity> newState)
         {
             _currentState?.ExitState();
@@ -123,10 +132,10 @@ namespace Entities.Player
                 var lookX = look.x * settings.mouseSensitivity * Time.deltaTime;
                 var lookY = look.y * settings.mouseSensitivity * Time.deltaTime;
                 var localPos = cameraTransform.localPosition;
-
+                
                 _xRotation -= lookY;
                 _xRotation = Mathf.Clamp(_xRotation, -90.0f, 90.0f);
-
+                
                 cameraTransform.localRotation = Quaternion.Euler(_xRotation, 0f, 0f);
                 transform.Rotate(Vector3.up * lookX);
                 
@@ -148,7 +157,6 @@ namespace Entities.Player
                     cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, 
                         _defaultCameraLocalPosition, Time.deltaTime * settings.bobSpeed);
                 }
-                
             }
         }
 
