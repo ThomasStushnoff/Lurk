@@ -15,7 +15,6 @@ namespace World.Interactables
         
         public void EndInteract()
         {
-            throw new System.NotImplementedException();
         }
     }
 }
