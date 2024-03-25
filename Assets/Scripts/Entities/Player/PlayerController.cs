@@ -19,7 +19,6 @@ namespace Entities.Player
     public class PlayerController : BaseEntity
     {
         [TitleHeader("Player Settings")]
-        [SerializeField]
         public PlayerSettings settings;
         [SerializeField] private Transform groundCheck;
         public Transform cameraTransform;
@@ -113,7 +112,7 @@ namespace Entities.Player
 
         private void OnApplicationFocus(bool hasFocus)
         {
-            if (hasFocus)
+            if (hasFocus && InputManager.IsMovementEnabled)
                 DisableCursor();
             else
                 EnableCursor();
@@ -306,6 +305,8 @@ namespace Entities.Player
             Cursor.visible = false;
         }
         
+        public static bool IsCursorEnabled() => Cursor.lockState == CursorLockMode.None && Cursor.visible;
+        
         private void GenerateNoise(bool isSneaking)
         {
             // TODO:
@@ -378,7 +379,7 @@ namespace Entities.Player
             // TODO:
             // Use Hold.
             // Add a delay when interacting (Holding the button).
-            if (!InputManager.InteractPuzzle.WasPerformedThisFrame()) return;
+            if (!InputManager.InteractOther.WasPerformedThisFrame()) return;
             
             if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out var hit, 
                 settings.interactDistance, settings.puzzle))

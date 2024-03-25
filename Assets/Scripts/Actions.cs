@@ -73,7 +73,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""InteractPuzzle"",
+                    ""name"": ""InteractOther"",
                     ""type"": ""Button"",
                     ""id"": ""bdf733d2-e705-48fd-a0e8-d9a3016301bf"",
                     ""expectedControlType"": ""Button"",
@@ -334,7 +334,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""InteractPuzzle"",
+                    ""action"": ""InteractOther"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -539,7 +539,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
         m_Player_Sneak = m_Player.FindAction("Sneak", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
-        m_Player_InteractPuzzle = m_Player.FindAction("InteractPuzzle", throwIfNotFound: true);
+        m_Player_InteractOther = m_Player.FindAction("InteractOther", throwIfNotFound: true);
         m_Player_Drop = m_Player.FindAction("Drop", throwIfNotFound: true);
         m_Player_Inspect = m_Player.FindAction("Inspect", throwIfNotFound: true);
         m_Player_RotateLeft = m_Player.FindAction("RotateLeft", throwIfNotFound: true);
@@ -621,7 +621,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Crouch;
     private readonly InputAction m_Player_Sneak;
     private readonly InputAction m_Player_Interact;
-    private readonly InputAction m_Player_InteractPuzzle;
+    private readonly InputAction m_Player_InteractOther;
     private readonly InputAction m_Player_Drop;
     private readonly InputAction m_Player_Inspect;
     private readonly InputAction m_Player_RotateLeft;
@@ -641,7 +641,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         public InputAction @Crouch => m_Wrapper.m_Player_Crouch;
         public InputAction @Sneak => m_Wrapper.m_Player_Sneak;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
-        public InputAction @InteractPuzzle => m_Wrapper.m_Player_InteractPuzzle;
+        public InputAction @InteractOther => m_Wrapper.m_Player_InteractOther;
         public InputAction @Drop => m_Wrapper.m_Player_Drop;
         public InputAction @Inspect => m_Wrapper.m_Player_Inspect;
         public InputAction @RotateLeft => m_Wrapper.m_Player_RotateLeft;
@@ -676,9 +676,9 @@ public partial class @Actions: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
-            @InteractPuzzle.started += instance.OnInteractPuzzle;
-            @InteractPuzzle.performed += instance.OnInteractPuzzle;
-            @InteractPuzzle.canceled += instance.OnInteractPuzzle;
+            @InteractOther.started += instance.OnInteractOther;
+            @InteractOther.performed += instance.OnInteractOther;
+            @InteractOther.canceled += instance.OnInteractOther;
             @Drop.started += instance.OnDrop;
             @Drop.performed += instance.OnDrop;
             @Drop.canceled += instance.OnDrop;
@@ -728,9 +728,9 @@ public partial class @Actions: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
-            @InteractPuzzle.started -= instance.OnInteractPuzzle;
-            @InteractPuzzle.performed -= instance.OnInteractPuzzle;
-            @InteractPuzzle.canceled -= instance.OnInteractPuzzle;
+            @InteractOther.started -= instance.OnInteractOther;
+            @InteractOther.performed -= instance.OnInteractOther;
+            @InteractOther.canceled -= instance.OnInteractOther;
             @Drop.started -= instance.OnDrop;
             @Drop.performed -= instance.OnDrop;
             @Drop.canceled -= instance.OnDrop;
@@ -847,7 +847,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         void OnCrouch(InputAction.CallbackContext context);
         void OnSneak(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
-        void OnInteractPuzzle(InputAction.CallbackContext context);
+        void OnInteractOther(InputAction.CallbackContext context);
         void OnDrop(InputAction.CallbackContext context);
         void OnInspect(InputAction.CallbackContext context);
         void OnRotateLeft(InputAction.CallbackContext context);

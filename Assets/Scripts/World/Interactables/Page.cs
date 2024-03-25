@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace World.Interactables
 {
-    [RequireComponent(typeof(AudioSource))]
+    [RequireComponent(typeof(AudioSource), typeof(BoxCollider))]
     public class Page : MonoBehaviour, IInteractable
     {
         [SerializeField] private PageType type = PageType.Page1;
@@ -26,6 +26,7 @@ namespace World.Interactables
             PlayerController.EnableCursor();
             PrefabManager.Create(GetPrefabType());
             InputManager.DisableMovementInput();
+            InputManager.DisableInteractInput();
             _audioSource.PlayOneShot(_interactSound);
         }
         
