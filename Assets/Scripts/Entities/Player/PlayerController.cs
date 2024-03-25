@@ -314,7 +314,12 @@ namespace Entities.Player
             // Randomize the footstep sound.
             var randomIndex = Random.Range(0, footstepSounds.Count);
             var footstepSound = IsFloorBloody() ? bloodyFloorSound : footstepSounds.ElementAt(randomIndex);
-            if (!audioSource.isPlaying) audioSource.PlaySoundFx(footstepSound); 
+            if (!audioSource.isPlaying)
+            {
+                audioSource.PlaySoundFx(footstepSound);
+                audioSource.volume = volume;
+                audioSource.pitch = pitch;
+            } 
             
             // Play footstep SFX and generate noise.
             

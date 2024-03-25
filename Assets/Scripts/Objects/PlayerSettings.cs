@@ -10,6 +10,8 @@ namespace Objects
         public float vaultDistance = 1.0f;
         public float crouchSpeedMultiplier  = 0.5f;
         public float sneakSpeedMultiplier = 0.5f;
+        [Range(0.0f, 1.0f)]
+        public float sneakVolume = 0.5f;
         [TitleHeader("Camera")]
         public float mouseSensitivity = 20.0f;
         public float bobFrequency = 5.0f;
