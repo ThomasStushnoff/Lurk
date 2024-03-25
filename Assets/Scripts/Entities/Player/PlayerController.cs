@@ -245,7 +245,8 @@ namespace Entities.Player
             if (IsMoving() || _isVaulting)
             {
                 // Decrease stamina when moving or vaulting.
-                CurrentStamina -= Time.deltaTime * settings.staminaDrainRate;
+                var drainRate = _isSneaking ? settings.sneakStaminaDrainRate : settings.staminaDrainRate;
+                CurrentStamina -= Time.deltaTime * drainRate;
             }
             else if (_isCrouching || !IsMoving())
             {
@@ -308,8 +309,8 @@ namespace Entities.Player
             // TODO:
             // 1. Adjust the values later.
             // 2. Add SFX.
-            var volume = isSneaking ? 0.5f : 1.0f;
-            var pitch = isSneaking ? 0.5f : 1.0f;
+            var volume = isSneaking ? settings.sneakVolume : 1.0f;
+            var pitch = isSneaking ? settings.sneakPitch : 1.0f;
             
             // Randomize the footstep sound.
             var randomIndex = Random.Range(0, footstepSounds.Count);

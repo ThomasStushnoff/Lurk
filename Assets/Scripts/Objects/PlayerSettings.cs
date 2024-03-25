@@ -12,6 +12,7 @@ namespace Objects
         public float sneakSpeedMultiplier = 0.5f;
         [Range(0.0f, 1.0f)]
         public float sneakVolume = 0.5f;
+        public float sneakPitch = 0.5f;
         [TitleHeader("Camera")]
         public float mouseSensitivity = 20.0f;
         public float bobFrequency = 5.0f;
@@ -27,6 +28,7 @@ namespace Objects
         public float staminaThreshold = 30.0f;
         public float staminaRegenRate = 5.0f;
         public float staminaDrainRate = 10.0f;
+        public float sneakStaminaDrainRate = 4.0f;
         public float crouchStaminaRegenRate = 10.0f;
         public float vaultStaminaCost = 5.0f;
         [TitleHeader("Interaction")]
