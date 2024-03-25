@@ -64,6 +64,7 @@ namespace World.Interactables.Puzzles
             LockState = PuzzleLockState.Unlocked;
             _player = player;
             InputManager.DisableMovementInput();
+            InputManager.DisableInteractInput();
             InputManager.EnablePuzzleInput();
             _player.FocusOnPuzzle(transform);
         }
@@ -72,6 +73,7 @@ namespace World.Interactables.Puzzles
         {
             _player.StopFocusingOnPuzzle();
             InputManager.EnableMovementInput();
+            InputManager.EnableInteractInput();
             InputManager.DisablePuzzleInput();
             _player = null;
             LockState = PuzzleLockState.Locked;

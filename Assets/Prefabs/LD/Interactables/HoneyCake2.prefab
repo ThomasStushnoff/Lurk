@@ -394,8 +394,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e1c8e33d67e49cfb522b01d799b685b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score: 10
-  _pickupSound: {fileID: 0}
+  deposit: {fileID: 0}
+  depositLayer:
+    serializedVersion: 2
+    m_Bits: 16384
+  placeDistance: 2
+  pickupSound: {fileID: 0}
 --- !u!82 &3720922484756204275
 AudioSource:
   m_ObjectHideFlags: 0

@@ -51,7 +51,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "InteractPuzzle",
+                    "name": "InteractOther",
                     "type": "Button",
                     "id": "bdf733d2-e705-48fd-a0e8-d9a3016301bf",
                     "expectedControlType": "Button",
@@ -312,7 +312,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "InteractPuzzle",
+                    "action": "InteractOther",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

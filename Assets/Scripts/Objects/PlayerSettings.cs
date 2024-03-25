@@ -12,6 +12,7 @@ namespace Objects
         public float sneakSpeedMultiplier = 0.5f;
         [Range(0.0f, 1.0f)]
         public float sneakVolume = 0.5f;
+        [Range(0.0f, 1.0f)]
         public float sneakPitch = 0.5f;
         [TitleHeader("Camera")]
         public float mouseSensitivity = 20.0f;
@@ -33,6 +34,7 @@ namespace Objects
         public float vaultStaminaCost = 5.0f;
         [TitleHeader("Interaction")]
         public float interactDistance = 2.0f;
+        public float interactDropDistance = 2.0f;
         public float inspectDistance = 5.0f;
         public float inspectRotationSpeed = 0.5f;
         [TitleHeader("Enemy Detection")]
