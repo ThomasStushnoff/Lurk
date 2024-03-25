@@ -16,10 +16,12 @@ MonoBehaviour:
   vaultDistance: 1
   crouchSpeedMultiplier: 0.5
   sneakSpeedMultiplier: 0.5
+  sneakVolume: 0.5
+  sneakPitch: 0.5
   mouseSensitivity: 7
   bobFrequency: 3
   bobSpeed: 4
-  bobAmountX: 0.001
+  bobAmountX: 0.005
   bobAmountY: 0.005
   maxSanity: 100
   panicThreshold: 30
@@ -28,6 +30,7 @@ MonoBehaviour:
   staminaThreshold: 30
   staminaRegenRate: 5
   staminaDrainRate: 10
+  sneakStaminaDrainRate: 4
   crouchStaminaRegenRate: 10
   vaultStaminaCost: 5
   interactDistance: 20

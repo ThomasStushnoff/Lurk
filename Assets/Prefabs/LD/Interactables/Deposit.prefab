@@ -14,7 +14,8 @@ GameObject:
   - component: {fileID: 1103434029124536283}
   - component: {fileID: 8990646175427475903}
   - component: {fileID: 752841654821254858}
-  m_Layer: 0
+  - component: {fileID: 4273668237928348799}
+  m_Layer: 14
   m_Name: Deposit
   m_TagString: Untagged
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
@@ -289,7 +290,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4916182630544636935}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -351,8 +352,21 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.4836793, y: 0.45722556, z: 0.49248505}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.4836793, y: 0.17713201, z: 0.49248505}
+  m_Center: {x: 0, y: -0.14004678, z: 0}
+--- !u!114 &4273668237928348799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4916182630544636935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 841b348f2a404d3d871b42e8432d8e95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hasDeposited: 0
 --- !u!1001 &1394269458085309872
 PrefabInstance:
   m_ObjectHideFlags: 0

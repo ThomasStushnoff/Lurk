@@ -1,16 +1,20 @@
-﻿using Entities;
+﻿using System;
+using Entities;
 using Entities.Player;
 using Interfaces;
 using Objects;
 using UnityEngine;
+using World.Environmental;
 
 namespace World.Interactables
 {
     [RequireComponent(typeof(Rigidbody), typeof(AudioSource))]
     public class HoneyCake : MonoBehaviour, IInteractable, IGrabbable
     {
-        public int score = 10;
-        [SerializeField] private AudioData _pickupSound;
+        // public int score = 10;
+        [SerializeField] private Deposit deposit;
+        [SerializeField] private LayerMask depositLayer;
+        [SerializeField] private AudioData pickupSound;
         
         private Transform _t;
         private Rigidbody _rb;
@@ -18,6 +22,7 @@ namespace World.Interactables
         private Transform _defaultParent;
         private Quaternion _defaultRotation;
         private PlayerController _player;
+        private bool _isPlaced;
         
         private void Awake()
         {
@@ -28,14 +33,34 @@ namespace World.Interactables
         
         public void BeginInteract(BaseEntity entity)
         {
+            if (_isPlaced) return;
+            
             PickUp(entity);
         }
         
         public void EndInteract()
         {
-            Drop();
-            // TODO:
-            // Deposit logic then call Place method.
+            if (_isPlaced) return;
+            
+            if (Physics.Raycast(_player.cameraTransform.position, _player.cameraTransform.forward, out var hit, 
+                    _player.settings.interactDropDistance, depositLayer))
+            {
+                var dep = hit.collider.GetComponent<Deposit>();
+                if (dep == deposit)
+                {
+                    Place(hit.point + hit.transform.up * 0.5f, hit.transform.rotation);
+                    dep.DepositItem();
+                    _isPlaced = true;
+                }
+                else
+                {
+                    Drop();
+                }
+            }
+            else
+            {
+                Drop();
+            }
         }
         
         public void PickUp(BaseEntity entity)
@@ -44,7 +69,7 @@ namespace World.Interactables
             if (_player == null) return;
             
             if (!_audioSource.isPlaying)
-                _audioSource.PlayOneShot(_pickupSound);
+                _audioSource.PlayOneShot(pickupSound);
             
             _defaultParent = _t.parent;
             _defaultRotation = _t.rotation;
@@ -69,11 +94,20 @@ namespace World.Interactables
         {
             if (_player == null) return;
             
-            _t.SetParent(null);
+            _t.SetParent(_defaultParent);
             _t.position = position;
             _t.rotation = rotation;
             _rb.isKinematic = false;
             _player = null;
+        }
+
+        private void OnCollisionEnter(Collision other)
+        {
+            if (!other.gameObject.CompareLayer("Deposit")) return;
+            
+            var bounds = other.collider.bounds;
+            _t.position = bounds.center + bounds.extents.y * Vector3.up;
+            _rb.isKinematic = true;
         }
     }
 }

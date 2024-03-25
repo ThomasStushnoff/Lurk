@@ -19,15 +19,17 @@ namespace Entities.Player
     public class PlayerController : BaseEntity
     {
         [TitleHeader("Player Settings")]
-        [SerializeField] private PlayerSettings settings;
+        [SerializeField]
+        public PlayerSettings settings;
         [SerializeField] private Transform groundCheck;
-        [SerializeField] private Transform cameraTransform;
+        public Transform cameraTransform;
         [SerializeField] private CharacterController character;
         [SerializeField] private HUDController hudController;
         [SerializeField] private Volume postProcessVolume;
         [SerializeField] private List<AudioDataEnumSoundFx> footstepSounds;
         [SerializeField] private AudioDataEnumSoundFx bloodyFloorSound;
         public Transform itemHoldTransform;
+        public Transform cameraHoldTransform;
 
         public Action OnSilhouetteAppear;
         public Action OnRoomLightChange;
