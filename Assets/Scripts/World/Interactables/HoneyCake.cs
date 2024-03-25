@@ -1,17 +1,20 @@
 ﻿using Entities;
 using Entities.Player;
 using Interfaces;
+using Objects;
 using UnityEngine;
 
 namespace World.Interactables
 {
-    [RequireComponent(typeof(Rigidbody))]
+    [RequireComponent(typeof(Rigidbody), typeof(AudioSource))]
     public class HoneyCake : MonoBehaviour, IInteractable, IGrabbable
     {
         public int score = 10;
+        [SerializeField] private AudioData _pickupSound;
         
         private Transform _t;
         private Rigidbody _rb;
+        private AudioSource _audioSource;
         private Transform _defaultParent;
         private Quaternion _defaultRotation;
         private PlayerController _player;
@@ -20,6 +23,7 @@ namespace World.Interactables
         {
             _t = transform;
             _rb = GetComponent<Rigidbody>();
+            _audioSource = GetComponent<AudioSource>();
         }
         
         public void BeginInteract(BaseEntity entity)
@@ -38,6 +42,9 @@ namespace World.Interactables
         {
             _player = entity as PlayerController;
             if (_player == null) return;
+            
+            if (!_audioSource.isPlaying)
+                _audioSource.PlayOneShot(_pickupSound);
             
             _defaultParent = _t.parent;
             _defaultRotation = _t.rotation;

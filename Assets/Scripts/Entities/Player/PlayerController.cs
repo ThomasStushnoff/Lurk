@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Audio;
 using Interfaces;
@@ -25,8 +26,12 @@ namespace Entities.Player
         [SerializeField] private HUDController hudController;
         [SerializeField] private Volume postProcessVolume;
         [SerializeField] private List<AudioDataEnumSoundFx> footstepSounds;
+        [SerializeField] private AudioDataEnumSoundFx bloodyFloorSound;
         public Transform itemHoldTransform;
 
+        public Action OnSilhouetteAppear;
+        public Action OnRoomLightChange;
+        
         private float CurrentStamina { get; set; }
         public float CurrentSanity { get; set; }
         
@@ -124,6 +129,21 @@ namespace Entities.Player
             if (!settings) return;
 
             _onGround = Physics.CheckSphere(groundCheck.position, 0.1f, settings.ground);
+        }
+        
+        private bool IsFloorBloody()
+        {
+            // if (Physics.Raycast(groundCheck.position, Vector3.down, out var hit, 0.1f))
+            //     return hit.collider.CompareTag("BloodyFloor");
+            var colliders = new Collider[12];
+            var size = Physics.OverlapSphereNonAlloc(groundCheck.position, 0.1f, colliders, settings.bloodyFloor);
+            for (var i = 0; i < size; i++)
+            {
+                if (colliders[i].CompareTag("BloodyFloor") || colliders[i].gameObject.CompareTag("BloodyFloor"))
+                    return true;
+            }
+            
+            return false;
         }
 
         private void HandleCameraMovement()
@@ -293,8 +313,8 @@ namespace Entities.Player
             
             // Randomize the footstep sound.
             var randomIndex = Random.Range(0, footstepSounds.Count);
-            var footstepSound = footstepSounds.ElementAt(randomIndex);
-            if (!audioSource.isPlaying) audioSource.PlaySoundFx(footstepSound);
+            var footstepSound = IsFloorBloody() ? bloodyFloorSound : footstepSounds.ElementAt(randomIndex);
+            if (!audioSource.isPlaying) audioSource.PlaySoundFx(footstepSound); 
             
             // Play footstep SFX and generate noise.
             
@@ -308,6 +328,8 @@ namespace Entities.Player
             // 3. If the player is within the circle, and the noise level is above a certain threshold, the enemy will be notified.
             // 4. The enemy will then move towards the player and do the deed.
         }
+        
+        
 
         private void BeginInteractions()
         {

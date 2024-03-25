@@ -41,5 +41,6 @@ namespace Objects
         public LayerMask obstacle;
         public LayerMask enemy;
         public LayerMask environment;
+        public LayerMask bloodyFloor;
     }
 }
