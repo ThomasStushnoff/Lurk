@@ -30,12 +30,14 @@ namespace Managers
         /// </summary>
         /// <param name="source">The audio source to register.</param>
         /// <param name="data">The AudioData to configure with.</param>
-        /// <param name="objTransform">The Transform of the audio source.</param>
-        public void RegisterAudioSource(AudioSource source, AudioData data, Transform objTransform)
+        public void RegisterAudioSource(AudioSource source, AudioData data)
         {
             source.Configure(data);
             if (!_audioSources.Exists(info => info.Source == source))
+            {
                 _audioSources.Add(new AudioSourceInfo(source, source.transform));
+                source.ConfigureAndPlay(data);
+            }
         }
         
         /// <summary>
@@ -45,7 +47,10 @@ namespace Managers
         public void UnregisterAudioSource(AudioSource source)
         {
             if (_audioSources.Exists(info => info.Source == source))
+            {
                 _audioSources.RemoveAll(info => info.Source == source);
+                if (source.isPlaying) source.Stop();
+            }
         }
         
         /// <summary>

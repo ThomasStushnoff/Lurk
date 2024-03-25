@@ -69,6 +69,16 @@ public static class Extensions
         audioSource.Play();
     }
     
+    /// <summary>
+    /// Overloads the PlayOneShot method to use the audio data.
+    /// </summary>
+    /// <param name="audioSource">The audio source to configure.</param>
+    /// <param name="audioData">The audio data to use.</param>
+    public static void PlayOneShot(this AudioSource audioSource, AudioData audioData)
+    {
+        audioSource.PlayOneShot(audioData.clip);
+    }
+    
     // /// <summary>
     // /// Plays the music audio data.
     // /// </summary>

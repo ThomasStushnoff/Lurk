@@ -2,24 +2,36 @@
 using Entities.Player;
 using Interfaces;
 using Managers;
+using Objects;
 using UnityEngine;
 
 namespace World.Interactables
 {
+    [RequireComponent(typeof(AudioSource))]
     public class Page : MonoBehaviour, IInteractable
     {
         [SerializeField] private PageType type = PageType.Page1;
+        [SerializeField] private AudioData _interactSound;
+        [SerializeField] private AudioData _endInteractSound;
+        
+        private AudioSource _audioSource;
+        
+        private void Awake()
+        {
+            _audioSource = GetComponent<AudioSource>();
+        }
         
         public void BeginInteract(BaseEntity entity)
         {
             PlayerController.EnableCursor();
             PrefabManager.Create(GetPrefabType());
             InputManager.DisableMovementInput();
+            _audioSource.PlayOneShot(_interactSound);
         }
         
         public void EndInteract()
         {
-            throw new System.NotImplementedException();
+            _audioSource.PlayOneShot(_endInteractSound);
         }
 
         private PrefabType GetPrefabType()

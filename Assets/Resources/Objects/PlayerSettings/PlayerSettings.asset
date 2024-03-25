@@ -17,8 +17,6 @@ MonoBehaviour:
   crouchSpeedMultiplier: 0.5
   sneakSpeedMultiplier: 0.5
   mouseSensitivity: 7
-  cameraDefaultDistance: 1.56
-  cameraCollisionBuffer: -43.24
   bobFrequency: 3
   bobSpeed: 4
   bobAmountX: 0.001
@@ -44,7 +42,7 @@ MonoBehaviour:
     m_Bits: 512
   interactable:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 2304
   puzzle:
     serializedVersion: 2
     m_Bits: 1024
@@ -57,3 +55,6 @@ MonoBehaviour:
   environment:
     serializedVersion: 2
     m_Bits: 4096
+  bloodyFloor:
+    serializedVersion: 2
+    m_Bits: 8192

@@ -26,7 +26,12 @@ namespace Entities.Player
         [SerializeField] private HUDController hudController;
         [SerializeField] private Volume postProcessVolume;
         [SerializeField] private List<AudioDataEnumSoundFx> footstepSounds;
+        [SerializeField] private AudioDataEnumSoundFx bloodyFloorSound;
+        public Transform itemHoldTransform;
 
+        public Action OnSilhouetteAppear;
+        public Action OnRoomLightChange;
+        
         private float CurrentStamina { get; set; }
         public float CurrentSanity { get; set; }
         
@@ -48,6 +53,7 @@ namespace Entities.Player
         private Vector3 _defaultCameraLocalPosition;
         private Vector3 _lastCameraPosition;
         private Quaternion _lastCameraRotation;
+        private IInteractable _interactable;
 
         protected override void Awake()
         {
@@ -62,7 +68,9 @@ namespace Entities.Player
             InputManager.FreeCursor.performed += _ => EnableCursor();
             InputManager.FreeCursor.canceled += _ => DisableCursor();
             
-            InputManager.Interact.started += _ => HandleInteractions();
+            InputManager.Interact.started += _ => BeginInteractions();
+            InputManager.Interact.canceled += _ => EndInteractions();
+            
             InputManager.Inspect.started += _ => ToggleInspect();
             InputManager.RotateLeft.performed += _ => StartRotatingLeft();
             InputManager.RotateLeft.canceled += _ => StopRotating();
@@ -91,7 +99,6 @@ namespace Entities.Player
             if (_isInspecting) RotateInspectingObject();
             HandlePuzzleInteractions();
             
-            // HandleCursor();
             CheckGrounded();
             
             postProcessVolume.profile.TryGet<DepthOfField>(out _depthOfField);
@@ -122,6 +129,21 @@ namespace Entities.Player
             if (!settings) return;
 
             _onGround = Physics.CheckSphere(groundCheck.position, 0.1f, settings.ground);
+        }
+        
+        private bool IsFloorBloody()
+        {
+            // if (Physics.Raycast(groundCheck.position, Vector3.down, out var hit, 0.1f))
+            //     return hit.collider.CompareTag("BloodyFloor");
+            var colliders = new Collider[12];
+            var size = Physics.OverlapSphereNonAlloc(groundCheck.position, 0.1f, colliders, settings.bloodyFloor);
+            for (var i = 0; i < size; i++)
+            {
+                if (colliders[i].CompareTag("BloodyFloor") || colliders[i].gameObject.CompareTag("BloodyFloor"))
+                    return true;
+            }
+            
+            return false;
         }
 
         private void HandleCameraMovement()
@@ -291,8 +313,8 @@ namespace Entities.Player
             
             // Randomize the footstep sound.
             var randomIndex = Random.Range(0, footstepSounds.Count);
-            var footstepSound = footstepSounds.ElementAt(randomIndex);
-            if (!audioSource.isPlaying) audioSource.PlaySoundFx(footstepSound);
+            var footstepSound = IsFloorBloody() ? bloodyFloorSound : footstepSounds.ElementAt(randomIndex);
+            if (!audioSource.isPlaying) audioSource.PlaySoundFx(footstepSound); 
             
             // Play footstep SFX and generate noise.
             
@@ -306,8 +328,10 @@ namespace Entities.Player
             // 3. If the player is within the circle, and the noise level is above a certain threshold, the enemy will be notified.
             // 4. The enemy will then move towards the player and do the deed.
         }
+        
+        
 
-        private void HandleInteractions()
+        private void BeginInteractions()
         {
             // TODO:
             // 1. Add cooldown maybe.
@@ -316,19 +340,29 @@ namespace Entities.Player
             if (!Physics.Raycast(cameraTransform.position, cameraTransform.forward, out var hit, 
                     settings.interactDistance, settings.interactable)) return;
             Debug.Log($"hit.collider.name: {hit.collider.name}!");
-            var interactable = hit.collider.GetComponent<IInteractable>();
-            if (interactable == null) return;
             
-            interactable.BeginInteract(this);
-            Debug.Log($"Interacted with {hit.collider.name}!");
-
+            // Check if the object is interactable.
+            if (hit.collider.TryGetComponent<IInteractable>(out var interactable))
+            {
+                _interactable = interactable;
+                interactable.BeginInteract(this);
+                Debug.Log($"Interacting with {hit.collider.name}!");
+            }
+            
             // Check if the object is collectible.
-            var collectible = hit.collider.GetComponent<ICollectible>();
-            if (collectible != null)
+            if (hit.collider.TryGetComponent<ICollectible>(out var collectible))
             {
                 collectible.Collect();
                 Debug.Log($"Collected {hit.collider.name}!");
             }
+        }
+
+        private void EndInteractions()
+        {
+            if (_interactable == null) return;
+            
+            _interactable.EndInteract();
+            _interactable = null;
         }
 
         private void HandlePuzzleInteractions()
