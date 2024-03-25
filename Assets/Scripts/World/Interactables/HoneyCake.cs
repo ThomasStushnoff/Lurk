@@ -43,7 +43,7 @@ namespace World.Interactables
             _player = entity as PlayerController;
             if (_player == null) return;
             
-            if (!_audioSource.isPlaying && _pickupSound != null)
+            if (!_audioSource.isPlaying)
                 _audioSource.PlayOneShot(_pickupSound);
             
             _defaultParent = _t.parent;

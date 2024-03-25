@@ -49,6 +49,8 @@ public static class Extensions
     /// <param name="audioData">The audio data to use.</param>
     public static void Configure(this AudioSource audioSource, AudioData audioData)
     {
+        if (!audioData) return;
+        
         audioSource.clip = audioData.clip;
         audioSource.outputAudioMixerGroup = audioData.mixerGroup;
         audioSource.playOnAwake = audioData.playOnAwake;
@@ -76,6 +78,8 @@ public static class Extensions
     /// <param name="audioData">The audio data to use.</param>
     public static void PlayOneShot(this AudioSource audioSource, AudioData audioData)
     {
+        if (!audioData) return;
+        
         audioSource.PlayOneShot(audioData.clip);
     }
     
