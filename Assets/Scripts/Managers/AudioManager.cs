@@ -88,7 +88,14 @@ namespace Managers
             if (!data || !data.clip) throw new Exception("AudioData is null or missing a clip!");
             
             // Create a temporary audio source to play the audio.
-            var tempObject = new GameObject("TempAudio") { transform = { position = position } };
+            var tempObject = new GameObject("TempAudio")
+            {
+                transform =
+                {
+                    position = position, 
+                    parent = transform
+                }
+            };
 
             // Add an audio source to the temporary object.
             var tempAudioSource = tempObject.AddComponent<AudioSource>();

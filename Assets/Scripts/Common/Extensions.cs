@@ -1,4 +1,5 @@
 ﻿using Audio;
+using Managers;
 using Objects;
 using UnityEngine;
 
@@ -70,17 +71,57 @@ public static class Extensions
         audioSource.Configure(audioData);
         audioSource.Play();
     }
-    
+
     /// <summary>
     /// Overloads the PlayOneShot method to use the audio data.
     /// </summary>
     /// <param name="audioSource">The audio source to configure.</param>
     /// <param name="audioData">The audio data to use.</param>
-    public static void PlayOneShot(this AudioSource audioSource, AudioData audioData)
+    /// <param name="proximity">Should the audio be played at the audio source's position?</param>
+    public static void PlayOneShot(this AudioSource audioSource, AudioData audioData, bool proximity = false)
     {
         if (!audioData) return;
         
-        audioSource.PlayOneShot(audioData.clip);
+        if (proximity)
+            AudioManager.Instance.PlayOneShotAudio(audioData, audioSource.transform.position);
+        else
+            audioSource.PlayOneShot(audioData.clip);
+    }
+    
+    // /// <summary>
+    // /// Plays the audio data as a one shot.
+    // /// </summary>
+    // /// <param name="audioSource">The audio source to configure.</param>
+    // /// <param name="audioEnum">The music audio data enum.</param>
+    // /// <param name="proximity">Should the audio be played at the audio source's position?</param>
+    // public static void PlayOneShot(this AudioSource audioSource, AudioDataEnumMusic audioEnum, bool proximity = false)
+    // {
+    //     if (AudioDataMapSoundFx.Map.TryGetValue(audioEnum, out var audioData))
+    //         audioSource.PlayOneShot(audioData, proximity);
+    // }
+    
+    /// <summary>
+    /// Plays the audio data as a one shot.
+    /// </summary>
+    /// <param name="audioSource">The audio source to configure.</param>
+    /// <param name="audioEnum">The sound fx audio data enum.</param>
+    /// <param name="proximity">Should the audio be played at the audio source's position?</param>
+    public static void PlayOneShot(this AudioSource audioSource, AudioDataEnumSoundFx audioEnum, bool proximity = false)
+    {
+        if (AudioDataMapSoundFx.Map.TryGetValue(audioEnum, out var audioData))
+            audioSource.PlayOneShot(audioData, proximity);
+    }
+    
+    /// <summary>
+    /// Plays the audio data as a one shot.
+    /// </summary>
+    /// <param name="audioSource">The audio source to configure.</param>
+    /// <param name="audioEnum">The voice over audio data enum.</param>
+    /// <param name="proximity">Should the audio be played at the audio source's position?</param>
+    public static void PlayOneShot(this AudioSource audioSource, AudioDataEnumVoiceOver audioEnum, bool proximity = false)
+    {
+        if (AudioDataMapVoiceOver.Map.TryGetValue(audioEnum, out var audioData))
+            audioSource.PlayOneShot(audioData, proximity);
     }
     
     // /// <summary>
