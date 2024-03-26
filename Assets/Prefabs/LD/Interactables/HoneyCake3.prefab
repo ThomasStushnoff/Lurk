@@ -398,8 +398,8 @@ MonoBehaviour:
   depositLayer:
     serializedVersion: 2
     m_Bits: 16384
-  placeDistance: 2
-  pickupSound: {fileID: 0}
+  depositAnywhere: 0
+  pickupSound: 7
 --- !u!82 &3615070078690419335
 AudioSource:
   m_ObjectHideFlags: 0

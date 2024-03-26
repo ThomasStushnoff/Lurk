@@ -5,12 +5,12 @@ using UnityEngine;
 namespace World.Environmental
 {
     [RequireComponent(typeof(AudioSource))]
-    public class Sink : MonoBehaviour
+    public class PowerBox : MonoBehaviour
     {
-        [SerializeField] private AudioDataEnumSoundFx soundFx;
+        [SerializeField] private AudioDataEnumSoundFx sparkSound;
         
         private AudioSource _audioSource;
-        
+
         private void Awake()
         {
             _audioSource = GetComponent<AudioSource>();
@@ -18,7 +18,7 @@ namespace World.Environmental
 
         private void Start()
         {
-            AudioManager.Instance.RegisterAudioSource(_audioSource, soundFx);
+            AudioManager.Instance.RegisterAudioSource(_audioSource, sparkSound);
         }
     }
 }

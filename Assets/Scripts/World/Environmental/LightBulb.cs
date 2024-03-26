@@ -1,16 +1,16 @@
-﻿using System;
+﻿using Audio;
 using Managers;
-using Objects;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace World.Environmental
 {
     [RequireComponent(typeof(AudioSource))]
     public class LightBulb : MonoBehaviour
     {
-        [SerializeField] private AudioData defaultAudio;
-        [SerializeField] private AudioData roomChangeAudio;
-        public Action OnRoomChange; // Triggered after you read and put the page down.
+        [SerializeField] private AudioDataEnumSoundFx defaultAudio;
+        [SerializeField] private AudioDataEnumSoundFx roomChangeAudio;
+        public UnityEvent onRoomChange;
         
         private AudioSource _audioSource;
         
@@ -23,7 +23,14 @@ namespace World.Environmental
         {
             AudioManager.Instance.RegisterAudioSource(_audioSource, defaultAudio);
             
-            OnRoomChange += RoomChange;
+            onRoomChange.AddListener(RoomChange);
+        }
+        
+        private void OnDestroy()
+        {
+            AudioManager.Instance.UnregisterAudioSource(_audioSource);
+            
+            onRoomChange.RemoveListener(RoomChange);
         }
         
         private void RoomChange()

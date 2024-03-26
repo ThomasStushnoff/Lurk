@@ -217,11 +217,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   openLocalPosition: {x: 0, y: 0, z: 0}
-  openSpeed: 2
+  openTime: 2
   deposits:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  openSoundFx: 24
 --- !u!1001 &762119234179392354
 PrefabInstance:
   m_ObjectHideFlags: 0

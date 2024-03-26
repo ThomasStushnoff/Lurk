@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Sparks
   m_EditorClassIdentifier: 
   clip: {fileID: 8300000, guid: a64dd463638cfc44aaf924230f03682e, type: 3}
-  mixerGroup: {fileID: -1267447417658469395, guid: 26c0ca923bdf63b4bb915eb3697b7c0c, type: 2}
+  mixerGroup: {fileID: -1267447417658469395, guid: 26c0ca923bdf63b4bb915eb3697b7c0c,
+    type: 2}
   playOnAwake: 0
-  loop: 0
+  loop: 1
   volume: 1
   spatialize: 0
   pitch: 1
-    

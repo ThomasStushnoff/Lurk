@@ -1,7 +1,7 @@
-﻿using System;
-using Audio;
+﻿using Audio;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.Events;
 namespace World.Environmental
 {
     public class Door : BaseObject
@@ -15,19 +15,26 @@ namespace World.Environmental
         [SerializeField, CanBeNull] private AudioDataEnumSoundFx closeSoundFx;
         [SerializeField, CanBeNull] private AudioDataEnumSoundFx slamSoundFx;
 
-        public Action OnOpen;
-        public Action OnClose;
-        public Action OnSlam;
+        public UnityEvent onOpen;
+        public UnityEvent onClose;
+        public UnityEvent onSlam;
         
         private bool _isOpening;
         
         private void Start()
         {
-            OnOpen += Open;
-            OnClose += Close;
-            OnSlam += Slam;
+            onOpen.AddListener(Open);
+            onClose.AddListener(Close);
+            onSlam.AddListener(Slam);
         }
-
+        
+        private void OnDestroy()
+        {
+            onOpen.RemoveAllListeners();
+            onClose.RemoveAllListeners();
+            onSlam.RemoveAllListeners();
+        }
+        
         private void Open()
         {
             var target = Quaternion.Euler(openRotation);

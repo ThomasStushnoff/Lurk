@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Audio;
 using Interfaces;
@@ -8,6 +7,7 @@ using Objects;
 using StateMachines;
 using UI;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
 using World;
@@ -30,8 +30,8 @@ namespace Entities.Player
         public Transform itemHoldTransform;
         public Transform cameraHoldTransform;
 
-        public Action OnSilhouetteAppear;
-        public Action OnRoomLightChange;
+        public UnityEvent onSilhouetteAppear;
+        public UnityEvent onRoomLightChange;
         
         private float CurrentStamina { get; set; }
         public float CurrentSanity { get; set; }

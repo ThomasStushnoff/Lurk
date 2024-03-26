@@ -1,4 +1,5 @@
-﻿using Audio;
+﻿using System.Collections.Generic;
+using Audio;
 using Managers;
 using Objects;
 using UnityEngine;
@@ -123,6 +124,30 @@ public static class Extensions
         if (AudioDataMapVoiceOver.Map.TryGetValue(audioEnum, out var audioData))
             audioSource.PlayOneShot(audioData, proximity);
     }
+    
+    // /// <summary>
+    // /// Gets the audio data from the audio enum.
+    // /// </summary>
+    // /// <param name="audioEnum">The audio enum to get the audio data from.</param>
+    // /// <returns>The audio data.</returns>
+    // public static AudioData GetAudioData(this AudioDataEnumMusic audioEnum) 
+    //     => AudioDataMapSoundFx.Map.AudioDataEnumMusic(audioEnum);
+    
+    /// <summary>
+    /// Gets the audio data from the audio enum.
+    /// </summary>
+    /// <param name="audioEnum">The audio enum to get the audio data from.</param>
+    /// <returns>The audio data.</returns>
+    public static AudioData GetAudioData(this AudioDataEnumSoundFx audioEnum) 
+        => AudioDataMapSoundFx.Map.GetValueOrDefault(audioEnum);
+    
+    /// <summary>
+    /// Gets the audio data from the audio enum.
+    /// </summary>
+    /// <param name="audioEnum">The audio enum to get the audio data from.</param>
+    /// <returns>The audio data.</returns>
+    public static AudioData GetAudioData(this AudioDataEnumVoiceOver audioEnum)
+        => AudioDataMapVoiceOver.Map.GetValueOrDefault(audioEnum);
     
     // /// <summary>
     // /// Plays the music audio data.
