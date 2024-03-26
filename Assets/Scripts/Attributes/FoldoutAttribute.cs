@@ -6,15 +6,11 @@
 public class FoldoutAttribute : PropertyAttribute
 {
     public readonly string Name;
-    public readonly bool StartOpen;
-    public readonly bool Stylized;
-    public readonly bool ReadOnly;
-
-    public FoldoutAttribute(string name, bool startOpen = true, bool stylized = true, bool readOnly = false)
+    public readonly bool FoldEverything;
+    
+    public FoldoutAttribute(string name, bool startOpen = true )
     {
         Name = name;
-        StartOpen = startOpen;
-        Stylized = stylized;
-        ReadOnly = readOnly;
+        FoldEverything = startOpen;
     }
 }

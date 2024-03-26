@@ -9,6 +9,7 @@ namespace World.Interactables.Puzzles
     // Puzzle completion logic.
     public class Reflector : BasePuzzle
     {
+        [Foldout("Puzzle Settings")]
         [SerializeField] private PuzzleType type;
         [SerializeField] private float rotationSpeed = 50.0f;
         [SerializeField] private float panSpeed = 2.0f;
