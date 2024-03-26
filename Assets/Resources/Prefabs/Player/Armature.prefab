@@ -1118,7 +1118,9 @@ MonoBehaviour:
   hudController: {fileID: 0}
   postProcessVolume: {fileID: 0}
   footstepSounds: 06000000070000000400000009000000
+  bloodyFloorSound: 27
   itemHoldTransform: {fileID: 7234661664371438871}
+  cameraHoldTransform: {fileID: 8521530392485833665}
 --- !u!54 &4084656751358901924
 Rigidbody:
   m_ObjectHideFlags: 0

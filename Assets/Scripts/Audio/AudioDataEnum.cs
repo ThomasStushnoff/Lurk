@@ -7,6 +7,16 @@ namespace Audio
     public enum AudioDataEnumSoundFx
     {
         None,
+        BooksFalling,
+        Candle_Light,
+        CerbrerusMoving,
+        Door_Slam,
+        FootstepsGhostogg,
+        HeadsRolling,
+        HoneyCake,
+        Light_Bulb,
+        Light_Bulb_End,
+        Page,
         Player_Footstep_01,
         Player_Footstep_02,
         Player_Footstep_03,
@@ -18,6 +28,13 @@ namespace Audio
         Player_Footstep_09,
         Player_Footstep_10,
         Player_Land,
+        RoomChange,
+        Silhouette,
+        SlidingBookShelf,
+        Sparks,
+        Wash_Basin,
+        Water_Footstep,
+        whispers_8D,
     }
     public enum AudioDataEnumVoiceOver
     {
