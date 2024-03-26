@@ -1117,7 +1117,7 @@ MonoBehaviour:
   character: {fileID: 4629173832739338317}
   hudController: {fileID: 0}
   postProcessVolume: {fileID: 0}
-  footstepSounds: 06000000070000000400000009000000
+  footstepSounds: 140000000c00000013000000100000000e000000
   bloodyFloorSound: 27
   itemHoldTransform: {fileID: 7234661664371438871}
   cameraHoldTransform: {fileID: 8521530392485833665}

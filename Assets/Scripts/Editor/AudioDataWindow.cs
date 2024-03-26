@@ -192,6 +192,17 @@ public class AudioDataWindow : EditorWindow
         if (File.Exists(enumsFilePath)) File.Delete(enumsFilePath);
         if (File.Exists(mapsFilePath)) File.Delete(mapsFilePath);
         
+        // Load enum mappings from the AudioDataGroups object.
+        var existingMap = new Dictionary<string, int>();
+        foreach (var enumMapping in _audioDataGroupsObject.enumMappings)
+            existingMap[enumMapping.enumName] = enumMapping.enumValue;
+        
+        // Get all valid enum names.
+        var validNames = new HashSet<string>();
+        foreach (var validEnumName in _audioDataGroups.SelectMany(group => group.Value.Select(audioData => 
+                     audioData.name.Replace(" ", "_").Replace("-", "_"))))
+            validNames.Add(validEnumName);
+        
         // Initialize the string builders.
         var enumBuilder = new StringBuilder();
         var mapBuilder = new StringBuilder();
@@ -218,21 +229,38 @@ public class AudioDataWindow : EditorWindow
         {
             var groupName = group.Key.Replace(" ", "");
             var enumName = $"AudioDataEnum{groupName}";
-            
             var sortedAudioData = group.Value.OrderBy(a => a.name).ToList();
+            
+            // Initialize the next value.
+            var nextValue = 1;
             
             // Start enum.
             enumBuilder.AppendLine($"    public enum {enumName}");
             enumBuilder.AppendLine("    {");
             
             // Add None as the first element.
-            enumBuilder.AppendLine("        None,");
+            enumBuilder.AppendLine("        None = 0,");
             
-            // Replace spaces and hyphens with underscores.
-            foreach (var validEnumName in sortedAudioData.Select(audioData => 
-                         audioData.name.Replace(" ", "_").Replace("-", "_")))
-                enumBuilder.AppendLine($"        {validEnumName},");
+            foreach (var audioData in sortedAudioData)
+            {
+                // Replace spaces and hyphens with underscores.
+                var validEnumName = audioData.name.Replace(" ", "_").Replace("-", "_");
+                if (!existingMap.ContainsKey(validEnumName))
+                {
+                    // Add the new enum to the map.
+                    existingMap[validEnumName] = nextValue++;
+                }
+                else if (group.Value.Contains(audioData))
+                {
+                    // Update the enum value.
+                    existingMap[validEnumName] = nextValue++;
+                }
+                
+                // Append the enum value to the enum.
+                enumBuilder.AppendLine($"        {validEnumName} = {existingMap[validEnumName]},");
+            }
             
+            // End enum.
             enumBuilder.AppendLine("    }");
             
             // Start map.
@@ -247,11 +275,12 @@ public class AudioDataWindow : EditorWindow
             // Populate the map.
             foreach (var audioData in sortedAudioData)
             {
+                // Replace spaces and hyphens with underscores.
                 var validEnumName = audioData.name.Replace(" ", "_").Replace("-", "_");
                 mapBuilder.AppendLine($"            Map.Add({enumName}.{validEnumName}, Resources.Load<AudioData>(\"{AssetDatabase.GetAssetPath(audioData).Replace("Assets/Resources/", "").Replace(".asset", "")}\"));");
             }
             
-            // Close constructor and map.
+            // End constructor and map.
             mapBuilder.AppendLine("        }");
             mapBuilder.AppendLine("    }");
         }
@@ -260,10 +289,21 @@ public class AudioDataWindow : EditorWindow
         enumBuilder.AppendLine("}");
         mapBuilder.AppendLine("}");
         
+        // Update the enum mappings in the AudioDataGroups object.
+        _audioDataGroupsObject.enumMappings.Clear();
+        foreach (var validEnumName in validNames.Where(validEnumName => existingMap.ContainsKey(validEnumName)))
+            _audioDataGroupsObject.enumMappings.Add(new AudioEnumMapping
+            {
+                enumName = validEnumName, enumValue = existingMap[validEnumName]
+            });
+        
         // Write the files.
         File.WriteAllText(enumsFilePath, enumBuilder.ToString());
         File.WriteAllText(mapsFilePath, mapBuilder.ToString());
-
+        
+        // Save the AudioDataGroups object.
+        EditorUtility.SetDirty(_audioDataGroupsObject);
+        AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }
 }
