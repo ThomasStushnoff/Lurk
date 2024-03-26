@@ -4,13 +4,10 @@ using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 /// <summary>
 /// Custom editor for serializable objects that groups fields under <see cref="FoldoutAttribute" />.
 /// </summary>
-[CustomEditor(typeof(Object), true, isFallback = true)]
-[CanEditMultipleObjects]
 public class FoldoutEditor : Editor
 {
     private Dictionary<string, FoldoutGroup> _foldoutGroups;
