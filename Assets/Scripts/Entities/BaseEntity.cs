@@ -6,7 +6,7 @@ namespace Entities
 {
     public abstract class BaseEntity : MonoBehaviour, IBaseEntity
     {
-        public uint runtimeID;
+        [ReadOnly] public uint runtimeID;
         [SerializeField] protected EntityType entityType;
         
         // Cache commonly used components.

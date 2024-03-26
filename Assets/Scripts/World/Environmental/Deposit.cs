@@ -5,7 +5,7 @@ namespace World.Environmental
 {
     public class Deposit : MonoBehaviour
     {
-        public bool hasDeposited;
+        [ReadOnly] public bool hasDeposited;
 
         public event Action OnDepositMade;
         
