@@ -1,4 +1,4 @@
-﻿using Objects;
+﻿using Audio;
 using UnityEngine;
 
 namespace World.Environmental
@@ -6,7 +6,7 @@ namespace World.Environmental
     [RequireComponent(typeof(AudioSource), typeof(BoxCollider))]
     public class Head : MonoBehaviour
     {
-        [SerializeField] private AudioData _dropSound;
+        [SerializeField] private AudioDataEnumSoundFx dropSound;
         
         private AudioSource _audioSource;
         private bool _didDrop;
@@ -20,7 +20,7 @@ namespace World.Environmental
         {
             if (_didDrop || !other.gameObject.CompareLayer("Ground")) return;
             
-            _audioSource.PlayOneShot(_dropSound);
+            _audioSource.PlayOneShot(dropSound);
             _didDrop = true;
         }
     }

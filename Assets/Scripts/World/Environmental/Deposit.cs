@@ -1,20 +1,20 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Events;
 
 namespace World.Environmental
 {
     public class Deposit : MonoBehaviour
     {
-        public bool hasDeposited;
-
-        public event Action OnDepositMade;
+        [ReadOnly] public bool hasDeposited;
+        
+        public UnityEvent onDepositMade;
         
         public void DepositItem()
         {
             if (hasDeposited) return;
             
             hasDeposited = true;
-            OnDepositMade?.Invoke();
+            onDepositMade?.Invoke();
         }
     }
 }

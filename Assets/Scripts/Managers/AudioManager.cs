@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Audio;
 using Objects;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -26,7 +27,7 @@ namespace Managers
         protected override void OnSceneUnloaded(Scene scene) => _audioSources.Clear();
         
         /// <summary>
-        /// Registers an audio source with the given AudioData and Transform.
+        /// Registers an audio source with the given AudioData
         /// </summary>
         /// <param name="source">The audio source to register.</param>
         /// <param name="data">The AudioData to configure with.</param>
@@ -39,6 +40,14 @@ namespace Managers
                 source.ConfigureAndPlay(data);
             }
         }
+        
+        /// <summary>
+        /// Registers an audio source with the given AudioDataEnumSoundFx
+        /// </summary>
+        /// <param name="source">The audio source to register.</param>
+        /// <param name="data">The AudioData to configure with.</param>
+        public void RegisterAudioSource(AudioSource source, AudioDataEnumSoundFx data) 
+            => RegisterAudioSource(source, data.GetAudioData());
         
         /// <summary>
         /// Unregisters an audio source.
@@ -88,7 +97,14 @@ namespace Managers
             if (!data || !data.clip) throw new Exception("AudioData is null or missing a clip!");
             
             // Create a temporary audio source to play the audio.
-            var tempObject = new GameObject("TempAudio") { transform = { position = position } };
+            var tempObject = new GameObject("TempAudio")
+            {
+                transform =
+                {
+                    position = position, 
+                    parent = transform
+                }
+            };
 
             // Add an audio source to the temporary object.
             var tempAudioSource = tempObject.AddComponent<AudioSource>();

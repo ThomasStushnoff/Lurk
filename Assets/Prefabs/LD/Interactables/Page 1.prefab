@@ -99,8 +99,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
-  _interactSound: {fileID: 0}
-  _endInteractSound: {fileID: 0}
+  interactSound: 10
+  endInteractSound: 0
+  lightBulb: {fileID: 0}
 --- !u!82 &-889854514806288688
 AudioSource:
   m_ObjectHideFlags: 0

@@ -33,7 +33,8 @@ MonoBehaviour:
   sneakStaminaDrainRate: 4
   crouchStaminaRegenRate: 10
   vaultStaminaCost: 5
-  interactDistance: 20
+  interactDistance: 2
+  interactDropDistance: 2
   inspectDistance: 5
   inspectRotationSpeed: 0.5
   detectionRadius: 10

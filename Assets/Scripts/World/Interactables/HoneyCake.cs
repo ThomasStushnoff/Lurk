@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Audio;
 using Entities;
 using Entities.Player;
 using Interfaces;
-using Objects;
+using JetBrains.Annotations;
 using UnityEngine;
 using World.Environmental;
 
@@ -12,9 +12,10 @@ namespace World.Interactables
     public class HoneyCake : MonoBehaviour, IInteractable, IGrabbable
     {
         // public int score = 10;
-        [SerializeField] private Deposit deposit;
+        [SerializeField, CanBeNull] private Deposit deposit;
         [SerializeField] private LayerMask depositLayer;
-        [SerializeField] private AudioData pickupSound;
+        [SerializeField] private bool depositAnywhere;
+        [SerializeField] private AudioDataEnumSoundFx pickupSound;
         
         private Transform _t;
         private Rigidbody _rb;
@@ -42,15 +43,22 @@ namespace World.Interactables
         {
             if (_isPlaced) return;
             
-            if (Physics.Raycast(_player.cameraTransform.position, _player.cameraTransform.forward, out var hit, 
-                    _player.settings.interactDropDistance, depositLayer))
+            if (depositAnywhere)
             {
-                var dep = hit.collider.GetComponent<Deposit>();
-                if (dep == deposit)
+                if (Physics.Raycast(_player.cameraTransform.position, _player.cameraTransform.forward, out var hit,
+                        _player.settings.interactDropDistance, depositLayer))
                 {
-                    Place(hit.point + hit.transform.up * 0.5f, hit.transform.rotation);
-                    dep.DepositItem();
-                    _isPlaced = true;
+                    var dep = hit.collider.GetComponent<Deposit>();
+                    if (dep != null)
+                    {
+                        Place(hit.point + hit.transform.up * 0.5f, hit.transform.rotation);
+                        dep.DepositItem();
+                        _isPlaced = true;
+                    }
+                    else
+                    {
+                        Drop();
+                    }
                 }
                 else
                 {
@@ -59,7 +67,25 @@ namespace World.Interactables
             }
             else
             {
-                Drop();
+                if (Physics.Raycast(_player.cameraTransform.position, _player.cameraTransform.forward, out var hit,
+                        _player.settings.interactDropDistance, depositLayer))
+                {
+                    var dep = hit.collider.GetComponent<Deposit>();
+                    if (dep == deposit)
+                    {
+                        Place(hit.point + hit.transform.up * 0.5f, hit.transform.rotation);
+                        dep!.DepositItem();
+                        _isPlaced = true;
+                    }
+                    else
+                    {
+                        Drop();
+                    }
+                }
+                else
+                {
+                    Drop();
+                }
             }
         }
         

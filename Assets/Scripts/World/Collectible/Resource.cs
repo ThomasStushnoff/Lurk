@@ -1,16 +1,16 @@
-﻿using System;
-using Interfaces;
+﻿using Interfaces;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace World.Collectible
 {
     public class Resource : MonoBehaviour, ICollectible
     {
-        public Action OnCollect;
+        public UnityEvent onCollect;
         
         public void Collect()
         {
-            OnCollect?.Invoke();
+            onCollect?.Invoke();
             Destroy(gameObject);
         }
     }

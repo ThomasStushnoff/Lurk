@@ -13,19 +13,95 @@ MonoBehaviour:
   m_Name: Audio Data Group
   m_EditorClassIdentifier: 
   groups:
+  - groupName: SoundFx
+    audioData:
+    - {fileID: 11400000, guid: bceb26e125abb8142abef9e79ef24399, type: 2}
+    - {fileID: 11400000, guid: 8ab7023164091c341bd09f753cc3562f, type: 2}
+    - {fileID: 11400000, guid: c1e4d1ee20481c845887931e7b5457cf, type: 2}
+    - {fileID: 11400000, guid: f8dcffe9eb3972c478a3406224678e86, type: 2}
+    - {fileID: 11400000, guid: d307f29eb56594f428e03193fc6ce5e0, type: 2}
+    - {fileID: 11400000, guid: a92f2d1557daa79468762251a8cab5b0, type: 2}
+    - {fileID: 11400000, guid: af272b476c4244a429ab374d3ff6f2c3, type: 2}
+    - {fileID: 11400000, guid: 62cfbd56882ac0b4c8c5ebb2db56d306, type: 2}
+    - {fileID: 11400000, guid: 7eceb6354ccf4cc4e9ba32294962cda6, type: 2}
+    - {fileID: 11400000, guid: f1ead3019e3be9944b00809ad24d07f3, type: 2}
+    - {fileID: 11400000, guid: b7e33d1fe249d0a42b643d5bd3ab9bf4, type: 2}
+    - {fileID: 11400000, guid: 5150bb90b358ccb46ae9cf3bf7517d06, type: 2}
+    - {fileID: 11400000, guid: 872d3baff03d2f24d93cf3d855b28250, type: 2}
+    - {fileID: 11400000, guid: 915b834b9c2daad469c0e7e9206b221f, type: 2}
+    - {fileID: 11400000, guid: 4838562b1cfd90c429c1de6b1a120be4, type: 2}
+    - {fileID: 11400000, guid: c4bd5faf4f356eb4cadf51c387acb5f8, type: 2}
+    - {fileID: 11400000, guid: c211284edc335ad449dc74e31787c084, type: 2}
+    - {fileID: 11400000, guid: 4fd2bd61237fee741b3a4cefe32432b5, type: 2}
+    - {fileID: 11400000, guid: 35a9fee88e105d3418b801c3fbb5edaa, type: 2}
+    - {fileID: 11400000, guid: d115633a7d775d946814b963f34e5296, type: 2}
+    - {fileID: 11400000, guid: 358b5159a18afd443b72b85a6d5f82fa, type: 2}
+    - {fileID: 11400000, guid: 0b8df4e9804cd6140b277b178f22c97e, type: 2}
+    - {fileID: 11400000, guid: 081f8e63c7cdd034f8b49a0eb4cb00fb, type: 2}
+    - {fileID: 11400000, guid: a66d7c7302c27c1458278788445a063a, type: 2}
+    - {fileID: 11400000, guid: 639a8d5186473c740be90be1fc7f567d, type: 2}
+    - {fileID: 11400000, guid: f1a65e22da10b22438190a1d2a6ece4b, type: 2}
+    - {fileID: 11400000, guid: 23e0aebf2022b10449cf4710d12d062f, type: 2}
+    - {fileID: 11400000, guid: 58dad1bbc96894a479086159708c6fbe, type: 2}
   - groupName: VoiceOver
     audioData:
     - {fileID: 11400000, guid: 7ece1bc39aa7d634cba88d7a633b74b6, type: 2}
-  - groupName: SoundFx
-    audioData:
-    - {fileID: 11400000, guid: f1a65e22da10b22438190a1d2a6ece4b, type: 2}
-    - {fileID: 11400000, guid: 23e0aebf2022b10449cf4710d12d062f, type: 2}
-    - {fileID: 11400000, guid: 639a8d5186473c740be90be1fc7f567d, type: 2}
-    - {fileID: 11400000, guid: d307f29eb56594f428e03193fc6ce5e0, type: 2}
-    - {fileID: 11400000, guid: a66d7c7302c27c1458278788445a063a, type: 2}
-    - {fileID: 11400000, guid: 4838562b1cfd90c429c1de6b1a120be4, type: 2}
-    - {fileID: 11400000, guid: f8dcffe9eb3972c478a3406224678e86, type: 2}
-    - {fileID: 11400000, guid: 8ab7023164091c341bd09f753cc3562f, type: 2}
-    - {fileID: 11400000, guid: 0b8df4e9804cd6140b277b178f22c97e, type: 2}
-    - {fileID: 11400000, guid: bceb26e125abb8142abef9e79ef24399, type: 2}
-    - {fileID: 11400000, guid: 4fd2bd61237fee741b3a4cefe32432b5, type: 2}
+  enumMappings:
+  - enumName: Player_Footstep_06
+    enumValue: 16
+  - enumName: Player_Land
+    enumValue: 21
+  - enumName: Light_Bulb_End
+    enumValue: 9
+  - enumName: Player_Footstep_01
+    enumValue: 11
+  - enumName: Player_Footstep_02
+    enumValue: 12
+  - enumName: Sparks
+    enumValue: 25
+  - enumName: Page
+    enumValue: 10
+  - enumName: CerbrerusMoving
+    enumValue: 3
+  - enumName: Silhouette
+    enumValue: 23
+  - enumName: BooksFalling
+    enumValue: 1
+  - enumName: Water_Footstep
+    enumValue: 27
+  - enumName: whispers_8D
+    enumValue: 28
+  - enumName: Candle_Light
+    enumValue: 2
+  - enumName: FootstepsGhostogg
+    enumValue: 5
+  - enumName: Player_Footstep_08
+    enumValue: 18
+  - enumName: Light_Bulb
+    enumValue: 8
+  - enumName: Wash_Basin
+    enumValue: 26
+  - enumName: Player_Footstep_05
+    enumValue: 15
+  - enumName: Door_Slam
+    enumValue: 4
+  - enumName: RoomChange
+    enumValue: 22
+  - enumName: HoneyCake
+    enumValue: 7
+  - enumName: Player_Footstep_07
+    enumValue: 17
+  - enumName: SlidingBookShelf
+    enumValue: 24
+  - enumName: Player_Footstep_10
+    enumValue: 20
+  - enumName: Player_Footstep_03
+    enumValue: 13
+  - enumName: Player_Footstep_04
+    enumValue: 14
+  - enumName: Player_Footstep_09
+    enumValue: 19
+  - enumName: HeadsRolling
+    enumValue: 6
+  - enumName: Sample_Brian_TTS
+    enumValue: 1

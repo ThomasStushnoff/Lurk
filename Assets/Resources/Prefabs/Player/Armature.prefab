@@ -1117,8 +1117,16 @@ MonoBehaviour:
   character: {fileID: 4629173832739338317}
   hudController: {fileID: 0}
   postProcessVolume: {fileID: 0}
-  footstepSounds: 06000000070000000400000009000000
+  footstepSounds: 140000000c00000013000000100000000e000000
+  bloodyFloorSound: 27
   itemHoldTransform: {fileID: 7234661664371438871}
+  cameraHoldTransform: {fileID: 8521530392485833665}
+  onSilhouetteAppear:
+    m_PersistentCalls:
+      m_Calls: []
+  onRoomLightChange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!54 &4084656751358901924
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1918,7 +1926,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5143547784427421084}
   - component: {fileID: 4441312130475201181}
-  - component: {fileID: 5357803608613363444}
   - component: {fileID: 7750958004886996904}
   m_Layer: 0
   m_Name: Main Camera
@@ -1995,14 +2002,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &5357803608613363444
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5743301192628016598}
-  m_Enabled: 1
 --- !u!114 &7750958004886996904
 MonoBehaviour:
   m_ObjectHideFlags: 0

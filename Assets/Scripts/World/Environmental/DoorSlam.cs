@@ -10,7 +10,7 @@ namespace World.Environmental
         private void OnTriggerEnter(Collider other)
         {
             if (!other.IsPlayer() || door == null) return;
-            door.OnSlam?.Invoke();
+            door.onSlam?.Invoke();
             Destroy(gameObject);
         }
     }

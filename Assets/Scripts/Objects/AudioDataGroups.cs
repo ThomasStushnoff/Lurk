@@ -11,6 +11,7 @@ namespace Objects
     public class AudioDataGroups : ScriptableObject
     {
         public List<AudioGroup> groups = new List<AudioGroup>();
+        public List<AudioEnumMapping> enumMappings = new List<AudioEnumMapping>();
     }
 
     [Serializable]
@@ -18,5 +19,12 @@ namespace Objects
     {
         public string groupName;
         public List<AudioData> audioData = new List<AudioData>();
+    }
+    
+    [Serializable]
+    public class AudioEnumMapping
+    {
+        public string enumName;
+        public int enumValue;
     }
 }

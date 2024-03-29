@@ -5,7 +5,7 @@ namespace World
 {
     public abstract class BaseObject : MonoBehaviour, IBaseObject
     {
-        public uint runtimeID;
+        [ReadOnly] public uint runtimeID;
         [HideInInspector] public Animator animator;
         [HideInInspector] public Rigidbody rb;
         [HideInInspector] public AudioSource audioSource;

@@ -1,5 +1,5 @@
-﻿using Managers;
-using Objects;
+﻿using Audio;
+using Managers;
 using UnityEngine;
 
 namespace World.Environmental
@@ -7,7 +7,7 @@ namespace World.Environmental
     [RequireComponent(typeof(AudioSource))]
     public class Sink : MonoBehaviour
     {
-        [SerializeField] private AudioData audioData;
+        [SerializeField] private AudioDataEnumSoundFx soundFx;
         
         private AudioSource _audioSource;
         
@@ -18,7 +18,7 @@ namespace World.Environmental
 
         private void Start()
         {
-            AudioManager.Instance.RegisterAudioSource(_audioSource, audioData);
+            AudioManager.Instance.RegisterAudioSource(_audioSource, soundFx);
         }
     }
 }
