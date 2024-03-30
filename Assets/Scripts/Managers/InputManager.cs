@@ -31,7 +31,6 @@ namespace Managers
         public static InputAction PuzzleRotate => Instance._actions.Puzzle.Rotate;
         public static InputAction PuzzleCancel => Instance._actions.Puzzle.Cancel;
         
-        
         /// <summary>
         /// Special singleton initializer method.
         /// </summary>

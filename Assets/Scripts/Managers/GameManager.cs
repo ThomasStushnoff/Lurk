@@ -9,7 +9,7 @@ namespace Managers
         protected override void OnAwake()
         {
             PrefabManager.Initialize();
-            // AudioManager.Initialize();
+            AudioManager.Initialize();
             InputManager.Initialize();
         }
     }
