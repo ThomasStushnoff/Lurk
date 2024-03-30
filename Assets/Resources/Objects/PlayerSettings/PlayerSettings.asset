@@ -16,8 +16,8 @@ MonoBehaviour:
   vaultDistance: 1
   crouchSpeedMultiplier: 0.5
   sneakSpeedMultiplier: 0.5
-  sneakVolume: 0.5
-  sneakPitch: 0.5
+  standHeight: 2
+  crouchHeight: 1
   mouseSensitivity: 7
   bobFrequency: 3
   bobSpeed: 4
@@ -30,7 +30,7 @@ MonoBehaviour:
   staminaThreshold: 30
   staminaRegenRate: 5
   staminaDrainRate: 5
-  sneakStaminaDrainRate: 4
+  sneakStaminaDrainRate: 3
   crouchStaminaRegenRate: 10
   vaultStaminaCost: 5
   interactDistance: 2
@@ -62,3 +62,7 @@ MonoBehaviour:
   bloodyFloor:
     serializedVersion: 2
     m_Bits: 8192
+  footstepSounds: 0b0000000c0000000d0000000e0000000f0000001000000011000000120000001300000014000000
+  bloodyFloorSound: 27
+  sneakVolume: 0.5
+  sneakPitch: 0.5

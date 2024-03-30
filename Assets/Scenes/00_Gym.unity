@@ -3804,41 +3804,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1965611848295120, guid: b2287e33f6bf454458f34ddf74ccda7c,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1062611868}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b2287e33f6bf454458f34ddf74ccda7c, type: 3}
---- !u!1 &1062611867 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1965611848295120, guid: b2287e33f6bf454458f34ddf74ccda7c,
-    type: 3}
-  m_PrefabInstance: {fileID: 1062611866}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1062611868
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1062611867}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee1c0369648047e3b556511bebecfad0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  runtimeID: 0
-  animator: {fileID: 0}
-  rb: {fileID: 0}
-  audioSource: {fileID: 0}
-  openRotation: {x: 0, y: 90, z: 0}
-  closedRotation: {x: 0, y: 0, z: 0}
-  snapSpeed: 4
-  holdDuration: 10
-  isOpen: 0
-  openSoundFx: 0
-  closeSoundFx: 0
 --- !u!1 &1062877281
 GameObject:
   m_ObjectHideFlags: 0

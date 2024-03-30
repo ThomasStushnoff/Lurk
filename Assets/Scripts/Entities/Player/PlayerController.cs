@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Audio;
+﻿using System.Linq;
 using Interfaces;
 using Managers;
 using Objects;
@@ -8,8 +6,6 @@ using StateMachines;
 using UI;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Rendering;
-using UnityEngine.Rendering.HighDefinition;
 using World;
 using Random = UnityEngine.Random;
 
@@ -24,8 +20,6 @@ namespace Entities.Player
         public Transform cameraTransform;
         [SerializeField] private CharacterController character;
         [SerializeField] private HUDController hudController;
-        [SerializeField] private List<AudioDataEnumSoundFx> footstepSounds;
-        [SerializeField] private AudioDataEnumSoundFx bloodyFloorSound;
         public Transform itemHoldTransform;
         public Transform cameraHoldTransform;
 
@@ -83,6 +77,8 @@ namespace Entities.Player
             CurrentSanity = settings.maxSanity;
 
             _defaultCameraLocalPosition = cameraTransform.localPosition;
+            
+            character.height = settings.standHeight;
         }
         
         private void Update()
@@ -200,8 +196,10 @@ namespace Entities.Player
             if (InputManager.Crouch.WasPressedThisFrame())
             {
                 _isCrouching = !_isCrouching;
-                // character.height = _isCrouching ? 1 : 2; // To be removed.
-                currentSpeed *= _isCrouching ? settings.crouchSpeedMultiplier : 1;
+                // TODO: Adjust this if we're having animations
+                character.height = _isCrouching ? Mathf.Lerp(character.height, settings.crouchHeight, 0.5f) : 
+                    Mathf.Lerp(character.height, settings.standHeight, 0.5f);
+                currentSpeed *= _isCrouching ? settings.crouchSpeedMultiplier : 1.0f;
             }
 
             // Sneaking.
@@ -312,8 +310,8 @@ namespace Entities.Player
             var pitch = isSneaking ? settings.sneakPitch : 1.0f;
             
             // Randomize the footstep sound.
-            var randomIndex = Random.Range(0, footstepSounds.Count);
-            var footstepSound = IsFloorBloody() ? bloodyFloorSound : footstepSounds.ElementAt(randomIndex);
+            var randomIndex = Random.Range(0, settings.footstepSounds.Count);
+            var footstepSound = IsFloorBloody() ? settings.bloodyFloorSound : settings.footstepSounds.ElementAt(randomIndex);
             if (!audioSource.isPlaying)
             {
                 audioSource.PlaySoundFx(footstepSound);

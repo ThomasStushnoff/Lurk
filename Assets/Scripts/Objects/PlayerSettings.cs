@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using Audio;
+using UnityEngine;
 
 namespace Objects
 {
@@ -10,20 +12,21 @@ namespace Objects
         public float vaultDistance = 1.0f;
         public float crouchSpeedMultiplier  = 0.5f;
         public float sneakSpeedMultiplier = 0.5f;
-        [Range(0.0f, 1.0f)]
-        public float sneakVolume = 0.5f;
-        [Range(0.0f, 1.0f)]
-        public float sneakPitch = 0.5f;
+        public float standHeight = 2.0f;
+        public float crouchHeight = 1.0f;
+        
         [TitleHeader("Camera")]
         public float mouseSensitivity = 20.0f;
         public float bobFrequency = 5.0f;
         public float bobSpeed = 10.0f;
         public float bobAmountX = 0.005f;
         public float bobAmountY = 0.05f;
+        
         [TitleHeader("Sanity")]
         public float maxSanity = 100.0f;
         public float panicThreshold = 30.0f;
         public float sanityDrainRate = 10.0f;
+        
         [TitleHeader("Stamina")]
         public float maxStamina = 100.0f;
         public float staminaThreshold = 30.0f;
@@ -32,13 +35,16 @@ namespace Objects
         public float sneakStaminaDrainRate = 4.0f;
         public float crouchStaminaRegenRate = 10.0f;
         public float vaultStaminaCost = 5.0f;
+        
         [TitleHeader("Interaction")]
         public float interactDistance = 2.0f;
         public float interactDropDistance = 2.0f;
         public float inspectDistance = 5.0f;
         public float inspectRotationSpeed = 0.5f;
+        
         [TitleHeader("Enemy Detection")]
         public float detectionRadius = 10.0f;
+        
         [TitleHeader("Layers")]
         public LayerMask ground;
         public LayerMask inspectable;
@@ -48,5 +54,13 @@ namespace Objects
         public LayerMask enemy;
         public LayerMask environment;
         public LayerMask bloodyFloor;
+        
+        [TitleHeader("Audio")]
+        public List<AudioDataEnumSoundFx> footstepSounds;
+        public AudioDataEnumSoundFx bloodyFloorSound;
+        [Range(0.0f, 1.0f)]
+        public float sneakVolume = 0.5f;
+        [Range(0.0f, 1.0f)]
+        public float sneakPitch = 0.5f;
     }
 }
