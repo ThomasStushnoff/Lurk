@@ -24,7 +24,6 @@ namespace Entities.Player
         public Transform cameraTransform;
         [SerializeField] private CharacterController character;
         [SerializeField] private HUDController hudController;
-        [SerializeField] private Volume postProcessVolume;
         [SerializeField] private List<AudioDataEnumSoundFx> footstepSounds;
         [SerializeField] private AudioDataEnumSoundFx bloodyFloorSound;
         public Transform itemHoldTransform;
@@ -49,7 +48,6 @@ namespace Entities.Player
         private GameObject _inspectingObject;
         private Vector3 _objOriginalPosition;
         private Quaternion _objOriginalRotation;
-        private DepthOfField _depthOfField;
         private BaseState<IBaseEntity> _currentState;
         private Vector3 _defaultCameraLocalPosition;
         private Vector3 _lastCameraPosition;
@@ -101,8 +99,6 @@ namespace Entities.Player
             HandlePuzzleInteractions();
             
             CheckGrounded();
-            
-            postProcessVolume.profile.TryGet<DepthOfField>(out _depthOfField);
         }
 
         private void LateUpdate()
@@ -461,12 +457,6 @@ namespace Entities.Player
             
             _inspectingObject.transform.position = cameraTransform.position + cameraTransform.forward * settings.inspectDistance;
             _inspectingObject.transform.rotation = Quaternion.identity;
-
-            if (_depthOfField)
-            {
-                _depthOfField.active = true;
-                // _depthOfField.focusDistance.SetValue();
-            }
             
             _isInspecting = true;
         }
@@ -476,8 +466,6 @@ namespace Entities.Player
             if (_inspectingObject == null) return;
             _inspectingObject.transform.position = _objOriginalPosition;
             _inspectingObject.transform.rotation = _objOriginalRotation;
-            
-            if (_depthOfField) _depthOfField.active = false;
             
             _isInspecting = false;
             _inspectingObject = null;

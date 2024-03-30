@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 33845642794702356}
   - component: {fileID: 23979419067896328}
   - component: {fileID: 65212045330628334}
-  m_Layer: 0
+  - component: {fileID: 8368944595792323187}
+  m_Layer: 8
   m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,3 +106,29 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.0028172, y: 1.9668593, z: 0.0970726}
   m_Center: {x: -0.500005, y: 0.9834297, z: -0.002076149}
+--- !u!114 &8368944595792323187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1965611848295120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee1c0369648047e3b556511bebecfad0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  runtimeID: 0
+  animator: {fileID: 0}
+  rb: {fileID: 0}
+  audioSource: {fileID: 0}
+  openRotation: {x: 0, y: 90, z: 0}
+  closedRotation: {x: 0, y: 0, z: 0}
+  holdDuration: 10
+  isOpen: 0
+  openSoundFx: 0
+  closeSoundFx: 0
+  slamSoundFx: 0
+  onSlam:
+    m_PersistentCalls:
+      m_Calls: []
