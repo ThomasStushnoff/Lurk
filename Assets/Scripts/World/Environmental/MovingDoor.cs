@@ -65,7 +65,10 @@ namespace World.Environmental
             while (t < openTime)
             {
                 t += Time.deltaTime;
-                transform.localPosition = Vector3.Lerp(_closedPosition, openLocalPosition, t / openTime);
+                var openPos = new Vector3(openLocalPosition.x != 0 ? openLocalPosition.x : transform.localPosition.x,
+                    openLocalPosition.y != 0 ? openLocalPosition.y : transform.localPosition.y,
+                    openLocalPosition.z != 0 ? openLocalPosition.z : transform.localPosition.z);
+                transform.localPosition = Vector3.Lerp(_closedPosition, openPos, t / openTime);
                 yield return null;
             }
         }
