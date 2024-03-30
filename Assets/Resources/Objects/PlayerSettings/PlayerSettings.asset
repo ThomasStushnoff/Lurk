@@ -25,11 +25,11 @@ MonoBehaviour:
   bobAmountY: 0.005
   maxSanity: 100
   panicThreshold: 30
-  sanityDrainRate: 10
+  sanityDrainRate: 5
   maxStamina: 100
   staminaThreshold: 30
   staminaRegenRate: 5
-  staminaDrainRate: 10
+  staminaDrainRate: 5
   sneakStaminaDrainRate: 4
   crouchStaminaRegenRate: 10
   vaultStaminaCost: 5
