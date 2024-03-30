@@ -902,7 +902,6 @@ Shader "Amp_PolygonTown_01_A"
 				float2 uv_Metallic = packedInput.ase_texcoord5.xy * _Metallic_ST.xy + _Metallic_ST.zw;
 				
 				float2 uv_Emissive = packedInput.ase_texcoord5.xy * _Emissive_ST.xy + _Emissive_ST.zw;
-				float3 temp_cast_1 = (tex2D( _Emissive, uv_Emissive ).r).xxx;
 				
 				surfaceDescription.BaseColor = tex2D( _BaseColor, uv_BaseColor ).rgb;
 				surfaceDescription.Normal = UnpackNormalScale( tex2D( _Normal, uv_Normal ), 1.0f );
@@ -914,7 +913,7 @@ Shader "Amp_PolygonTown_01_A"
 				surfaceDescription.Specular = 0;
 				#endif
 
-				surfaceDescription.Emission = temp_cast_1;
+				surfaceDescription.Emission = tex2D( _Emissive, uv_Emissive ).rgb;
 				surfaceDescription.Smoothness = 0.5;
 				surfaceDescription.Occlusion = 1;
 				surfaceDescription.Alpha = 1;
@@ -1580,7 +1579,6 @@ Shader "Amp_PolygonTown_01_A"
 				float2 uv_Metallic = packedInput.ase_texcoord2.xy * _Metallic_ST.xy + _Metallic_ST.zw;
 				
 				float2 uv_Emissive = packedInput.ase_texcoord2.xy * _Emissive_ST.xy + _Emissive_ST.zw;
-				float3 temp_cast_1 = (tex2D( _Emissive, uv_Emissive ).r).xxx;
 				
 				surfaceDescription.BaseColor = tex2D( _BaseColor, uv_BaseColor ).rgb;
 				surfaceDescription.Normal = UnpackNormalScale( tex2D( _Normal, uv_Normal ), 1.0f );
@@ -1592,7 +1590,7 @@ Shader "Amp_PolygonTown_01_A"
 				surfaceDescription.Specular = 0;
 				#endif
 
-				surfaceDescription.Emission = temp_cast_1;
+				surfaceDescription.Emission = tex2D( _Emissive, uv_Emissive ).rgb;
 				surfaceDescription.Smoothness = 0.5;
 				surfaceDescription.Occlusion = 1;
 				surfaceDescription.Alpha = 1;
@@ -4812,7 +4810,6 @@ Shader "Amp_PolygonTown_01_A"
 				float2 uv_Metallic = packedInput.ase_texcoord7.xy * _Metallic_ST.xy + _Metallic_ST.zw;
 				
 				float2 uv_Emissive = packedInput.ase_texcoord7.xy * _Emissive_ST.xy + _Emissive_ST.zw;
-				float3 temp_cast_1 = (tex2D( _Emissive, uv_Emissive ).r).xxx;
 				
 				surfaceDescription.BaseColor = tex2D( _BaseColor, uv_BaseColor ).rgb;
 				surfaceDescription.Normal = UnpackNormalScale( tex2D( _Normal, uv_Normal ), 1.0f );
@@ -4824,7 +4821,7 @@ Shader "Amp_PolygonTown_01_A"
 				surfaceDescription.Specular = 0;
 				#endif
 
-				surfaceDescription.Emission = temp_cast_1;
+				surfaceDescription.Emission = tex2D( _Emissive, uv_Emissive ).rgb;
 				surfaceDescription.Smoothness = 0.5;
 				surfaceDescription.Occlusion = 1;
 				surfaceDescription.Alpha = 1;
@@ -5707,9 +5704,9 @@ Shader "Amp_PolygonTown_01_A"
 /*ASEBEGIN
 Version=19302
 Node;AmplifyShaderEditor.SamplerNode;12;-466.5,78;Inherit;True;Property;_Normal;Normal;1;0;Create;True;0;0;0;False;0;False;-1;f19d91fb55c31f3489e749e808679b35;f19d91fb55c31f3489e749e808679b35;True;0;True;bump;Auto;True;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.SamplerNode;11;-454.5,-110;Inherit;True;Property;_BaseColor;Base Color;0;0;Create;True;0;0;0;False;0;False;-1;a21aba4b248900647a5c6c3e84de1ea7;a21aba4b248900647a5c6c3e84de1ea7;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.SamplerNode;14;-480.644,257.0167;Inherit;True;Property;_Metallic;Metallic;3;0;Create;True;0;0;0;False;0;False;-1;414d49db8a9dc1b4c884ddcd07bfa01f;414d49db8a9dc1b4c884ddcd07bfa01f;True;0;False;black;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SamplerNode;13;-475.5,506;Inherit;True;Property;_Emissive;Emissive;2;0;Create;True;0;0;0;False;0;False;-1;efa34d710ef93124aa8baa1a8e6708d0;efa34d710ef93124aa8baa1a8e6708d0;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.SamplerNode;14;-534.644,268.0167;Inherit;True;Property;_Metallic;Metallic;3;0;Create;True;0;0;0;False;0;False;-1;414d49db8a9dc1b4c884ddcd07bfa01f;414d49db8a9dc1b4c884ddcd07bfa01f;True;0;False;black;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.SamplerNode;11;-454.5,-110;Inherit;True;Property;_BaseColor;Base Color;0;0;Create;True;0;0;0;False;0;False;-1;a21aba4b248900647a5c6c3e84de1ea7;a21aba4b248900647a5c6c3e84de1ea7;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;0;0,0;Float;False;True;-1;2;Rendering.HighDefinition.LightingShaderGraphGUI;0;12;Amp_PolygonTown_01_A;53b46d85872c5b24c8f4f0a1c3fe4c87;True;GBuffer;0;0;GBuffer;34;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_CullMode;False;True;True;True;True;True;0;True;_LightLayersMaskBuffer4;False;False;False;False;False;False;False;True;True;0;True;_StencilRefGBuffer;255;False;;255;True;_StencilWriteMaskGBuffer;7;False;;3;False;;0;False;;0;False;;7;False;;3;False;;0;False;;0;False;;False;False;True;0;True;_ZTestGBuffer;False;True;1;LightMode=GBuffer;False;False;0;;0;0;Standard;37;Surface Type;0;0;  Rendering Pass;1;0;  Refraction Model;0;0;    Blending Mode;0;0;    Blend Preserves Specular;1;0;  Back Then Front Rendering;0;0;  Transparent Depth Prepass;0;0;  Transparent Depth Postpass;0;0;  ZWrite;0;0;  Z Test;4;0;Double-Sided;0;0;Alpha Clipping;0;0;  Use Shadow Threshold;0;0;Material Type,InvertActionOnDeselection;0;0;  Energy Conserving Specular;1;0;  Transmission,InvertActionOnDeselection;0;0;Receive Decals;1;0;Receive SSR;1;0;Receive SSR Transparent;0;0;Motion Vectors;1;0;  Add Precomputed Velocity;0;0;Specular AA;0;0;Specular Occlusion Mode;1;0;Override Baked GI;0;0;Depth Offset;0;0;GPU Instancing;1;0;LOD CrossFade;0;0;Tessellation;0;0;  Phong;0;0;  Strength;0.5,False,;0;  Type;0;0;  Tess;16,False,;0;  Min;10,False,;0;  Max;25,False,;0;  Edge Length;16,False,;0;  Max Displacement;25,False,;0;Vertex Position;1;0;0;11;True;True;True;True;True;True;False;False;False;True;True;False;;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;1;0,0;Float;False;False;-1;2;Rendering.HighDefinition.LightingShaderGraphGUI;0;1;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;META;0;1;META;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;2;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=Meta;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;2;0,0;Float;False;False;-1;2;Rendering.HighDefinition.LightingShaderGraphGUI;0;1;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;ShadowCaster;0;2;ShadowCaster;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;True;7;d3d11;metal;vulkan;xboxone;xboxseries;playstation;switch;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_CullMode;False;True;False;False;False;False;0;False;;False;False;False;False;False;False;False;False;False;True;1;False;;True;3;False;;False;True;1;LightMode=ShadowCaster;False;False;0;;0;0;Standard;0;False;0
@@ -5724,6 +5721,6 @@ Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;10;0,0;Float;False;False;-1
 WireConnection;0;0;11;0
 WireConnection;0;1;12;0
 WireConnection;0;4;14;1
-WireConnection;0;6;13;1
+WireConnection;0;6;13;0
 ASEEND*/
-//CHKSM=3183B9CADD0D0C7FB1465FEF686CC851FA680865
+//CHKSM=E3C8D44513C41A942AA3CE35B4DAF2FA6304B199
