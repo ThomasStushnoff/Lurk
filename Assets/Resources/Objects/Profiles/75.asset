@@ -18,13 +18,74 @@ MonoBehaviour:
     m_Value: 3
   intensity:
     m_OverrideState: 1
-    m_Value: 0.6
+    m_Value: 0.7
   response:
     m_OverrideState: 1
-    m_Value: 0.6
+    m_Value: 0.7
   texture:
     m_OverrideState: 1
     m_Value: {fileID: 0}
+--- !u!114 &-2945733024916069204
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaa3b8214f75b354e9ba2caadd022259, type: 3}
+  m_Name: DepthOfField
+  m_EditorClassIdentifier: 
+  active: 0
+  quality:
+    m_OverrideState: 1
+    m_Value: 2
+  focusMode:
+    m_OverrideState: 1
+    m_Value: 1
+  focusDistance:
+    m_OverrideState: 0
+    m_Value: 10
+  focusDistanceMode:
+    m_OverrideState: 1
+    m_Value: 1
+  nearFocusStart:
+    m_OverrideState: 0
+    m_Value: 0
+  nearFocusEnd:
+    m_OverrideState: 0
+    m_Value: 4
+  farFocusStart:
+    m_OverrideState: 0
+    m_Value: 10
+  farFocusEnd:
+    m_OverrideState: 0
+    m_Value: 20
+  m_NearSampleCount:
+    m_OverrideState: 1
+    m_Value: 8
+  m_NearMaxBlur:
+    m_OverrideState: 1
+    m_Value: 7
+  m_FarSampleCount:
+    m_OverrideState: 1
+    m_Value: 14
+  m_FarMaxBlur:
+    m_OverrideState: 1
+    m_Value: 13
+  m_Resolution:
+    m_OverrideState: 1
+    m_Value: 1
+  m_HighQualityFiltering:
+    m_OverrideState: 1
+    m_Value: 1
+  m_PhysicallyBased:
+    m_OverrideState: 1
+    m_Value: 0
+  m_LimitManualRangeNearBlur:
+    m_OverrideState: 1
+    m_Value: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35,12 +96,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
-  m_Name: 100
+  m_Name: 75
   m_EditorClassIdentifier: 
   components:
   - {fileID: 1126017972306497681}
   - {fileID: -4421774150933159760}
-  - {fileID: 4060731167749811657}
+  - {fileID: 3376758755554778763}
+  - {fileID: -2945733024916069204}
 --- !u!114 &1126017972306497681
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -65,10 +127,10 @@ MonoBehaviour:
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.25
+    m_Value: 0.3
   smoothness:
     m_OverrideState: 1
-    m_Value: 0.25
+    m_Value: 0.3
   roundness:
     m_OverrideState: 1
     m_Value: 1
@@ -81,7 +143,7 @@ MonoBehaviour:
   opacity:
     m_OverrideState: 1
     m_Value: 1
---- !u!114 &4060731167749811657
+--- !u!114 &3376758755554778763
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -95,17 +157,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   active: 1
   postExposure:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
   contrast:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
   colorFilter:
-    m_OverrideState: 0
-    m_Value: {r: 1, g: 1, b: 1, a: 1}
+    m_OverrideState: 1
+    m_Value: {r: 1.7411011, g: 1.7411011, b: 1.7411011, a: 1}
   hueShift:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
   saturation:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0

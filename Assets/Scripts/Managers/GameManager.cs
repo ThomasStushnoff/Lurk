@@ -1,4 +1,4 @@
-using Entities.Player;
+using Controllers;
 
 namespace Managers
 {

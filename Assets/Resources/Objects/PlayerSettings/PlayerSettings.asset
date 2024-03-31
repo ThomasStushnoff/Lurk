@@ -26,24 +26,12 @@ MonoBehaviour:
   maxSanity: 100
   panicThreshold: 30
   sanityDrainRate: 5
-  sanityProfiles:
-    keys:
-    - 100
-    - 75
-    - 50
-    - 25
-    - 0
-    values:
-    - {fileID: 11400000, guid: d550bb4f6e2af7248b1c30311d1db3fe, type: 2}
-    - {fileID: 11400000, guid: a26750196224ed744a44be9ada8b24eb, type: 2}
-    - {fileID: 11400000, guid: 3ab0662d42b4adf42b762f6b7e4c495e, type: 2}
-    - {fileID: 11400000, guid: c2d649f1a0d62c44da54441d844b9257, type: 2}
-    - {fileID: 11400000, guid: 725cfebe764d55f44b7f685714727788, type: 2}
   sanityProfile100: {fileID: 11400000, guid: d550bb4f6e2af7248b1c30311d1db3fe, type: 2}
   sanityProfile75: {fileID: 11400000, guid: a26750196224ed744a44be9ada8b24eb, type: 2}
   sanityProfile50: {fileID: 11400000, guid: 3ab0662d42b4adf42b762f6b7e4c495e, type: 2}
   sanityProfile25: {fileID: 11400000, guid: c2d649f1a0d62c44da54441d844b9257, type: 2}
-  sanityProfile0: {fileID: 11400000, guid: 725cfebe764d55f44b7f685714727788, type: 2}
+  sanityProfile10: {fileID: 0}
+  profileInterpolationSpeed: 1
   maxStamina: 100
   staminaThreshold: 30
   staminaRegenRate: 5

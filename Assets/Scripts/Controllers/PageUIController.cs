@@ -1,11 +1,9 @@
-﻿using Entities.Player;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using Managers;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using World.Environmental;
-
-namespace UI
+namespace Controllers
 {
     public class PageUIController : MonoBehaviour
     {

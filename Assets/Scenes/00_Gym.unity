@@ -4594,9 +4594,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4944875375261635232, guid: fc6704a308d8ab742bc36e52d23886cb,
         type: 3}
+      propertyPath: weight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4944875375261635232, guid: fc6704a308d8ab742bc36e52d23886cb,
+        type: 3}
+      propertyPath: m_IsGlobal
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4944875375261635232, guid: fc6704a308d8ab742bc36e52d23886cb,
+        type: 3}
       propertyPath: sharedProfile
       value: 
-      objectReference: {fileID: 11400000, guid: a26750196224ed744a44be9ada8b24eb,
+      objectReference: {fileID: 11400000, guid: d550bb4f6e2af7248b1c30311d1db3fe,
         type: 2}
     - target: {fileID: 8242924634194976746, guid: fc6704a308d8ab742bc36e52d23886cb,
         type: 3}
@@ -8405,7 +8415,7 @@ PrefabInstance:
     - target: {fileID: 2843650850091560655, guid: 5e7dc3e9651cdab49867346392efbb67,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 1.516
       objectReference: {fileID: 0}
     - target: {fileID: 2843650850091560655, guid: 5e7dc3e9651cdab49867346392efbb67,
         type: 3}
@@ -8472,6 +8482,11 @@ PrefabInstance:
       propertyPath: postProcessVolume
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6884615145944695855, guid: 5e7dc3e9651cdab49867346392efbb67,
+        type: 3}
+      propertyPath: globalVolume
+      value: 
+      objectReference: {fileID: 716212823}
     - target: {fileID: 7886310759940036460, guid: 5e7dc3e9651cdab49867346392efbb67,
         type: 3}
       propertyPath: m_IsActive

@@ -1050,6 +1050,7 @@ GameObject:
   - component: {fileID: 1434787438545437569}
   - component: {fileID: 4629173832739338317}
   - component: {fileID: 6330723874676146979}
+  - component: {fileID: 6884615145944695855}
   - component: {fileID: 4084656751358901924}
   - component: {fileID: 8451217339609819377}
   m_Layer: 3
@@ -1148,16 +1149,23 @@ MonoBehaviour:
   cameraTransform: {fileID: 5143547784427421084}
   character: {fileID: 4629173832739338317}
   hudController: {fileID: 0}
-  footstepSounds: 140000000c00000013000000100000000e000000
-  bloodyFloorSound: 27
   itemHoldTransform: {fileID: 7234661664371438871}
   cameraHoldTransform: {fileID: 8521530392485833665}
-  onSilhouetteAppear:
-    m_PersistentCalls:
-      m_Calls: []
-  onRoomLightChange:
-    m_PersistentCalls:
-      m_Calls: []
+  <CurrentSanity>k__BackingField: 0
+--- !u!114 &6884615145944695855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3098255118454604677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 535edcdd03da4391b96640b70133dace, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  globalVolume: {fileID: 0}
+  transitionTime: 2
 --- !u!54 &4084656751358901924
 Rigidbody:
   m_ObjectHideFlags: 0

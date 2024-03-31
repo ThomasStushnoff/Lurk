@@ -27,14 +27,14 @@ namespace Objects
         public float maxSanity = 100.0f;
         public float panicThreshold = 30.0f;
         public float sanityDrainRate = 10.0f;
-        
+
         [TitleHeader("Sanity Effects")]
-        // public UDictionary<float, VolumeProfile> sanityProfiles;
         public VolumeProfile sanityProfile100;
         public VolumeProfile sanityProfile75;
         public VolumeProfile sanityProfile50;
         public VolumeProfile sanityProfile25;
-        public VolumeProfile sanityProfile0;
+        public VolumeProfile sanityProfile10;
+        public float profileInterpolationSpeed = 2.0f;
         
         [TitleHeader("Stamina")]
         public float maxStamina = 100.0f;

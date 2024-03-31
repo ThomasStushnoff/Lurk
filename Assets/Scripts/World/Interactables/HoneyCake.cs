@@ -1,6 +1,6 @@
 ﻿using Audio;
+using Controllers;
 using Entities;
-using Entities.Player;
 using Interfaces;
 using JetBrains.Annotations;
 using UnityEngine;

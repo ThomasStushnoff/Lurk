@@ -1,18 +1,18 @@
 ﻿using System.Linq;
+using Entities;
 using Interfaces;
 using JetBrains.Annotations;
 using Managers;
 using Objects;
 using StateMachines;
-using UI;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.Rendering;
+using UnityEngine.Rendering.HighDefinition;
 using World;
 using Random = UnityEngine.Random;
 
 // TODO: REFACTOR AND USE FSM
-namespace Entities.Player
+namespace Controllers
 {
     public class PlayerController : BaseEntity
     {
@@ -22,15 +22,14 @@ namespace Entities.Player
         public Transform cameraTransform;
         [SerializeField] private CharacterController character;
         [SerializeField, NotNull] private HUDController hudController;
-        [SerializeField, NotNull] private Volume globalVolume;
+
         public Transform itemHoldTransform;
         public Transform cameraHoldTransform;
-
-        public UnityEvent onSilhouetteAppear;
-        public UnityEvent onRoomLightChange;
+        // public UnityEvent onSilhouetteAppear;
+        // public UnityEvent onRoomLightChange;
         
         private float CurrentStamina { get; set; }
-        public float CurrentSanity { get; set; }
+        [field: SerializeField] public float CurrentSanity { get; set; }
         
         private bool _onGround;
         private float _xRotation;
@@ -50,7 +49,7 @@ namespace Entities.Player
         private Vector3 _lastCameraPosition;
         private Quaternion _lastCameraRotation;
         private IInteractable _interactable;
-
+        
         protected override void Awake()
         {
             base.Awake();
@@ -60,9 +59,6 @@ namespace Entities.Player
             
             if (hudController == null)
                 Debug.LogError("HUDController is not assigned!");
-            
-            if (globalVolume == null)
-                Debug.LogError("Global Volume is not assigned!");
         }
         
         private void Start()
@@ -100,7 +96,6 @@ namespace Entities.Player
             HandleVault();
             HandleStamina();
             HandleSanity();
-            HandleSanityEffects();
             if (_isInspecting) RotateInspectingObject();
             HandlePuzzleInteractions();
             
@@ -292,29 +287,6 @@ namespace Entities.Player
             }
         }
 
-        private void HandleSanityEffects()
-        {
-            var sanityPercentage = CurrentSanity / settings.maxSanity * 100.0f;
-            // foreach (var (key, value) in settings.sanityProfiles.OrderByDescending(x => x.Key))
-            // {
-            //     if (sanityPercentage <= key)
-            //     {
-            //         Debug.Log($"Sanity Profile: {value}, Sanity Percentage: {sanityPercentage}");
-            //         globalVolume.profile = value;
-            //         break;
-            //     }
-            // }
-            globalVolume.profile = sanityPercentage switch
-            {
-                <= 100 and > 75 => settings.sanityProfile100,
-                <= 75 and > 50 => settings.sanityProfile75,
-                <= 50 and > 25 => settings.sanityProfile50,
-                <= 25 and > 0 => settings.sanityProfile25,
-                <= 0 => settings.sanityProfile0,
-                _ => globalVolume.profile
-            };
-        }
-
         public void UpdateSanity(float value) => CurrentSanity += value;
 
         public static void EnableCursor()
@@ -365,8 +337,6 @@ namespace Entities.Player
             // 4. The enemy will then move towards the player and do the deed.
         }
         
-        
-
         private void BeginInteractions()
         {
             // TODO:
