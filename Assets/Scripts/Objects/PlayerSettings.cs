@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Audio;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Objects
 {
@@ -26,6 +27,14 @@ namespace Objects
         public float maxSanity = 100.0f;
         public float panicThreshold = 30.0f;
         public float sanityDrainRate = 10.0f;
+        
+        [TitleHeader("Sanity Effects")]
+        // public UDictionary<float, VolumeProfile> sanityProfiles;
+        public VolumeProfile sanityProfile100;
+        public VolumeProfile sanityProfile75;
+        public VolumeProfile sanityProfile50;
+        public VolumeProfile sanityProfile25;
+        public VolumeProfile sanityProfile0;
         
         [TitleHeader("Stamina")]
         public float maxStamina = 100.0f;

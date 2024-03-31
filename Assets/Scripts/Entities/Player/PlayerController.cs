@@ -1,11 +1,13 @@
 ﻿using System.Linq;
 using Interfaces;
+using JetBrains.Annotations;
 using Managers;
 using Objects;
 using StateMachines;
 using UI;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Rendering;
 using World;
 using Random = UnityEngine.Random;
 
@@ -19,7 +21,8 @@ namespace Entities.Player
         [SerializeField] private Transform groundCheck;
         public Transform cameraTransform;
         [SerializeField] private CharacterController character;
-        [SerializeField] private HUDController hudController;
+        [SerializeField, NotNull] private HUDController hudController;
+        [SerializeField, NotNull] private Volume globalVolume;
         public Transform itemHoldTransform;
         public Transform cameraHoldTransform;
 
@@ -54,6 +57,12 @@ namespace Entities.Player
             
             if (GameManager.Instance.localPlayer == null)
                 GameManager.Instance.localPlayer = this;
+            
+            if (hudController == null)
+                Debug.LogError("HUDController is not assigned!");
+            
+            if (globalVolume == null)
+                Debug.LogError("Global Volume is not assigned!");
         }
         
         private void Start()
@@ -91,6 +100,7 @@ namespace Entities.Player
             HandleVault();
             HandleStamina();
             HandleSanity();
+            HandleSanityEffects();
             if (_isInspecting) RotateInspectingObject();
             HandlePuzzleInteractions();
             
@@ -280,6 +290,30 @@ namespace Entities.Player
                 // AudioManager.Instance.PlayOneShotAudio();
                 // Restart the level.
             }
+        }
+
+        private void HandleSanityEffects()
+        {
+            var sanityPercentage = CurrentSanity / settings.maxSanity * 100.0f;
+            // foreach (var (key, value) in settings.sanityProfiles.OrderByDescending(x => x.Key))
+            // {
+            //     if (sanityPercentage <= key)
+            //     {
+            //         Debug.Log($"Sanity Profile: {value}, Sanity Percentage: {sanityPercentage}");
+            //         globalVolume.profile = value;
+            //         break;
+            //     }
+            // }
+            Debug.Log($"Sanity Percentage: {sanityPercentage}");
+            globalVolume.profile = sanityPercentage switch
+            {
+                <= 100 and > 75 => settings.sanityProfile100,
+                <= 75 and > 50 => settings.sanityProfile75,
+                <= 50 and > 25 => settings.sanityProfile50,
+                <= 25 and > 0 => settings.sanityProfile25,
+                <= 0 => settings.sanityProfile0,
+                _ => globalVolume.profile
+            };
         }
 
         public void UpdateSanity(float value) => CurrentSanity += value;
