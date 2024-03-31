@@ -3,18 +3,22 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
 
+// WIP
 namespace Controllers
 {
     public class VolumeProfileController : MonoBehaviour
     {
         [SerializeField, NotNull] private Volume globalVolume;
         [SerializeField] private float transitionTime = 2.0f;
+        [ReadOnly] public bool isNightVisionActive;
         
         private PlayerController _player;
         private VolumeProfile _tempProfile;
+        private VolumeProfile _nightVisionProfile;
         private VolumeProfile _targetProfile;
         private bool _isTransitioning;
         private float _timeElapsed;
+        private bool _didSwitchProfile; // It's 5am I can't think of a better way lol.
         
         private void Awake()
         {
@@ -26,32 +30,55 @@ namespace Controllers
 
         private void Start()
         {
+            // Create a temporary profile to store the interpolated values.
             _tempProfile = ScriptableObject.CreateInstance<VolumeProfile>();
+            _tempProfile.name = "Temp Profile";
             CopyProfile(_player.settings.sanityProfile100, _tempProfile);
             _targetProfile = _tempProfile;
             globalVolume.profile = _tempProfile;
+            
+            // Create a night vision profile. This is a separate profile that will be used when the player equips the night vision.
+            _nightVisionProfile = ScriptableObject.CreateInstance<VolumeProfile>();
+            _nightVisionProfile.name = "Night Vision Profile";
+            CopyProfile(_player.settings.nightVisionProfile, _nightVisionProfile);
         }
 
         private void Update()
         {
-            if (_isTransitioning)
+            if (isNightVisionActive)
             {
-                _timeElapsed += Time.deltaTime;
-                var t = Mathf.Clamp01(_timeElapsed / transitionTime);
-                InterpolateProfile(_tempProfile, _targetProfile, t);
-
-                if (t >= 1f)
-                    _isTransitioning = false;
+                globalVolume.profile = _nightVisionProfile;
+                _didSwitchProfile = true;
             }
             else
             {
-                HandleVolumeEffects();
+                if (_didSwitchProfile)
+                {
+                    // EZ.
+                    globalVolume.profile = _tempProfile;
+                    _didSwitchProfile = false;
+                }
+                
+                if (_isTransitioning)
+                {
+                    _timeElapsed += Time.deltaTime;
+                    var t = Mathf.Clamp01(_timeElapsed / transitionTime);
+                    InterpolateProfile(_tempProfile, _targetProfile, t);
+                    
+                    if (t >= 1f)
+                        _isTransitioning = false;
+                }
+                else
+                {
+                    HandleVolumeEffects();
+                }
             }
         }
 
         private void OnDestroy()
         {
             CleanUpProfile(_tempProfile);
+            CleanUpProfile(_nightVisionProfile);
         }
 
         private void HandleVolumeEffects()
@@ -75,39 +102,47 @@ namespace Controllers
             }
         }
 
-        private void InterpolateProfile(VolumeProfile from, VolumeProfile to, float t)
+        /// <summary>
+        /// Interpolates the values of the given profiles.
+        /// </summary>
+        /// <param name="from">The profile to interpolate from.</param>
+        /// <param name="to">The profile to interpolate to.</param>
+        /// <param name="t">The interpolation value.</param>
+        private static void InterpolateProfile(VolumeProfile from, VolumeProfile to, float t)
         {
             if (from.TryGet<Vignette>(out var fromVignette) && to.TryGet<Vignette>(out var toVignette))
             {
-                _tempProfile.TryGet<Vignette>(out var tempVignette);
-                tempVignette.mode.value = fromVignette.mode.value;
-                tempVignette.color.Interp(fromVignette.color.value, toVignette.color.value, t);
-                tempVignette.center.Interp(fromVignette.center.value, toVignette.center.value, t);
-                tempVignette.intensity.Interp(fromVignette.intensity.value, toVignette.intensity.value, t);
-                tempVignette.smoothness.Interp(fromVignette.smoothness.value, toVignette.smoothness.value, t);
-                tempVignette.roundness.Interp(fromVignette.roundness.value, toVignette.roundness.value, t);
-                tempVignette.rounded.value = fromVignette.rounded.value;
+                fromVignette.mode.value = fromVignette.mode.value;
+                fromVignette.color.Interp(fromVignette.color.value, toVignette.color.value, t);
+                fromVignette.center.Interp(fromVignette.center.value, toVignette.center.value, t);
+                fromVignette.intensity.Interp(fromVignette.intensity.value, toVignette.intensity.value, t);
+                fromVignette.smoothness.Interp(fromVignette.smoothness.value, toVignette.smoothness.value, t);
+                fromVignette.roundness.Interp(fromVignette.roundness.value, toVignette.roundness.value, t);
+                fromVignette.rounded.value = fromVignette.rounded.value;
             }
             
             if (from.TryGet<FilmGrain>(out var fromFilmGrain) && to.TryGet<FilmGrain>(out var toFilmGrain))
             {
-                _tempProfile.TryGet<FilmGrain>(out var tempFilmGrain);
-                tempFilmGrain.type.value = fromFilmGrain.type.value;
-                tempFilmGrain.intensity.Interp(fromFilmGrain.intensity.value, toFilmGrain.intensity.value, t);
-                tempFilmGrain.response.Interp(fromFilmGrain.response.value, toFilmGrain.response.value, t);
+                fromFilmGrain.type.value = fromFilmGrain.type.value;
+                fromFilmGrain.intensity.Interp(fromFilmGrain.intensity.value, toFilmGrain.intensity.value, t);
+                fromFilmGrain.response.Interp(fromFilmGrain.response.value, toFilmGrain.response.value, t);
             }
             
             if (from.TryGet<ColorAdjustments>(out var fromColor) && to.TryGet<ColorAdjustments>(out var toColor))
             {
-                _tempProfile.TryGet<ColorAdjustments>(out var tempColor);
-                tempColor.postExposure.Interp(fromColor.postExposure.value, toColor.postExposure.value, t);
-                tempColor.contrast.Interp(fromColor.contrast.value, toColor.contrast.value, t);
-                tempColor.colorFilter.Interp(fromColor.colorFilter.value, toColor.colorFilter.value, t);
-                tempColor.hueShift.Interp(fromColor.hueShift.value, toColor.hueShift.value, t);
-                tempColor.saturation.Interp(fromColor.saturation.value, toColor.saturation.value, t);
+                fromColor.postExposure.Interp(fromColor.postExposure.value, toColor.postExposure.value, t);
+                fromColor.contrast.Interp(fromColor.contrast.value, toColor.contrast.value, t);
+                fromColor.colorFilter.Interp(fromColor.colorFilter.value, toColor.colorFilter.value, t);
+                fromColor.hueShift.Interp(fromColor.hueShift.value, toColor.hueShift.value, t);
+                fromColor.saturation.Interp(fromColor.saturation.value, toColor.saturation.value, t);
             }
         }
         
+        /// <summary>
+        /// Copies the values of the given profile to another profile.
+        /// </summary>
+        /// <param name="from">The profile to copy from.</param>
+        /// <param name="to">The profile to copy to.</param>
         private static void CopyProfile(VolumeProfile from, VolumeProfile to)
         {
             if (from.TryGet<Vignette>(out var fromVignette))
@@ -144,6 +179,10 @@ namespace Controllers
             }
         }
         
+        /// <summary>
+        /// Cleans up the given profile.
+        /// </summary>
+        /// <param name="profile">The profile to clean up.</param>
         private static void CleanUpProfile(VolumeProfile profile)
         {
             if (profile != null)

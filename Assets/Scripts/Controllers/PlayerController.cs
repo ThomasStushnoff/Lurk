@@ -6,8 +6,6 @@ using Managers;
 using Objects;
 using StateMachines;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.Rendering.HighDefinition;
 using World;
 using Random = UnityEngine.Random;
 
@@ -22,9 +20,7 @@ namespace Controllers
         public Transform cameraTransform;
         [SerializeField] private CharacterController character;
         [SerializeField, NotNull] private HUDController hudController;
-
         public Transform itemHoldTransform;
-        public Transform cameraHoldTransform;
         // public UnityEvent onSilhouetteAppear;
         // public UnityEvent onRoomLightChange;
         

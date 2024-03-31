@@ -28,13 +28,13 @@ namespace Objects
         public float panicThreshold = 30.0f;
         public float sanityDrainRate = 10.0f;
 
-        [TitleHeader("Sanity Effects")]
+        [TitleHeader("Volume Profiles")]
         public VolumeProfile sanityProfile100;
         public VolumeProfile sanityProfile75;
         public VolumeProfile sanityProfile50;
         public VolumeProfile sanityProfile25;
         public VolumeProfile sanityProfile10;
-        public float profileInterpolationSpeed = 2.0f;
+        public VolumeProfile nightVisionProfile;
         
         [TitleHeader("Stamina")]
         public float maxStamina = 100.0f;

@@ -123,6 +123,19 @@ namespace Managers
             PuzzleCancel.Enable();
         }
         
+        /// <summary>
+        /// Checks if all movement input is enabled.
+        /// </summary>
         public static bool IsMovementEnabled => Move.enabled && Vault.enabled && Crouch.enabled && Sneak.enabled;
+        
+        /// <summary>
+        /// Checks if scroll input is greater than 0.1f.
+        /// </summary>
+        public static bool IsScrollUp() => Scroll.ReadValue<float>() > 0.1f;
+   
+        /// <summary>
+        /// Checks if scroll input is less than -0.1f.
+        /// </summary>
+        public bool IsScrollDown() => Scroll.ReadValue<float>() < -0.1f;
     }
 }
