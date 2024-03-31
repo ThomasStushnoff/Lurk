@@ -6,10 +6,12 @@ using UnityEngine;
 
 namespace World.Interactables
 {
-    public class Drawer : BaseObject, IInteractable
+    public class Chest : BaseObject, IInteractable
     {
-        [TitleHeader("Drawer Settings")] 
-        [SerializeField] private Vector3 openPositionOffset; 
+        [TitleHeader("Chest Settings")]
+        [SerializeField] private Transform lid;
+        // [SerializeField] private GameObject lockObject;
+        [SerializeField] private Vector3 openRotation = new Vector3(-90, 0, 0);
         [SerializeField] private float duration = 0.5f;
         [ReadOnly] public bool isOpen;
         
@@ -17,16 +19,16 @@ namespace World.Interactables
         [SerializeField, CanBeNull] private AudioDataEnumSoundFx openSoundFx;
         [SerializeField, CanBeNull] private AudioDataEnumSoundFx closeSoundFx;
         
-        private Vector3 _startPosition;
-        private Vector3 _targetPosition;
+        private Quaternion _startRotation;
+        private Quaternion _targetRotation;
         private float _timeElapsed;
         private bool _isInteracting;
-
+        
         private void Start()
         {
             isOpen = false;
-            var position = transform.localPosition;
-            _startPosition = position;
+            var rotation = lid.localRotation;
+            _startRotation = Quaternion.Euler(rotation.eulerAngles);
         }
         
         private void Update()
@@ -36,11 +38,11 @@ namespace World.Interactables
                 if (_timeElapsed < duration)
                 {
                     _timeElapsed += Time.deltaTime;
-                    transform.localPosition = Vector3.Lerp(transform.localPosition, _targetPosition, _timeElapsed / duration);
+                    lid.localRotation = Quaternion.Lerp(lid.localRotation, _targetRotation, _timeElapsed / duration);
                 }
             }
         }
-
+        
         public void BeginInteract(BaseEntity entity)
         {
             _isInteracting = true;
@@ -49,7 +51,7 @@ namespace World.Interactables
             
             audioSource.PlaySoundFx(isOpen ? openSoundFx : closeSoundFx);
             
-            _targetPosition = isOpen ? _startPosition + openPositionOffset : _startPosition;
+            _targetRotation = isOpen ? Quaternion.Euler(openRotation) : _startRotation;
             
             _timeElapsed = 0.0f;
         }
@@ -57,7 +59,7 @@ namespace World.Interactables
         public void EndInteract()
         {
             _isInteracting = false;
-            transform.localPosition = _targetPosition;
+            lid.localRotation = _targetRotation;
         }
     }
 }
