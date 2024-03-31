@@ -7,6 +7,7 @@ using UnityEngine.Events;
 
 namespace World.Interactables
 {
+    [RequireComponent(typeof(AudioSource))]
     public class Door : BaseObject, IInteractable
     {
         [TitleHeader("Door Settings")]
@@ -39,12 +40,9 @@ namespace World.Interactables
         
         private void Start()
         {
-            _relativeOpenRotation = new Vector3(openRotation.x != 0 ? openRotation.x : transform.rotation.eulerAngles.x,
-                openRotation.y != 0 ? openRotation.y : transform.rotation.eulerAngles.y,
-                openRotation.z != 0 ? openRotation.z : transform.rotation.eulerAngles.z);
-            _relativeClosedRotation = new Vector3(closedRotation.x != 0 ? closedRotation.x : transform.rotation.eulerAngles.x,
-                closedRotation.y != 0 ? closedRotation.y : transform.rotation.eulerAngles.y,
-                closedRotation.z != 0 ? closedRotation.z : transform.rotation.eulerAngles.z);
+            var rotation = transform.rotation;
+            _relativeOpenRotation = rotation.eulerAngles.OverrideNonZero(openRotation);
+            _relativeClosedRotation = rotation.eulerAngles.OverrideNonZero(closedRotation);
             
             onSlam.AddListener(Slam);
         }
@@ -69,17 +67,7 @@ namespace World.Interactables
             _isInteracting = true;
             isOpen = !isOpen;
             _targetRotation = isOpen ? Quaternion.Euler(_relativeOpenRotation) : Quaternion.Euler(_relativeClosedRotation);
-            
-            if (isOpen)
-            {
-                if (openSoundFx is not AudioDataEnumSoundFx.None)
-                    audioSource.PlaySoundFx(openSoundFx);
-            }
-            else
-            {
-                if (closeSoundFx is not AudioDataEnumSoundFx.None)
-                    audioSource.PlaySoundFx(closeSoundFx);
-            }
+            audioSource.PlaySoundFx(isOpen ? openSoundFx : closeSoundFx);
         }
         
         public void EndInteract()
@@ -93,7 +81,7 @@ namespace World.Interactables
             _interactTime = 0.0f;
             // transform.rotation = Quaternion.Slerp(transform.rotation, _targetRotation, snapSpeed * Time.deltaTime);
             transform.rotation = _targetRotation;
-            if (slamSoundFx is not AudioDataEnumSoundFx.None) audioSource.PlaySoundFx(slamSoundFx);
+            audioSource.PlaySoundFx(slamSoundFx);
         }
     }
 }

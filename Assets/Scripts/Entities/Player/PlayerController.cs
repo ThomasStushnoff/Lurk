@@ -304,7 +304,6 @@ namespace Entities.Player
             //         break;
             //     }
             // }
-            Debug.Log($"Sanity Percentage: {sanityPercentage}");
             globalVolume.profile = sanityPercentage switch
             {
                 <= 100 and > 75 => settings.sanityProfile100,
