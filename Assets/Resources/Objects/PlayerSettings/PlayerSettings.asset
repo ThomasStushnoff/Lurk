@@ -12,33 +12,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3bd614f60d84bd39dadccfa5b92a210, type: 3}
   m_Name: PlayerSettings
   m_EditorClassIdentifier: 
-  movementSpeed: 8
+  movementSpeed: 6
   vaultDistance: 1
   crouchSpeedMultiplier: 0.5
   sneakSpeedMultiplier: 0.5
   standHeight: 2
   crouchHeight: 1
   mouseSensitivity: 7
-  bobFrequency: 3
-  bobSpeed: 4
-  bobAmountX: 0.005
-  bobAmountY: 0.005
+  minXClamp: -90
+  maxXClamp: 90
+  bobFrequency: 2
+  bobSpeed: 1
+  bobAmountX: 0.0001
+  bobAmountY: 0.003
   maxSanity: 100
   panicThreshold: 30
-  sanityDrainRate: 5
+  sanityDrainRate: 3.5
   sanityProfile100: {fileID: 11400000, guid: d550bb4f6e2af7248b1c30311d1db3fe, type: 2}
   sanityProfile75: {fileID: 11400000, guid: a26750196224ed744a44be9ada8b24eb, type: 2}
   sanityProfile50: {fileID: 11400000, guid: 3ab0662d42b4adf42b762f6b7e4c495e, type: 2}
   sanityProfile25: {fileID: 11400000, guid: c2d649f1a0d62c44da54441d844b9257, type: 2}
   sanityProfile10: {fileID: 11400000, guid: 725cfebe764d55f44b7f685714727788, type: 2}
   nightVisionProfile: {fileID: 11400000, guid: 2e32ef6e20d029747ad25a029af9fa1b, type: 2}
-  maxStamina: 100
-  staminaThreshold: 30
-  staminaRegenRate: 5
-  staminaDrainRate: 5
-  sneakStaminaDrainRate: 3
-  crouchStaminaRegenRate: 10
-  vaultStaminaCost: 5
   interactDistance: 2
   interactDropDistance: 2
   inspectDistance: 5

@@ -18,10 +18,10 @@ MonoBehaviour:
     m_Value: 3
   intensity:
     m_OverrideState: 1
-    m_Value: 0.75
+    m_Value: 0.5
   response:
     m_OverrideState: 1
-    m_Value: 0.75
+    m_Value: 0.5
   texture:
     m_OverrideState: 1
     m_Value: {fileID: 0}
@@ -55,19 +55,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   active: 1
   postExposure:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
   contrast:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
   colorFilter:
-    m_OverrideState: 0
-    m_Value: {r: 1, g: 1, b: 1, a: 1}
+    m_OverrideState: 1
+    m_Value: {r: 1.1614147, g: 1.1614147, b: 1.1614147, a: 1}
   hueShift:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
   saturation:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
 --- !u!114 &1126017972306497681
 MonoBehaviour:

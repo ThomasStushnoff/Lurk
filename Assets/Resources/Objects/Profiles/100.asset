@@ -18,10 +18,10 @@ MonoBehaviour:
     m_Value: 3
   intensity:
     m_OverrideState: 1
-    m_Value: 0.6
+    m_Value: 0.5
   response:
     m_OverrideState: 1
-    m_Value: 0.6
+    m_Value: 0.5
   texture:
     m_OverrideState: 1
     m_Value: {fileID: 0}
@@ -65,10 +65,10 @@ MonoBehaviour:
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.25
+    m_Value: 0.15
   smoothness:
     m_OverrideState: 1
-    m_Value: 0.25
+    m_Value: 0.15
   roundness:
     m_OverrideState: 1
     m_Value: 1
