@@ -45,6 +45,7 @@ namespace Controllers
         private Vector3 _lastCameraPosition;
         private Quaternion _lastCameraRotation;
         private IInteractable _interactable;
+        private BaseObject _currentInteractableObject;
         
         protected override void Awake()
         {
@@ -93,6 +94,7 @@ namespace Controllers
             HandlePuzzleInteractions();
             
             CheckGrounded();
+            RaycastForBaseObjects();
         }
 
         private void LateUpdate()
@@ -318,6 +320,33 @@ namespace Controllers
             
             _interactable.EndInteract();
             _interactable = null;
+        }
+        
+        private void RaycastForBaseObjects()
+        {
+            if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out var hit, settings.interactDistance))
+            {
+                var baseObject = hit.collider.GetComponent<BaseObject>();
+                if (baseObject)
+                {
+                    if (_currentInteractableObject != baseObject)
+                    {
+                        _currentInteractableObject?.OnRaycastExit();
+                        _currentInteractableObject = baseObject;
+                        _currentInteractableObject.OnRaycastEnter();
+                    }
+                }
+                else if (_currentInteractableObject)
+                {
+                    _currentInteractableObject.OnRaycastExit();
+                    _currentInteractableObject = null;
+                }
+            }
+            else if (_currentInteractableObject)
+            {
+                _currentInteractableObject.OnRaycastExit();
+                _currentInteractableObject = null;
+            }
         }
 
         private void HandlePuzzleInteractions()
