@@ -27,7 +27,7 @@ namespace World.Interactables
         
         public void BeginInteract(BaseEntity entity)
         {
-            PlayerController.EnableCursor();
+            GameStateManager.Instance.IsPuzzleActive = true;
             var pageUI = PrefabManager.Create<PageUIController>(GetPrefabType());
             if (lightBulb != null) pageUI.lightBulb = lightBulb;
             InputManager.DisableMovementInput();

@@ -59,9 +59,6 @@ namespace Controllers
         
         private void Start()
         {
-            InputManager.FreeCursor.performed += _ => EnableCursor();
-            InputManager.FreeCursor.canceled += _ => DisableCursor();
-            
             InputManager.Interact.started += _ => BeginInteractions();
             InputManager.Interact.canceled += _ => EndInteractions();
             
@@ -84,6 +81,8 @@ namespace Controllers
         
         private void Update()
         {
+            if (GameStateManager.Instance.IsGamePaused) return;
+            
             AudioManager.Instance.UpdateAudioSource(transform.position);
             
             HandleCameraMovement();
@@ -106,9 +105,9 @@ namespace Controllers
         private void OnApplicationFocus(bool hasFocus)
         {
             if (hasFocus && InputManager.IsMovementEnabled)
-                DisableCursor();
+                InputManager.DisableCursor();
             else
-                EnableCursor();
+                InputManager.EnableCursor();
         }
 
         public override void ChangeState(BaseState<IBaseEntity> newState)
@@ -284,23 +283,6 @@ namespace Controllers
         }
 
         public void UpdateSanity(float value) => CurrentSanity += value;
-
-        public static void EnableCursor()
-        {
-            // var cursorFree = InputManager.FreeCursor.IsPressed();
-            // Cursor.lockState = cursorFree ? CursorLockMode.None : CursorLockMode.Locked;
-            // Cursor.visible = cursorFree;
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
-        
-        public static void DisableCursor()
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
-        
-        public static bool IsCursorEnabled() => Cursor.lockState == CursorLockMode.None && Cursor.visible;
         
         private void GenerateNoise(bool isSneaking)
         {
@@ -335,10 +317,8 @@ namespace Controllers
         
         private void BeginInteractions()
         {
-            // TODO:
-            // 1. Add cooldown maybe.
-            // 2. UI feedback.
-            // 3. SFX.
+            if (GameStateManager.Instance.IsGamePaused) return;
+
             if (!Physics.Raycast(cameraTransform.position, cameraTransform.forward, out var hit, 
                     settings.interactDistance, settings.interactable)) return;
             Debug.Log($"hit.collider.name: {hit.collider.name}!");
@@ -361,6 +341,8 @@ namespace Controllers
 
         private void EndInteractions()
         {
+            if (GameStateManager.Instance.IsGamePaused) return;
+            
             if (_interactable == null) return;
             
             _interactable.EndInteract();
@@ -414,11 +396,26 @@ namespace Controllers
             cameraTransform.position = Vector3.Lerp(cameraTransform.position, targetPosition, smoothTime);
         }
         
-        private void StartRotatingLeft() => _rotationDirection = -1.0f;
+        private void StartRotatingLeft()
+        {
+            if (GameStateManager.Instance.IsGamePaused) return;
+            
+            _rotationDirection = -1.0f;
+        }
 
-        private void StartRotatingRight() => _rotationDirection = 1.0f;
+        private void StartRotatingRight()
+        {
+            if (GameStateManager.Instance.IsGamePaused) return;
+            
+            _rotationDirection = 1.0f;
+        }
 
-        private void StopRotating() => _rotationDirection = 0.0f;
+        private void StopRotating()
+        {
+            if (GameStateManager.Instance.IsGamePaused) return;
+            
+            _rotationDirection = 0.0f;
+        }
 
         private void RotateInspectingObject() 
         {
@@ -432,6 +429,8 @@ namespace Controllers
 
         private void ToggleInspect()
         {
+            if (GameStateManager.Instance.IsGamePaused) return;
+            
             if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out var hit, 
                     settings.inspectDistance, settings.inspectable))
             {

@@ -37,6 +37,8 @@ namespace Controllers
         
         private void Update()
         {
+            if (GameStateManager.Instance.IsGamePaused) return;
+            
             // Equip the night vision camera when right mouse button is pressed.
             if (InputManager.Camera.WasPressedThisFrame())
                 ToggleNightVision();

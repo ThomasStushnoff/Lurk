@@ -1,4 +1,5 @@
 ﻿using JetBrains.Annotations;
+using Managers;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
@@ -45,6 +46,8 @@ namespace Controllers
 
         private void Update()
         {
+            if (GameStateManager.Instance.IsGamePaused) return;
+            
             if (isNightVisionActive)
             {
                 globalVolume.profile = _nightVisionProfile;

@@ -45,7 +45,15 @@ namespace Managers
             instance.name = "Managers.InputManager (Singleton)";
         }
         
-        protected override void OnAwake() => _actions = new Actions();
+        protected override void OnAwake()
+        {
+            _actions = new Actions();
+
+            GameStateManager.OnCursorStateChange += UpdateCursorState;
+            
+            FreeCursor.performed += _ => EnableCursor();
+            FreeCursor.canceled += _ => DisableCursor();
+        }
         
         /// <summary>
         /// Enables all input actions when the scene is loaded.
@@ -127,15 +135,34 @@ namespace Managers
         /// Checks if all movement input is enabled.
         /// </summary>
         public static bool IsMovementEnabled => Move.enabled && Vault.enabled && Crouch.enabled && Sneak.enabled;
+
+        private void UpdateCursorState(bool enable)
+        {
+            if (enable) EnableCursor();
+            else DisableCursor();
+        }
         
         /// <summary>
-        /// Checks if scroll input is greater than 0.1f.
+        /// Enables the cursor. 
         /// </summary>
-        public static bool IsScrollUp() => Scroll.ReadValue<float>() > 0.1f;
-   
+        public static void EnableCursor()
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        
         /// <summary>
-        /// Checks if scroll input is less than -0.1f.
+        /// Disables the cursor.
         /// </summary>
-        public bool IsScrollDown() => Scroll.ReadValue<float>() < -0.1f;
+        public static void DisableCursor()
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        
+        /// <summary>
+        /// Checks if the cursor is enabled.
+        /// </summary>
+        public static bool IsCursorEnabled() => Cursor.lockState == CursorLockMode.None && Cursor.visible;
     }
 }
