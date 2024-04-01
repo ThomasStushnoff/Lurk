@@ -18,6 +18,8 @@ namespace Objects
         
         [TitleHeader("Camera")]
         public float mouseSensitivity = 20.0f;
+        public float minXClamp = -90.0f;
+        public float maxXClamp = 90.0f;
         public float bobFrequency = 5.0f;
         public float bobSpeed = 10.0f;
         public float bobAmountX = 0.005f;
@@ -35,15 +37,6 @@ namespace Objects
         public VolumeProfile sanityProfile25;
         public VolumeProfile sanityProfile10;
         public VolumeProfile nightVisionProfile;
-        
-        [TitleHeader("Stamina")]
-        public float maxStamina = 100.0f;
-        public float staminaThreshold = 30.0f;
-        public float staminaRegenRate = 5.0f;
-        public float staminaDrainRate = 10.0f;
-        public float sneakStaminaDrainRate = 4.0f;
-        public float crouchStaminaRegenRate = 10.0f;
-        public float vaultStaminaCost = 5.0f;
         
         [TitleHeader("Interaction")]
         public float interactDistance = 2.0f;

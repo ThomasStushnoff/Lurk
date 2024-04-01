@@ -24,7 +24,7 @@ namespace Controllers
         // public UnityEvent onSilhouetteAppear;
         // public UnityEvent onRoomLightChange;
         
-        private float CurrentStamina { get; set; }
+        [field: TitleHeader("Properties")]
         [field: SerializeField] public float CurrentSanity { get; set; }
         
         private bool _onGround;
@@ -70,8 +70,7 @@ namespace Controllers
             
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-
-            CurrentStamina = settings.maxStamina;
+            
             CurrentSanity = settings.maxSanity;
 
             _defaultCameraLocalPosition = cameraTransform.localPosition;
@@ -89,7 +88,6 @@ namespace Controllers
             
             HandleMovement();
             HandleVault();
-            HandleStamina();
             HandleSanity();
             if (_isInspecting) RotateInspectingObject();
             HandlePuzzleInteractions();
@@ -99,6 +97,8 @@ namespace Controllers
 
         private void LateUpdate()
         {
+            if (GameStateManager.Instance.IsGamePaused) return;
+            
             if (_isFocusingOnPuzzle) FollowPuzzle();
         }
 
@@ -149,7 +149,7 @@ namespace Controllers
                 var localPos = cameraTransform.localPosition;
                 
                 _xRotation -= lookY;
-                _xRotation = Mathf.Clamp(_xRotation, -90.0f, 90.0f);
+                _xRotation = Mathf.Clamp(_xRotation, settings.minXClamp, settings.maxXClamp);
                 
                 cameraTransform.localRotation = Quaternion.Euler(_xRotation, 0f, 0f);
                 transform.Rotate(Vector3.up * lookX);
@@ -205,9 +205,7 @@ namespace Controllers
             // Sneaking.
             _isSneaking = InputManager.Sneak.IsPressed();
             if (_isSneaking) currentSpeed *= settings.sneakSpeedMultiplier;
-
-            // Apply speed reduction based on stamina.
-            currentSpeed *= Mathf.Lerp(0.5f, 1.0f, (100.0f - CurrentStamina) / 100.0f);
+            
             // Apply speed reduction based on sanity.
             currentSpeed *= Mathf.Lerp(0.5f, 1.0f, (100.0f - CurrentSanity) / 100.0f);
 
@@ -221,7 +219,7 @@ namespace Controllers
             // TODO:
             // 1. Add animation.
             // 2. Optimize.
-            if (!InputManager.Vault.WasPressedThisFrame() || !CanVault(out var obstacleHeight) || CurrentStamina <= 0) return;
+            if (!InputManager.Vault.WasPressedThisFrame() || !CanVault(out var obstacleHeight)) return;
             
             if (obstacleHeight > 0)
             {
@@ -230,39 +228,12 @@ namespace Controllers
                 var newPos = new Vector3(transform.position.x, vaultHeight, transform.position.z).
                     Add(transform.forward * settings.vaultDistance);
                 transform.position = newPos;
-                CurrentStamina -= settings.vaultStaminaCost;
                 // transform.position = Vector3.Lerp(transform.position, newPosition, 0.5f);
             }
         }
-
-        private void HandleStamina()
-        {
-            if (IsMoving() || _isVaulting)
-            {
-                // Decrease stamina when moving or vaulting.
-                var drainRate = _isSneaking ? settings.sneakStaminaDrainRate : settings.staminaDrainRate;
-                CurrentStamina -= Time.deltaTime * drainRate;
-            }
-            else if (_isCrouching || !IsMoving())
-            {
-                // Regenerate stamina when crouching or standing still.
-                CurrentStamina += Time.deltaTime * settings.crouchStaminaRegenRate;
-            }
-            else
-            {
-                // Regenerate stamina when not moving.
-                CurrentStamina += Time.deltaTime * settings.staminaRegenRate;
-            }
-
-            CurrentStamina = Mathf.Clamp(CurrentStamina, 0, settings.maxStamina);
-            hudController.UpdateStamina(CurrentStamina / settings.maxStamina);
-        }
-
+        
         private void HandleSanity()
         {
-            // Player is low on stamina.
-            if (CurrentStamina <= settings.staminaThreshold)
-                CurrentSanity -= Time.deltaTime * settings.sanityDrainRate;
             // Player is near an enemy.
             if (IsEnemyNearby())
                 CurrentSanity -= Time.deltaTime * settings.sanityDrainRate;
@@ -469,7 +440,7 @@ namespace Controllers
         
         private bool IsMoving() => InputManager.Move.ReadValue<Vector2>().magnitude > 0;
         
-        private bool IsInPanicState() => CurrentSanity <= settings.panicThreshold || CurrentStamina <= settings.staminaThreshold;
+        private bool IsInPanicState() => CurrentSanity <= settings.panicThreshold;
         
         private bool CanVault(out float obstacleHeight)
         {

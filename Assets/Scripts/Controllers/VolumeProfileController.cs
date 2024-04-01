@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
 
-// WIP
 namespace Controllers
 {
     public class VolumeProfileController : MonoBehaviour
@@ -19,7 +18,7 @@ namespace Controllers
         private VolumeProfile _targetProfile;
         private bool _isTransitioning;
         private float _timeElapsed;
-        private bool _didSwitchProfile; // It's 5am I can't think of a better way lol.
+        private bool _didSwitchProfile;
         
         private void Awake()
         {
@@ -57,7 +56,6 @@ namespace Controllers
             {
                 if (_didSwitchProfile)
                 {
-                    // EZ.
                     globalVolume.profile = _tempProfile;
                     _didSwitchProfile = false;
                 }
