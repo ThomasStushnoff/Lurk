@@ -24,7 +24,7 @@ namespace Controllers
         // public UnityEvent onSilhouetteAppear;
         // public UnityEvent onRoomLightChange;
         
-        private float CurrentStamina { get; set; }
+        [field: TitleHeader("Properties")]
         [field: SerializeField] public float CurrentSanity { get; set; }
         
         private bool _onGround;
@@ -45,12 +45,13 @@ namespace Controllers
         private Vector3 _lastCameraPosition;
         private Quaternion _lastCameraRotation;
         private IInteractable _interactable;
+        private BaseObject _currentInteractableObject;
         
         protected override void Awake()
         {
             base.Awake();
             
-            if (GameManager.Instance.localPlayer == null)
+            if (GameManager.Instance.localPlayer == null || GameManager.Instance.localPlayer != this)
                 GameManager.Instance.localPlayer = this;
             
             if (hudController == null)
@@ -59,9 +60,6 @@ namespace Controllers
         
         private void Start()
         {
-            InputManager.FreeCursor.performed += _ => EnableCursor();
-            InputManager.FreeCursor.canceled += _ => DisableCursor();
-            
             InputManager.Interact.started += _ => BeginInteractions();
             InputManager.Interact.canceled += _ => EndInteractions();
             
@@ -73,8 +71,7 @@ namespace Controllers
             
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-
-            CurrentStamina = settings.maxStamina;
+            
             CurrentSanity = settings.maxSanity;
 
             _defaultCameraLocalPosition = cameraTransform.localPosition;
@@ -84,31 +81,35 @@ namespace Controllers
         
         private void Update()
         {
+            if (GameStateManager.Instance.IsGamePaused) return;
+            
             AudioManager.Instance.UpdateAudioSource(transform.position);
             
             HandleCameraMovement();
             
             HandleMovement();
             HandleVault();
-            HandleStamina();
             HandleSanity();
             if (_isInspecting) RotateInspectingObject();
             HandlePuzzleInteractions();
             
             CheckGrounded();
+            RaycastForBaseObjects();
         }
 
         private void LateUpdate()
         {
+            if (GameStateManager.Instance.IsGamePaused) return;
+            
             if (_isFocusingOnPuzzle) FollowPuzzle();
         }
-
+        
         private void OnApplicationFocus(bool hasFocus)
         {
             if (hasFocus && InputManager.IsMovementEnabled)
-                DisableCursor();
+                InputManager.DisableCursor();
             else
-                EnableCursor();
+                InputManager.EnableCursor();
         }
 
         public override void ChangeState(BaseState<IBaseEntity> newState)
@@ -150,7 +151,7 @@ namespace Controllers
                 var localPos = cameraTransform.localPosition;
                 
                 _xRotation -= lookY;
-                _xRotation = Mathf.Clamp(_xRotation, -90.0f, 90.0f);
+                _xRotation = Mathf.Clamp(_xRotation, settings.minXClamp, settings.maxXClamp);
                 
                 cameraTransform.localRotation = Quaternion.Euler(_xRotation, 0f, 0f);
                 transform.Rotate(Vector3.up * lookX);
@@ -206,9 +207,7 @@ namespace Controllers
             // Sneaking.
             _isSneaking = InputManager.Sneak.IsPressed();
             if (_isSneaking) currentSpeed *= settings.sneakSpeedMultiplier;
-
-            // Apply speed reduction based on stamina.
-            currentSpeed *= Mathf.Lerp(0.5f, 1.0f, (100.0f - CurrentStamina) / 100.0f);
+            
             // Apply speed reduction based on sanity.
             currentSpeed *= Mathf.Lerp(0.5f, 1.0f, (100.0f - CurrentSanity) / 100.0f);
 
@@ -222,7 +221,7 @@ namespace Controllers
             // TODO:
             // 1. Add animation.
             // 2. Optimize.
-            if (!InputManager.Vault.WasPressedThisFrame() || !CanVault(out var obstacleHeight) || CurrentStamina <= 0) return;
+            if (!InputManager.Vault.WasPressedThisFrame() || !CanVault(out var obstacleHeight)) return;
             
             if (obstacleHeight > 0)
             {
@@ -231,41 +230,19 @@ namespace Controllers
                 var newPos = new Vector3(transform.position.x, vaultHeight, transform.position.z).
                     Add(transform.forward * settings.vaultDistance);
                 transform.position = newPos;
-                CurrentStamina -= settings.vaultStaminaCost;
                 // transform.position = Vector3.Lerp(transform.position, newPosition, 0.5f);
             }
         }
-
-        private void HandleStamina()
-        {
-            if (IsMoving() || _isVaulting)
-            {
-                // Decrease stamina when moving or vaulting.
-                var drainRate = _isSneaking ? settings.sneakStaminaDrainRate : settings.staminaDrainRate;
-                CurrentStamina -= Time.deltaTime * drainRate;
-            }
-            else if (_isCrouching || !IsMoving())
-            {
-                // Regenerate stamina when crouching or standing still.
-                CurrentStamina += Time.deltaTime * settings.crouchStaminaRegenRate;
-            }
-            else
-            {
-                // Regenerate stamina when not moving.
-                CurrentStamina += Time.deltaTime * settings.staminaRegenRate;
-            }
-
-            CurrentStamina = Mathf.Clamp(CurrentStamina, 0, settings.maxStamina);
-            hudController.UpdateStamina(CurrentStamina / settings.maxStamina);
-        }
-
+        
         private void HandleSanity()
         {
-            // Player is low on stamina.
-            if (CurrentStamina <= settings.staminaThreshold)
-                CurrentSanity -= Time.deltaTime * settings.sanityDrainRate;
             // Player is near an enemy.
-            if (IsEnemyNearby())
+            // if (IsEnemyNearby())
+            //     CurrentSanity -= Time.deltaTime * settings.sanityDrainRate;
+            
+            if (LightManager.Instance.HasSanityLights())
+                CurrentSanity += Time.deltaTime * settings.sanityRegenRate;
+            else
                 CurrentSanity -= Time.deltaTime * settings.sanityDrainRate;
             
             CurrentSanity = Mathf.Clamp(CurrentSanity, 0, settings.maxSanity);
@@ -284,23 +261,6 @@ namespace Controllers
         }
 
         public void UpdateSanity(float value) => CurrentSanity += value;
-
-        public static void EnableCursor()
-        {
-            // var cursorFree = InputManager.FreeCursor.IsPressed();
-            // Cursor.lockState = cursorFree ? CursorLockMode.None : CursorLockMode.Locked;
-            // Cursor.visible = cursorFree;
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
-        
-        public static void DisableCursor()
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
-        
-        public static bool IsCursorEnabled() => Cursor.lockState == CursorLockMode.None && Cursor.visible;
         
         private void GenerateNoise(bool isSneaking)
         {
@@ -335,10 +295,8 @@ namespace Controllers
         
         private void BeginInteractions()
         {
-            // TODO:
-            // 1. Add cooldown maybe.
-            // 2. UI feedback.
-            // 3. SFX.
+            if (GameStateManager.Instance.IsGamePaused) return;
+
             if (!Physics.Raycast(cameraTransform.position, cameraTransform.forward, out var hit, 
                     settings.interactDistance, settings.interactable)) return;
             Debug.Log($"hit.collider.name: {hit.collider.name}!");
@@ -361,10 +319,39 @@ namespace Controllers
 
         private void EndInteractions()
         {
+            if (GameStateManager.Instance.IsGamePaused) return;
+            
             if (_interactable == null) return;
             
             _interactable.EndInteract();
             _interactable = null;
+        }
+        
+        private void RaycastForBaseObjects()
+        {
+            if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out var hit, settings.interactDistance))
+            {
+                var baseObject = hit.collider.GetComponent<BaseObject>();
+                if (baseObject)
+                {
+                    if (_currentInteractableObject != baseObject)
+                    {
+                        _currentInteractableObject?.OnRaycastExit();
+                        _currentInteractableObject = baseObject;
+                        _currentInteractableObject.OnRaycastEnter();
+                    }
+                }
+                else if (_currentInteractableObject)
+                {
+                    _currentInteractableObject.OnRaycastExit();
+                    _currentInteractableObject = null;
+                }
+            }
+            else if (_currentInteractableObject)
+            {
+                _currentInteractableObject.OnRaycastExit();
+                _currentInteractableObject = null;
+            }
         }
 
         private void HandlePuzzleInteractions()
@@ -414,11 +401,26 @@ namespace Controllers
             cameraTransform.position = Vector3.Lerp(cameraTransform.position, targetPosition, smoothTime);
         }
         
-        private void StartRotatingLeft() => _rotationDirection = -1.0f;
+        private void StartRotatingLeft()
+        {
+            if (GameStateManager.Instance.IsGamePaused) return;
+            
+            _rotationDirection = -1.0f;
+        }
 
-        private void StartRotatingRight() => _rotationDirection = 1.0f;
+        private void StartRotatingRight()
+        {
+            if (GameStateManager.Instance.IsGamePaused) return;
+            
+            _rotationDirection = 1.0f;
+        }
 
-        private void StopRotating() => _rotationDirection = 0.0f;
+        private void StopRotating()
+        {
+            if (GameStateManager.Instance.IsGamePaused) return;
+            
+            _rotationDirection = 0.0f;
+        }
 
         private void RotateInspectingObject() 
         {
@@ -432,6 +434,8 @@ namespace Controllers
 
         private void ToggleInspect()
         {
+            if (GameStateManager.Instance.IsGamePaused) return;
+            
             if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out var hit, 
                     settings.inspectDistance, settings.inspectable))
             {
@@ -470,7 +474,7 @@ namespace Controllers
         
         private bool IsMoving() => InputManager.Move.ReadValue<Vector2>().magnitude > 0;
         
-        private bool IsInPanicState() => CurrentSanity <= settings.panicThreshold || CurrentStamina <= settings.staminaThreshold;
+        private bool IsInPanicState() => CurrentSanity <= settings.panicThreshold;
         
         private bool CanVault(out float obstacleHeight)
         {

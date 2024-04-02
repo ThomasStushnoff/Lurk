@@ -6,7 +6,7 @@ namespace Managers
 {
     public class MenuManager : Singleton<MenuManager>
     {
-        private Stack<Menu> _menuStack = new Stack<Menu>();
+        private readonly Stack<Menu> _menuStack = new Stack<Menu>();
         
         /// <summary>
         /// Clears the menuStack.
@@ -14,11 +14,16 @@ namespace Managers
         public void ClearStack() => _menuStack.Clear();
         
         /// <summary>
+        /// Checks if the menuStack has any menus open.
+        /// </summary>
+        public bool IsAnyMenuOpen() => _menuStack.Count > 0;
+        
+        /// <summary>
         /// Checks if the menuStack has any menus open and if the top menu is the same as the menu you want to check.
         /// </summary>
         /// <param name="menu">The menu.</param>
         /// <returns>true or false.</returns>
-        public bool IsMenuOpen(Menu menu) => _menuStack.Count > 0 && _menuStack.Peek() == menu;
+        public bool IsMenuOpen(Menu menu) => IsAnyMenuOpen() && _menuStack.Peek() == menu;
     
         /// <summary>
         /// Opens a specific menu and closes the previous menu.
@@ -26,7 +31,7 @@ namespace Managers
         /// <param name="menu">The menu you want to close. This menu must inherit the Menu class</param>
         public void OpenMenu(Menu menu)
         {
-            if (menu == null) return;
+            if (!menu) return;
             
             // If the menu is already open and is the top menu, do nothing.
             if (_menuStack.Count > 0 && _menuStack.Peek().Equals(menu)) return;
@@ -47,6 +52,9 @@ namespace Managers
             
             // Add the menu to the stack.
             _menuStack.Push(menu);
+            
+            // Notify the GameStateManager that a menu is open.
+            GameStateManager.Instance.IsMenuOpen = true;
         }
     
         /// <summary>
@@ -66,6 +74,11 @@ namespace Managers
                 _menuStack.Peek().Open();
                 // Set the first selected object.
                 EventSystem.current.SetSelectedGameObject(_menuStack.Peek().firstSelected);
+            }
+            else
+            {
+                // Notify the GameStateManager that no menus are open.
+                GameStateManager.Instance.IsMenuOpen = false;
             }
         }
     }

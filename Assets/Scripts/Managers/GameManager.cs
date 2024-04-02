@@ -8,9 +8,11 @@ namespace Managers
         
         protected override void OnAwake()
         {
+            GameStateManager.Initialize();
             PrefabManager.Initialize();
             AudioManager.Initialize();
             InputManager.Initialize();
+            TooltipManager.Initialize();
         }
     }
 }
