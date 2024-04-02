@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Managers;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace UI.Menus
@@ -7,7 +8,12 @@ namespace UI.Menus
     {
         public OptionsMenu optionsMenu;
         public CreditsMenu creditsMenu;
-        
+
+        private void Awake()
+        {
+            GameStateManager.Instance.SetGameState(GameState.MainMenu);
+        }
+
         public void OnPlayButtonClicked()
         {
             // TODO:

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace World.Interactables
 {
-    public class LightSwitch : MonoBehaviour, IInteractable
+    public class LightSwitch : BaseObject, IInteractable
     {
         [SerializeField] private Light light;
         

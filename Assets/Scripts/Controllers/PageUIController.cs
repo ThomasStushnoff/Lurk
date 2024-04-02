@@ -3,6 +3,7 @@ using Managers;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using World.Environmental;
+
 namespace Controllers
 {
     public class PageUIController : MonoBehaviour
@@ -11,21 +12,28 @@ namespace Controllers
         
         private void Start()
         {
-            // Might change later.
             InputManager.InteractOther.started += OnClick;
         }
-
+        
         private void OnDestroy()
         {
-            // Might change later.
             InputManager.InteractOther.started -= OnClick;
         }
-
+        
+        private void Update()
+        {
+            if (GameStateManager.Instance.IsGamePaused) return;
+            
+            // Ensure cursor is enabled when the page is open.
+            if (!GameStateManager.Instance.IsPuzzleActive)
+                GameStateManager.Instance.IsPuzzleActive = true;
+        }
+        
         private void OnClick(InputAction.CallbackContext context)
         {
-            if (!PlayerController.IsCursorEnabled()) return;
-            
-            PlayerController.DisableCursor();
+            if (!GameStateManager.Instance.IsPuzzleActive && GameStateManager.Instance.IsGamePaused) return;
+
+            GameStateManager.Instance.IsPuzzleActive = false;
             Destroy(gameObject);
             InputManager.EnableMovementInput();
             InputManager.EnableInteractInput();

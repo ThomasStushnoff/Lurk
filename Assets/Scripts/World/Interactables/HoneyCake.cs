@@ -9,27 +9,22 @@ using World.Environmental;
 namespace World.Interactables
 {
     [RequireComponent(typeof(Rigidbody), typeof(AudioSource))]
-    public class HoneyCake : MonoBehaviour, IInteractable, IGrabbable
+    public class HoneyCake : BaseObject, IInteractable, IGrabbable
     {
-        // public int score = 10;
         [SerializeField, CanBeNull] private Deposit deposit;
         [SerializeField] private LayerMask depositLayer;
         [SerializeField] private bool depositAnywhere;
         [SerializeField] private AudioDataEnumSoundFx pickupSound;
         
         private Transform _t;
-        private Rigidbody _rb;
-        private AudioSource _audioSource;
         private Transform _defaultParent;
         private Quaternion _defaultRotation;
         private PlayerController _player;
         private bool _isPlaced;
-        
-        private void Awake()
+
+        protected override void Awake()
         {
             _t = transform;
-            _rb = GetComponent<Rigidbody>();
-            _audioSource = GetComponent<AudioSource>();
         }
         
         public void BeginInteract(BaseEntity entity)
@@ -69,15 +64,15 @@ namespace World.Interactables
             _player = entity as PlayerController;
             if (_player == null) return;
             
-            if (!_audioSource.isPlaying)
-                _audioSource.PlayOneShot(pickupSound);
+            if (!audioSource.isPlaying)
+                audioSource.PlayOneShot(pickupSound);
             
             _defaultParent = _t.parent;
             _defaultRotation = _t.rotation;
             
             _t.SetParent(_player.itemHoldTransform.transform);
             _t.position = _player.itemHoldTransform.position;
-            _rb.isKinematic = true;
+            rb.isKinematic = true;
         }
         
         public void Drop()
@@ -85,7 +80,7 @@ namespace World.Interactables
             if (_player == null) return;
             
             _t.SetParent(_defaultParent);
-            _rb.isKinematic = false;
+            rb.isKinematic = false;
             
             var rayStart = _player.cameraTransform.position;
             var rayDirection = _player.cameraTransform.forward;
@@ -113,7 +108,7 @@ namespace World.Interactables
             _t.SetParent(_defaultParent);
             _t.position = position;
             _t.rotation = rotation;
-            _rb.isKinematic = false;
+            rb.isKinematic = false;
             _player = null;
         }
 
@@ -123,7 +118,7 @@ namespace World.Interactables
             
             var bounds = other.collider.bounds;
             _t.position = bounds.center + bounds.extents.y * Vector3.up;
-            _rb.isKinematic = true;
+            rb.isKinematic = true;
         }
     }
 }
