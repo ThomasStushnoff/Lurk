@@ -25,9 +25,15 @@ namespace Objects
         public float bobAmountX = 0.005f;
         public float bobAmountY = 0.05f;
         
+        [TitleHeader("Night Vision")]
+        public float energyMeter = 100.0f;
+        public float energyDrainRate = 1.5f;
+        public float lowEnergyThreshold = 20.0f;
+        
         [TitleHeader("Sanity")]
         public float maxSanity = 100.0f;
         public float panicThreshold = 30.0f;
+        public float sanityRegenRate = 5.0f;
         public float sanityDrainRate = 10.0f;
 
         [TitleHeader("Volume Profiles")]

@@ -51,7 +51,7 @@ namespace Controllers
         {
             base.Awake();
             
-            if (GameManager.Instance.localPlayer == null)
+            if (GameManager.Instance.localPlayer == null || GameManager.Instance.localPlayer != this)
                 GameManager.Instance.localPlayer = this;
             
             if (hudController == null)
@@ -103,7 +103,7 @@ namespace Controllers
             
             if (_isFocusingOnPuzzle) FollowPuzzle();
         }
-
+        
         private void OnApplicationFocus(bool hasFocus)
         {
             if (hasFocus && InputManager.IsMovementEnabled)
@@ -237,7 +237,12 @@ namespace Controllers
         private void HandleSanity()
         {
             // Player is near an enemy.
-            if (IsEnemyNearby())
+            // if (IsEnemyNearby())
+            //     CurrentSanity -= Time.deltaTime * settings.sanityDrainRate;
+            
+            if (LightManager.Instance.HasSanityLights())
+                CurrentSanity += Time.deltaTime * settings.sanityRegenRate;
+            else
                 CurrentSanity -= Time.deltaTime * settings.sanityDrainRate;
             
             CurrentSanity = Mathf.Clamp(CurrentSanity, 0, settings.maxSanity);

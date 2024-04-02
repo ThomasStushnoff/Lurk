@@ -17,16 +17,21 @@ namespace Controllers
     {
         [SerializeField] private Transform nightVisionCameraTransform;
         [SerializeField] private Light spotlight;
-        [SerializeField] private float energyMeter = 100.0f;
-        [SerializeField] private float energyDrainRate = 5.0f;
-        [SerializeField] private float lowEnergyThreshold = 20.0f;
         [ReadOnly] public bool isNightVisionActive;
         
         private VolumeProfileController _volumeProfileController;
+        private PlayerController _controller;
+        private float _energyMeter;
+        private float _energyDrainRate;
+        private float _lowEnergyThreshold;
         
         private void Awake()
         {
             _volumeProfileController = GetComponent<VolumeProfileController>();
+            _controller = GetComponent<PlayerController>();
+            _energyMeter = _controller.settings.energyMeter;
+            _energyDrainRate = _controller.settings.energyDrainRate;
+            _lowEnergyThreshold = _controller.settings.lowEnergyThreshold;
         }
 
         private void Start()
@@ -57,16 +62,16 @@ namespace Controllers
         
         private void UpdateEnergyMeter()
         {
-            energyMeter -= energyDrainRate * Time.deltaTime;
-            energyMeter = Mathf.Clamp(energyMeter, 0.0f, 100.0f);
+            _energyMeter -= _energyDrainRate * Time.deltaTime;
+            _energyMeter = Mathf.Clamp(_energyMeter, 0.0f, 100.0f);
             
             // Turn off night vision when energy meter is empty.
-            if (energyMeter <= 0.0f)
+            if (_energyMeter <= 0.0f)
                 ToggleNightVision();
             
-            UpdateEnergyMeterUI(energyMeter);
+            UpdateEnergyMeterUI(_energyMeter);
             
-            if (energyMeter <= lowEnergyThreshold)
+            if (_energyMeter <= _lowEnergyThreshold)
                 FlickerUIElement();
         }
         
