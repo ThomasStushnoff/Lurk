@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1229374259603098}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -203,6 +203,7 @@ GameObject:
   - component: {fileID: 5622011659619196401}
   - component: {fileID: 110600193000413180}
   - component: {fileID: 8804486951848952797}
+  - component: {fileID: 4705825733622874416}
   m_Layer: 0
   m_Name: Spot Light (9)
   m_TagString: Untagged
@@ -237,7 +238,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 15.334247
+  m_Intensity: 3.9788735
   m_Range: 3
   m_SpotAngle: 160
   m_InnerSpotAngle: 1
@@ -409,6 +410,19 @@ MonoBehaviour:
   m_PointlightHDType: 0
   m_SpotLightShape: 0
   m_AreaLightShape: 0
+--- !u!114 &4705825733622874416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 160627924826310153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 565d6189eb5bfc842b28434a015e133e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  range: 100
 --- !u!1 &6177811777544909232
 GameObject:
   m_ObjectHideFlags: 0
@@ -5263,6 +5277,7 @@ GameObject:
   - component: {fileID: 2160842913435679345}
   - component: {fileID: 4868384872066432994}
   - component: {fileID: 3078557017685839647}
+  - component: {fileID: 4625076344095571964}
   m_Layer: 0
   m_Name: Spot Light (7)
   m_TagString: Untagged
@@ -5469,3 +5484,16 @@ MonoBehaviour:
   m_PointlightHDType: 0
   m_SpotLightShape: 0
   m_AreaLightShape: 0
+--- !u!114 &4625076344095571964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8961074531527716635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 565d6189eb5bfc842b28434a015e133e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  range: 100

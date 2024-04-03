@@ -121,6 +121,7 @@ GameObject:
   - component: {fileID: 2316604577655055266}
   - component: {fileID: 5386904051119263140}
   - component: {fileID: 1727390470595853397}
+  - component: {fileID: 2240233325006376593}
   m_Layer: 0
   m_Name: Spot Light (9)
   m_TagString: Untagged
@@ -200,7 +201,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 4866
   m_UseColorTemperature: 1
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 7.17e-43, y: 1.470668e-39, z: 7.17e-43, w: 1.470691e-39}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
@@ -327,6 +328,19 @@ MonoBehaviour:
   m_PointlightHDType: 0
   m_SpotLightShape: 0
   m_AreaLightShape: 0
+--- !u!114 &2240233325006376593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4889838289736047092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 565d6189eb5bfc842b28434a015e133e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  range: 100
 --- !u!1 &5118900609005987871
 GameObject:
   m_ObjectHideFlags: 0
@@ -338,6 +352,7 @@ GameObject:
   - component: {fileID: 429173587000731457}
   - component: {fileID: 598553906123553117}
   - component: {fileID: 1866452879828670419}
+  - component: {fileID: 7411158372123285276}
   m_Layer: 0
   m_Name: Spot Light (7)
   m_TagString: Untagged
@@ -417,7 +432,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 4866
   m_UseColorTemperature: 1
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 0, y: 1.469805e-39, z: 0, w: 1.469811e-39}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
@@ -544,6 +559,19 @@ MonoBehaviour:
   m_PointlightHDType: 0
   m_SpotLightShape: 0
   m_AreaLightShape: 0
+--- !u!114 &7411158372123285276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5118900609005987871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 565d6189eb5bfc842b28434a015e133e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  range: 100
 --- !u!1 &5911360320515050970
 GameObject:
   m_ObjectHideFlags: 0
@@ -555,6 +583,7 @@ GameObject:
   - component: {fileID: 592564470206856386}
   - component: {fileID: 1825361370557611987}
   - component: {fileID: 1082870498305608117}
+  - component: {fileID: 4279919658021564073}
   m_Layer: 0
   m_Name: Spot Light (6)
   m_TagString: Untagged
@@ -634,7 +663,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 4866
   m_UseColorTemperature: 1
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 7.52e-43, y: 1.88e-43, z: 1.5e-44, w: 4.1463e-41}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
@@ -761,6 +790,19 @@ MonoBehaviour:
   m_PointlightHDType: 0
   m_SpotLightShape: 0
   m_AreaLightShape: 0
+--- !u!114 &4279919658021564073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5911360320515050970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 565d6189eb5bfc842b28434a015e133e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  range: 100
 --- !u!1 &7537672493314089279
 GameObject:
   m_ObjectHideFlags: 0
@@ -772,6 +814,7 @@ GameObject:
   - component: {fileID: 1601079409917470696}
   - component: {fileID: 4355268710802717369}
   - component: {fileID: 8053114916673416878}
+  - component: {fileID: 2438646612827528202}
   m_Layer: 0
   m_Name: Spot Light (8)
   m_TagString: Untagged
@@ -851,7 +894,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 4866
   m_UseColorTemperature: 1
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 7.17e-43, y: 1.470668e-39, z: 7.17e-43, w: 1.470691e-39}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
@@ -978,3 +1021,16 @@ MonoBehaviour:
   m_PointlightHDType: 0
   m_SpotLightShape: 0
   m_AreaLightShape: 0
+--- !u!114 &2438646612827528202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7537672493314089279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 565d6189eb5bfc842b28434a015e133e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  range: 100

@@ -120,6 +120,7 @@ GameObject:
   - component: {fileID: 6610472692475042785}
   - component: {fileID: 8933198773750540476}
   - component: {fileID: 5961203986532974804}
+  - component: {fileID: 8003367839933262254}
   m_Layer: 0
   m_Name: Spot Light (9)
   m_TagString: Untagged
@@ -326,6 +327,19 @@ MonoBehaviour:
   m_PointlightHDType: 0
   m_SpotLightShape: 0
   m_AreaLightShape: 0
+--- !u!114 &8003367839933262254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3531481533825226528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 565d6189eb5bfc842b28434a015e133e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  range: 100
 --- !u!1 &4016197607621530419
 GameObject:
   m_ObjectHideFlags: 0
@@ -337,6 +351,7 @@ GameObject:
   - component: {fileID: 7443203954801265806}
   - component: {fileID: 8101168260865336105}
   - component: {fileID: 4460822703014473618}
+  - component: {fileID: 7374840192152766266}
   m_Layer: 0
   m_Name: Spot Light (10)
   m_TagString: Untagged
@@ -543,6 +558,19 @@ MonoBehaviour:
   m_PointlightHDType: 0
   m_SpotLightShape: 0
   m_AreaLightShape: 0
+--- !u!114 &7374840192152766266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4016197607621530419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 565d6189eb5bfc842b28434a015e133e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  range: 100
 --- !u!1 &7094628228516561714
 GameObject:
   m_ObjectHideFlags: 0
@@ -554,6 +582,7 @@ GameObject:
   - component: {fileID: 3265196566316267766}
   - component: {fileID: 8814480649451120344}
   - component: {fileID: 4115759539975507491}
+  - component: {fileID: 6090804127757388888}
   m_Layer: 0
   m_Name: Spot Light (8)
   m_TagString: Untagged
@@ -760,3 +789,16 @@ MonoBehaviour:
   m_PointlightHDType: 0
   m_SpotLightShape: 0
   m_AreaLightShape: 0
+--- !u!114 &6090804127757388888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7094628228516561714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 565d6189eb5bfc842b28434a015e133e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  range: 100
