@@ -18557,6 +18557,11 @@ PrefabInstance:
       propertyPath: postProcessVolume
       value: 
       objectReference: {fileID: 829140361}
+    - target: {fileID: 6884615145944695855, guid: 5e7dc3e9651cdab49867346392efbb67,
+        type: 3}
+      propertyPath: globalVolume
+      value: 
+      objectReference: {fileID: 8961495559270786689}
     - target: {fileID: 8226390034925065330, guid: 5e7dc3e9651cdab49867346392efbb67,
         type: 3}
       propertyPath: m_IsActive
@@ -25148,76 +25153,16 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 300231791}
-    - target: {fileID: 2612949106592745979, guid: a74f70c7151756644ab5a968f233efc9,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 3.8500004
-      objectReference: {fileID: 0}
-    - target: {fileID: 2612949106592745979, guid: a74f70c7151756644ab5a968f233efc9,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2612949106592745979, guid: a74f70c7151756644ab5a968f233efc9,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -7.46
-      objectReference: {fileID: 0}
     - target: {fileID: 2687288956873165723, guid: a74f70c7151756644ab5a968f233efc9,
         type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1663304216}
-    - target: {fileID: 2864870587680635856, guid: a74f70c7151756644ab5a968f233efc9,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 3.328
-      objectReference: {fileID: 0}
-    - target: {fileID: 2864870587680635856, guid: a74f70c7151756644ab5a968f233efc9,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2864870587680635856, guid: a74f70c7151756644ab5a968f233efc9,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -7.46
-      objectReference: {fileID: 0}
     - target: {fileID: 4296357723216538049, guid: a74f70c7151756644ab5a968f233efc9,
         type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1384061252}
-    - target: {fileID: 4916644097618969066, guid: a74f70c7151756644ab5a968f233efc9,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 2.8000007
-      objectReference: {fileID: 0}
-    - target: {fileID: 4916644097618969066, guid: a74f70c7151756644ab5a968f233efc9,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4916644097618969066, guid: a74f70c7151756644ab5a968f233efc9,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -7.46
-      objectReference: {fileID: 0}
-    - target: {fileID: 5195540885393498608, guid: a74f70c7151756644ab5a968f233efc9,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 3.3190002
-      objectReference: {fileID: 0}
-    - target: {fileID: 5195540885393498608, guid: a74f70c7151756644ab5a968f233efc9,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.93700004
-      objectReference: {fileID: 0}
-    - target: {fileID: 5195540885393498608, guid: a74f70c7151756644ab5a968f233efc9,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -1.6910539
-      objectReference: {fileID: 0}
     - target: {fileID: 5236332056844050400, guid: a74f70c7151756644ab5a968f233efc9,
         type: 3}
       propertyPath: m_Mesh
@@ -25248,36 +25193,6 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1904564493}
-    - target: {fileID: 7307744847995666725, guid: a74f70c7151756644ab5a968f233efc9,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 5.914
-      objectReference: {fileID: 0}
-    - target: {fileID: 7307744847995666725, guid: a74f70c7151756644ab5a968f233efc9,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.0572
-      objectReference: {fileID: 0}
-    - target: {fileID: 7307744847995666725, guid: a74f70c7151756644ab5a968f233efc9,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 4.1769466
-      objectReference: {fileID: 0}
-    - target: {fileID: 8664868342891493130, guid: a74f70c7151756644ab5a968f233efc9,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 10.3808
-      objectReference: {fileID: 0}
-    - target: {fileID: 8664868342891493130, guid: a74f70c7151756644ab5a968f233efc9,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.0564
-      objectReference: {fileID: 0}
-    - target: {fileID: 8664868342891493130, guid: a74f70c7151756644ab5a968f233efc9,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1.1035
-      objectReference: {fileID: 0}
     - target: {fileID: 8947017365797656238, guid: a74f70c7151756644ab5a968f233efc9,
         type: 3}
       propertyPath: m_Mesh
@@ -26016,6 +25931,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4944875375261635232, guid: fc6704a308d8ab742bc36e52d23886cb,
+        type: 3}
+      propertyPath: sharedProfile
+      value: 
+      objectReference: {fileID: 11400000, guid: 90f6a882277b56447814c8aefce60fc7,
+        type: 2}
     - target: {fileID: 8242924634194976746, guid: fc6704a308d8ab742bc36e52d23886cb,
         type: 3}
       propertyPath: m_Name
@@ -26026,6 +25947,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc6704a308d8ab742bc36e52d23886cb, type: 3}
+--- !u!114 &8961495559270786689 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4944875375261635232, guid: fc6704a308d8ab742bc36e52d23886cb,
+    type: 3}
+  m_PrefabInstance: {fileID: 8961495559270786688}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8987531440697316929
 PrefabInstance:
   m_ObjectHideFlags: 0

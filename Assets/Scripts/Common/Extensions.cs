@@ -156,6 +156,8 @@ public static class Extensions
     // /// <param name="audioEnum">The music audio data enum.</param>
     // public static void PlayMusic(this AudioSource audioSource, AudioDataEnumMusic audioEnum)
     // {
+    //     if (audioEnum is AudioDataEnumMusic.None) return;
+    //
     //     if (AudioDataMapMusic.Map.TryGetValue(audioEnum, out var audioData))
     //         audioSource.ConfigureAndPlay(audioData);
     // }
@@ -167,6 +169,8 @@ public static class Extensions
     /// <param name="audioEnum">The voice over audio data enum.</param>
     public static void PlayVoiceOver(this AudioSource audioSource, AudioDataEnumVoiceOver audioEnum)
     {
+        if (audioEnum is AudioDataEnumVoiceOver.None) return;
+        
         if (AudioDataMapVoiceOver.Map.TryGetValue(audioEnum, out var audioData))
             audioSource.ConfigureAndPlay(audioData);
     }
@@ -178,6 +182,8 @@ public static class Extensions
     /// <param name="audioEnum">The voice over audio data enum.</param>
     public static void PlaySoundFx(this AudioSource audioSource, AudioDataEnumSoundFx audioEnum)
     {
+        if (audioEnum is AudioDataEnumSoundFx.None) return;
+        
         if (AudioDataMapSoundFx.Map.TryGetValue(audioEnum, out var audioData))
             audioSource.ConfigureAndPlay(audioData);
     }

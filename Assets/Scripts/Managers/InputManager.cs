@@ -31,7 +31,6 @@ namespace Managers
         public static InputAction PuzzleRotate => Instance._actions.Puzzle.Rotate;
         public static InputAction PuzzleCancel => Instance._actions.Puzzle.Cancel;
         
-        
         /// <summary>
         /// Special singleton initializer method.
         /// </summary>
@@ -46,7 +45,15 @@ namespace Managers
             instance.name = "Managers.InputManager (Singleton)";
         }
         
-        protected override void OnAwake() => _actions = new Actions();
+        protected override void OnAwake()
+        {
+            _actions = new Actions();
+
+            GameStateManager.OnCursorStateChange += UpdateCursorState;
+            
+            FreeCursor.performed += _ => EnableCursor();
+            FreeCursor.canceled += _ => DisableCursor();
+        }
         
         /// <summary>
         /// Enables all input actions when the scene is loaded.
@@ -124,6 +131,38 @@ namespace Managers
             PuzzleCancel.Enable();
         }
         
+        /// <summary>
+        /// Checks if all movement input is enabled.
+        /// </summary>
         public static bool IsMovementEnabled => Move.enabled && Vault.enabled && Crouch.enabled && Sneak.enabled;
+
+        private void UpdateCursorState(bool enable)
+        {
+            if (enable) EnableCursor();
+            else DisableCursor();
+        }
+        
+        /// <summary>
+        /// Enables the cursor. 
+        /// </summary>
+        public static void EnableCursor()
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        
+        /// <summary>
+        /// Disables the cursor.
+        /// </summary>
+        public static void DisableCursor()
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        
+        /// <summary>
+        /// Checks if the cursor is enabled.
+        /// </summary>
+        public static bool IsCursorEnabled() => Cursor.lockState == CursorLockMode.None && Cursor.visible;
     }
 }

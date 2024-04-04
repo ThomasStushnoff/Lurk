@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 1940709966740258023}
   - component: {fileID: 4755895638536084149}
   - component: {fileID: 5155727782384461000}
-  - component: {fileID: 6002326454574638261}
-  m_Layer: 12
+  - component: {fileID: -2028905847261131221}
+  - component: {fileID: 3964339540255263845}
+  m_Layer: 8
   m_Name: Drawer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84,30 +85,45 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!54 &6002326454574638261
-Rigidbody:
+--- !u!114 &-2028905847261131221
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3961182660129278908}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d3b8e1d01446d2a4aab1c3c492ac6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  runtimeID: 0
+  animator: {fileID: 0}
+  rb: {fileID: 0}
+  audioSource: {fileID: 0}
+  openPositionOffset: {x: 0, y: 0, z: 0.4}
+  duration: 0.5
+  isOpen: 0
+  openSoundFx: 0
+  closeSoundFx: 0
+--- !u!65 &3964339540255263845
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3961182660129278908}
+  m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.4102764, y: 0.1445895, z: 0.49514797}
+  m_Center: {x: 0.000000037252903, y: 0, z: -0.23808132}

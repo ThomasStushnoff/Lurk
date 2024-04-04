@@ -1,17 +1,16 @@
 ﻿using Audio;
+using Controllers;
 using Entities;
-using Entities.Player;
 using Interfaces;
 using JetBrains.Annotations;
 using Managers;
-using UI;
 using UnityEngine;
 using World.Environmental;
 
 namespace World.Interactables
 {
     [RequireComponent(typeof(AudioSource), typeof(BoxCollider))]
-    public class Page : MonoBehaviour, IInteractable
+    public class Page : BaseObject, IInteractable
     {
         [SerializeField] private PageType type = PageType.Page1;
         [SerializeField] private AudioDataEnumSoundFx interactSound;
@@ -19,26 +18,19 @@ namespace World.Interactables
         [Tooltip("Optional. If you want to trigger an event after you read and put the page down.")]
         [SerializeField, CanBeNull] private LightBulb lightBulb;
         
-        private AudioSource _audioSource;
-        
-        private void Awake()
-        {
-            _audioSource = GetComponent<AudioSource>();
-        }
-        
         public void BeginInteract(BaseEntity entity)
         {
-            PlayerController.EnableCursor();
+            GameStateManager.Instance.IsPuzzleActive = true;
             var pageUI = PrefabManager.Create<PageUIController>(GetPrefabType());
             if (lightBulb != null) pageUI.lightBulb = lightBulb;
             InputManager.DisableMovementInput();
             InputManager.DisableInteractInput();
-            _audioSource.PlayOneShot(interactSound);
+            audioSource.PlayOneShot(interactSound);
         }
         
         public void EndInteract()
         {
-            _audioSource.PlayOneShot(endInteractSound);
+            audioSource.PlayOneShot(endInteractSound);
         }
 
         private PrefabType GetPrefabType()

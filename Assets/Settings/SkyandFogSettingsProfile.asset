@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a81bcacc415a1f743bfdf703afc52027, type: 3}
   m_Name: GradientSky
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   rotation:
     m_OverrideState: 0
     m_Value: 0
@@ -271,7 +271,7 @@ MonoBehaviour:
     m_Value: 52.9
   meanFreePath:
     m_OverrideState: 1
-    m_Value: 118.41
+    m_Value: 52.3
   enableVolumetricFog:
     m_OverrideState: 1
     m_Value: 1
@@ -283,7 +283,7 @@ MonoBehaviour:
     m_Value: 1
   depthExtent:
     m_OverrideState: 1
-    m_Value: 14.45
+    m_Value: 5
   denoisingMode:
     m_OverrideState: 1
     m_Value: 2

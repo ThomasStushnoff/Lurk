@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using Audio;
 using Objects;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
+using Utils;
 
 namespace Managers
 {
     public class AudioManager : Singleton<AudioManager>
     {
+        public AudioMixer audioMixer;
         private struct AudioSourceInfo
         {
             public readonly AudioSource Source;
@@ -24,8 +27,27 @@ namespace Managers
         
         private List<AudioSourceInfo> _audioSources = new List<AudioSourceInfo>();
         
-        protected override void OnSceneUnloaded(Scene scene) => _audioSources.Clear();
+        /// <summary>
+        /// Special singleton initializer method.
+        /// </summary>
+        public new static void Initialize()
+        {
+            var prefab = Resources.Load<GameObject>("Prefabs/Managers/AudioManager");
+            if (prefab == null) throw new Exception("Missing AudioManager prefab!");
+            
+            var instance = Instantiate(prefab);
+            if (instance == null) throw new Exception("Failed to instantiate AudioManager prefab!");
+            
+            instance.name = "Managers.AudioManager (Singleton)";
+        }
         
+        protected override void OnSceneUnloaded(Scene scene) => _audioSources.Clear();
+
+        protected override void OnAwake()
+        {
+            LoadVolumeSettings();
+        }
+
         /// <summary>
         /// Registers an audio source with the given AudioData
         /// </summary>
@@ -193,6 +215,26 @@ namespace Managers
             source.volume = targetVolume;
             if (targetVolume == 0) source.Stop();
         }
+
+        private void LoadVolumeSettings()
+        {
+            SetMasterVolume(PlayerPrefsUtil.MasterVolume);
+            SetMusicVolume(PlayerPrefsUtil.MusicVolume);
+            SetSoundFxVolume(PlayerPrefsUtil.SoundFxVolume);
+            SetVoiceOverVolume(PlayerPrefsUtil.VoiceOverVolume);
+        }
+        
+        public void SetMasterVolume(float value) => 
+            audioMixer.SetFloat("MasterVolume", Mathf.Log10(value) * 20);
+        
+        public void SetMusicVolume(float value) => 
+            audioMixer.SetFloat("MusicVolume", Mathf.Log10(value) * 20);
+        
+        public void SetSoundFxVolume(float value) => 
+            audioMixer.SetFloat("SoundFxVolume", Mathf.Log10(value) * 20);
+        
+        public void SetVoiceOverVolume(float value) => 
+            audioMixer.SetFloat("VoiceOverVolume", Mathf.Log10(value) * 20);
     }
 
     public enum FadeMode

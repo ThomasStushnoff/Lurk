@@ -1,5 +1,5 @@
-﻿using Entities;
-using Entities.Player;
+﻿using Controllers;
+using Entities;
 using Managers;
 using UnityEngine;
 
