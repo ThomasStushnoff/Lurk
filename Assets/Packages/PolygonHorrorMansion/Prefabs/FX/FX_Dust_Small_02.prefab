@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 198114913761027532}
   - component: {fileID: 199689566063724084}
   m_Layer: 0
-  m_Name: FX_Dust_Small_01
+  m_Name: FX_Dust_Small_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -865,7 +865,7 @@ ParticleSystem:
           m_PostInfinity: 2
           m_RotationOrder: 4
   EmissionModule:
-    enabled: 1
+    enabled: 0
     serializedVersion: 4
     rateOverTime:
       serializedVersion: 2
